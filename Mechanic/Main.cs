@@ -11,16 +11,12 @@ using System.Windows.Forms;
 namespace Mechanic
 {
     public partial class Main : Form
-    {
+    {       
+
         public Main()
         {
             InitializeComponent();
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        }       
 
         private void btnDrawDiagram_Click(object sender, EventArgs e)
         {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using static System.Math;
 
 
@@ -6,7 +8,11 @@ namespace Mechanic
 {
     class CalcPolitropsOfComprassionAndExpansion
     {
+        // token source
+        public CancellationTokenSource CancellationTokenSource { get; set; } = null;
+
         //константные данные для рассчета
+
         //кути
         private int StartAngle { get; set; } = 0;
         private int EndAngle { get; set; } = 180;
@@ -25,6 +31,16 @@ namespace Mechanic
 
         // дані про політропу     
         public DataPolitropsOfComprassionAndExpansion DataPolitrops { get; private set; } = null;
+
+        private const double DEFAULT_INDICATOR_POLITROP_COMPRASS = 1.37;
+        private const double DEFAULT_INDICATOR_POLITROP_EXPANSION = 1.27;
+
+        private const double MU = 1.035; // дійсний коефіцієнт молекул зміни
+        private const double Tz = 1953; //1953K
+        private const double LAMBDA_Z = 1.77; // ступінь підвищення тиску
+        private const double Ta = 342.2; // температура тіла на початку стиснення
+        private readonly double Tc;
+
         //середній показник стиснення політропи
         private double n1;
         public double N1
@@ -46,6 +62,9 @@ namespace Mechanic
 
         //середній показник розширення політропи
         private double n2;
+
+        private const double PZ = 7.0; // pz
+
         public double N2
         {
             get
@@ -69,17 +88,28 @@ namespace Mechanic
         //об'єм камери стиснення
         public double Vc { get; }
 
-        public CalcPolitropsOfComprassionAndExpansion(DataPolitropsOfComprassionAndExpansion dataPolitrops, double n1, double n2)
+        public CalcPolitropsOfComprassionAndExpansion(DataPolitropsOfComprassionAndExpansion dataPolitrops)
         {
             this.DataPolitrops = dataPolitrops;
-            this.N1 = n1;
-            this.N2 = n2;
+            this.N1 = DEFAULT_INDICATOR_POLITROP_COMPRASS;
+            this.N2 = DEFAULT_INDICATOR_POLITROP_EXPANSION;
 
             this.Vh = ((PI * this.DiamOfCylinder * this.DiamOfCylinder) / 4) * this.RunningOfPiston;
             this.Vc = this.Vh / (this.Epsilon - 1);
+            this.Tc = Ta * Pow(this.Epsilon, this.N1 - 1);
         }
 
-        public DataPolitropsOfComprassionAndExpansion calcPolitropsData(int deltaAngle)
+        public async Task CalcPolitropsDataAsync(int deltaAngle)
+        {
+            CancellationTokenSource = new CancellationTokenSource();
+            var token = CancellationTokenSource.Token;
+            this.DataPolitrops = new DataPolitropsOfComprassionAndExpansion();
+
+            await Task.Factory.StartNew(() => CalcPolitropsData(deltaAngle, token), token);
+        }
+
+
+        private void CalcPolitropsData(int deltaAngle, CancellationToken token)
         {
             for (int currentAngle = this.StartAngle; currentAngle <= this.EndAngle; currentAngle += deltaAngle)
             {
@@ -95,38 +125,63 @@ namespace Mechanic
                 double v = calcVolumeCylinder(multiplesFnAndS);
                 this.DataPolitrops.V.Add(v);
                 //відношення об'ємів  Va/V
-                this.DataPolitrops.RatioVaToV.Add(calcRatioVaToV(v));
+                double Va = calcVa();
+                double ratioVaToV = Va / v;
+                this.DataPolitrops.RatioVaToV.Add(ratioVaToV);
                 //відношення об'ємів  (Va/V)^n1
-                double ratioVaToVInDegreeN = Pow(calcRatioVaToV(v), this.N1);
-                this.DataPolitrops.RatioVaToV.Add(ratioVaToVInDegreeN);
+                double ratioVaToVInDegreeN1 = Pow(ratioVaToV, this.N1);
+                this.DataPolitrops.RatioVaToVInDegreeN1.Add(ratioVaToVInDegreeN1);
                 //поточний тиск p на лінії стиснення
-                double pressureOnLineCompression = calcPressureOnLineCompression(ratioVaToVInDegreeN);
+                double pressureOnLineCompression = calcPressureOnLineCompression(ratioVaToVInDegreeN1);
+                this.DataPolitrops.PressureOnLineCompression.Add(pressureOnLineCompression);
                 //відношення об'ємів  Vz/V
-                double Vz = calcVz();
-                double ratioVzToV = calcRatioVzToV()
-                //відношення об'ємів (Vz/V)^n
+                double Vz = calcVz(calcRo());
+                double ratioVzToV = Vz / v;
+                this.DataPolitrops.RatioVzToV.Add(ratioVzToV);
+                //відношення об'ємів (Vz/V)^n2
+                double ratioVzToVInDegreeN2 = Pow(ratioVzToV, this.N2);
+                this.DataPolitrops.RatioVzToVInDegreeN2.Add(ratioVzToVInDegreeN2);
                 //поточний тиск p на лінії розширення
+                double pressureOnLineExpansion = calcPressureOnLineExpansion(ratioVzToVInDegreeN2);
+                this.DataPolitrops.PressureOnLineExpansion.Add(pressureOnLineExpansion);
+                //cancel execute calc func
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
             }
-
         }
 
-        private double calcVz()
+        private double calcVa()
         {
-            //Vz = p(ro) * Vc
-            // ro = (mu*Tz)/(lamdaZ * Tc)
+            return this.Vc + this.Vh;
+        }
 
-            #region mu
-                // mu = (mu0 + gamma)/(1+gamma)
-                // mu0 = M2/M1
-                // M1 = 1.8
-                //M2 = M0 + (lamba - 1) * L0
+        //поточний тиск p на лінії розширення
+        private double calcPressureOnLineExpansion(double ratioVzToVInDegreeN2)
+        {
+            // p = pz*(1/((V/Vz)^n2))
+            //pz - найбільший тиск згорання            
+            return PZ / ratioVzToVInDegreeN2;
+        }
 
-            #endregion
-
-
+        //Vz
+        private double calcVz(double ro)
+        {
+            //Vz = p(ro) * Vc        
             return ro * this.Vc;
         }
 
+        // ступінь попереднього розміщення
+        private double calcRo()
+        {
+            // ro = (mu*Tz)/(lamdaZ * Tc)
+            // mu = (mu0 + gamma)/(1+gamma)            
+            double ro = (MU * Tz) / (LAMBDA_Z * Tc);
+            return ro;
+        }
+
+        //поточний тиск p на лінії стиснення
         private double calcPressureOnLineCompression(double ratioVaToVInDegreeN)
         {
             //тиск на початку стиснення pa = [0.9...0.96]*pk
@@ -134,21 +189,19 @@ namespace Mechanic
             return koefPa * ratioVaToVInDegreeN;
         }
 
-        private double calcRatioVaToV(double v)
-        {
-            return (this.Vc + this.Vh) / v;
-        }
-
+        //поточний об'єм циліндра
         private double calcVolumeCylinder(double multiplesFnAndS)
-        {           
+        {
             return this.Vc + multiplesFnAndS;
         }
 
+        //добуток Fn*S
         private double calcMultipleFnAndS(double s)
         {
             return ((PI * this.DiamOfCylinder * this.DiamOfCylinder) / 4) * s;
         }
 
+        //переміщення поршня
         private double calcMovementPiston(int currentAngle)
         {
             return this.R * (
