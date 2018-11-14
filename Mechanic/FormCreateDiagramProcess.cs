@@ -100,6 +100,11 @@ namespace Mechanic
 
         private void ShowDataPolitropOnDataGridView()
         {
+            // очистка старого графіка
+            chart_IndicatorDiagram.Series["PolitropOfComprassion"].Points.Clear();
+            chart_IndicatorDiagram.Series["PolitropOfExpansion"].Points.Clear();
+
+
             for (int iterInternalPolitrData = 0;
                  iterInternalPolitrData < calcPolitrops.DataPolitrops.LengthInternalObject;
                  iterInternalPolitrData++
@@ -118,7 +123,7 @@ namespace Mechanic
                     dataPolitrop.RatioVzToVInDegreeN2[iterInternalPolitrData],
                     dataPolitrop.PressureOnLineExpansion[iterInternalPolitrData]
                     );
-
+                
                 // будувати графік по точкам
                 chart_IndicatorDiagram.Series["PolitropOfComprassion"].Points.
                 AddXY(dataPolitrop.V[iterInternalPolitrData], // V
