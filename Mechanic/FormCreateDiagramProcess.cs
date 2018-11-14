@@ -13,7 +13,7 @@ namespace Mechanic
     public partial class FormCreateDiagramProcess : Form
     {
         private const int WAITING_EXECUTE_CALCULATING = 10; // wait on execute calc data in milisec
-
+        private const int SHIFT_OF_CHART_ABOUT_TABLETOP = 100;
         private CalcPolitropsOfComprassionAndExpansion calcPolitrops = new CalcPolitropsOfComprassionAndExpansion(
             new DataPolitropsOfComprassionAndExpansion());
         private Task TaskCalcPolitropData { get; set; } = null;
@@ -38,6 +38,8 @@ namespace Mechanic
                     dataGridView_Politrop.Rows.RemoveAt(i);
                 }
                 dataGridView_Politrop.Refresh();
+                //placement chart after refresh datagrid
+                this.chart_IndicatorDiagram.Top = dataGridView_Politrop.Top + SHIFT_OF_CHART_ABOUT_TABLETOP;
             }
 
             if (calcPolitrops.CancellationTokenSource != null)
