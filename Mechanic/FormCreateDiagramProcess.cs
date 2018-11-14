@@ -25,6 +25,7 @@ namespace Mechanic
         {
             InitializeComponent();
             timer.Interval = WAITING_EXECUTE_CALCULATING;
+            this.label_Pc.Text = "Pc:  " + calcPolitrops.PC.ToString();
         }
 
         private void btnCalcAndBuildDiagr_Click(object sender, EventArgs e)
@@ -66,7 +67,19 @@ namespace Mechanic
                 MessageBox.Show(this, ex.Message, "Помилка в заданому значенні", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            
+
+            double lambdaDegreeIncreasePressure = double.Parse(textBox_Lambda_DegreeOfPressureIncrease.Text);
+            try
+            {
+                calcPolitrops.LambdaDegreeIncreasePressure = lambdaDegreeIncreasePressure;
+                label_PZ.Text = "Pz:  " + Math.Round(calcPolitrops.PZ, 3).ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Помилка в заданому значенні", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             int deltaAngle = int.Parse(textBox_DeltaAngle.Text);
 
             TaskCalcPolitropData = calcPolitrops.CalcPolitropsDataAsync(deltaAngle);
@@ -99,10 +112,21 @@ namespace Mechanic
                     dataPolitrop.RatioVaToV[iterInternalPolitrData],
                     dataPolitrop.RatioVaToVInDegreeN1[iterInternalPolitrData],
                     dataPolitrop.PressureOnLineCompression[iterInternalPolitrData],
-                    dataPolitrop.RatioVzToV[iterInternalPolitrData],
+                    dataPolitrop.RatioVToVz[iterInternalPolitrData],
                     dataPolitrop.RatioVzToVInDegreeN2[iterInternalPolitrData],
                     dataPolitrop.PressureOnLineExpansion[iterInternalPolitrData]
                     );
+
+                // будувати графік по точкам
+                chart_IndicatorDiagram.Series["PolitropOfComprassion"].Points.
+                AddXY(dataPolitrop.V[iterInternalPolitrData], // V
+                    dataPolitrop.PressureOnLineCompression[iterInternalPolitrData] // p compression
+                    );
+
+                chart_IndicatorDiagram.Series["PolitropOfExpansion"].Points.
+               AddXY(dataPolitrop.V[iterInternalPolitrData], // V
+                   dataPolitrop.PressureOnLineExpansion[iterInternalPolitrData] // p expansion
+                   );
             }
 
             // autosize height
@@ -113,6 +137,8 @@ namespace Mechanic
             }
 
             dataGridView_Politrop.Height = height;
+            //смещение графика 
+            chart_IndicatorDiagram.Top += height;
         }
     }
 }

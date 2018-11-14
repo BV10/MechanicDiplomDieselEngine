@@ -1,4 +1,6 @@
-﻿namespace Mechanic
+﻿using System.Drawing;
+
+namespace Mechanic
 {
     partial class FormCreateDiagramProcess
     {
@@ -29,6 +31,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.label1 = new System.Windows.Forms.Label();
             this.btnCalcAndBuildDiagr = new System.Windows.Forms.Button();
             this.textBox_N1_IndicPolitrCompres = new System.Windows.Forms.TextBox();
@@ -51,8 +58,11 @@
             this.textBox_DeltaAngle = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.label6 = new System.Windows.Forms.Label();
+            this.label_Pc = new System.Windows.Forms.Label();
+            this.label_PZ = new System.Windows.Forms.Label();
+            this.chart_IndicatorDiagram = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Politrop)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_IndicatorDiagram)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -68,7 +78,7 @@
             // btnCalcAndBuildDiagr
             // 
             this.btnCalcAndBuildDiagr.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnCalcAndBuildDiagr.Location = new System.Drawing.Point(701, 92);
+            this.btnCalcAndBuildDiagr.Location = new System.Drawing.Point(704, 68);
             this.btnCalcAndBuildDiagr.Name = "btnCalcAndBuildDiagr";
             this.btnCalcAndBuildDiagr.Size = new System.Drawing.Size(204, 45);
             this.btnCalcAndBuildDiagr.TabIndex = 1;
@@ -118,6 +128,7 @@
             this.textBox_Lambda_DegreeOfPressureIncrease.Name = "textBox_Lambda_DegreeOfPressureIncrease";
             this.textBox_Lambda_DegreeOfPressureIncrease.Size = new System.Drawing.Size(90, 20);
             this.textBox_Lambda_DegreeOfPressureIncrease.TabIndex = 9;
+            this.textBox_Lambda_DegreeOfPressureIncrease.Text = "1,5";
             // 
             // label3
             // 
@@ -214,7 +225,7 @@
             this.textBox_DeltaAngle.Name = "textBox_DeltaAngle";
             this.textBox_DeltaAngle.Size = new System.Drawing.Size(90, 20);
             this.textBox_DeltaAngle.TabIndex = 12;
-            this.textBox_DeltaAngle.Text = "3";
+            this.textBox_DeltaAngle.Text = "5";
             // 
             // label5
             // 
@@ -230,15 +241,72 @@
             // 
             this.timer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // label6
+            // label_Pc
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(316, 137);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(119, 16);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "НЕ ИСПОЛЬЗ!!!!!!!\r\n";
+            this.label_Pc.AutoSize = true;
+            this.label_Pc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_Pc.Location = new System.Drawing.Point(701, 146);
+            this.label_Pc.Name = "label_Pc";
+            this.label_Pc.Size = new System.Drawing.Size(31, 16);
+            this.label_Pc.TabIndex = 14;
+            this.label_Pc.Text = "pC: ";
+            // 
+            // label_PZ
+            // 
+            this.label_PZ.AutoSize = true;
+            this.label_PZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_PZ.Location = new System.Drawing.Point(701, 173);
+            this.label_PZ.Name = "label_PZ";
+            this.label_PZ.Size = new System.Drawing.Size(30, 16);
+            this.label_PZ.TabIndex = 15;
+            this.label_PZ.Text = "pZ: ";
+            // 
+            // chart_IndicatorDiagram
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chart_IndicatorDiagram.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart_IndicatorDiagram.Legends.Add(legend1);
+            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(63, 281);
+            this.chart_IndicatorDiagram.Name = "chart_IndicatorDiagram";
+            series1.Font = new Font("Courier New", 15.0f, FontStyle.Italic);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.Legend = "Legend1";            
+            series1.LegendText = "Політропа стиснення";
+            series1.MarkerBorderWidth = 3;
+            series1.Name = "PolitropOfComprassion";
+            series1.BorderWidth = 3;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series2.Legend = "Legend1";
+            series2.BorderWidth = 3;
+            series2.LegendText = "Політропа розширення";
+            series2.MarkerBorderColor = System.Drawing.Color.Transparent;
+            series2.MarkerBorderWidth = 3;
+            series2.Name = "PolitropOfExpansion";
+            this.chart_IndicatorDiagram.Series.Add(series1);
+            this.chart_IndicatorDiagram.Series.Add(series2);
+            this.chart_IndicatorDiagram.Size = new System.Drawing.Size(1044, 300);
+            this.chart_IndicatorDiagram.TabIndex = 16;
+            this.chart_IndicatorDiagram.Text = "chart1";
+            title1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title1.Name = "indicateDiagram";
+            title1.Text = "Індикаторна діаграма";
+            this.chart_IndicatorDiagram.Titles.Add(title1);
+
+            //this.chart_IndicatorDiagram.
+            this.chart_IndicatorDiagram.ChartAreas[0].AxisX.LabelAutoFitMinFontSize = 10;            
+            this.chart_IndicatorDiagram.ChartAreas[0].AxisX.TitleAlignment = System.Drawing.StringAlignment.Far;
+            this.chart_IndicatorDiagram.ChartAreas[0].AxisX.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12, System.Drawing.FontStyle.Bold);
+            this.chart_IndicatorDiagram.ChartAreas[0].AxisX.Title = "V";
+
+
+
+            this.chart_IndicatorDiagram.ChartAreas[0].AxisY.LabelAutoFitMinFontSize = 10;
+            this.chart_IndicatorDiagram.ChartAreas[0].AxisY.TitleAlignment = System.Drawing.StringAlignment.Far;
+            this.chart_IndicatorDiagram.ChartAreas[0].AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12, System.Drawing.FontStyle.Bold);
+            this.chart_IndicatorDiagram.ChartAreas[0].AxisY.Title = "p";
             // 
             // FormCreateDiagramProcess
             // 
@@ -246,7 +314,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1174, 637);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.chart_IndicatorDiagram);
+            this.Controls.Add(this.label_PZ);
+            this.Controls.Add(this.label_Pc);
             this.Controls.Add(this.textBox_DeltaAngle);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.dataGridView_Politrop);
@@ -259,8 +329,10 @@
             this.Controls.Add(this.btnCalcAndBuildDiagr);
             this.Controls.Add(this.label1);
             this.Name = "FormCreateDiagramProcess";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Діаграма робочого процесу для цилінндра";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Politrop)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_IndicatorDiagram)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -290,6 +362,8 @@
         private System.Windows.Forms.TextBox textBox_DeltaAngle;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Timer timer;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label_Pc;
+        private System.Windows.Forms.Label label_PZ;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart_IndicatorDiagram;
     }
 }

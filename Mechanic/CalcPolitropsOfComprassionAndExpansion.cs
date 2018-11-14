@@ -8,6 +8,8 @@ namespace Mechanic
 {
     class CalcPolitropsOfComprassionAndExpansion
     {
+        // дефолтная константа округления дробных чисел
+        private const int DEFAULT_ROUND_NUMB = 3;
         // token source
         public CancellationTokenSource CancellationTokenSource { get; set; } = null;
 
@@ -16,8 +18,8 @@ namespace Mechanic
         //кути
         private int StartAngle { get; set; } = 0;
         private int EndAngle { get; set; } = 180;
-        // R  - для розрахунку переміщення поршня S
-        private int R { get; set; } = 165;
+        // R(в метрах)  - для розрахунку переміщення поршня S в м
+        private double R { get; set; } = 0.165;
         // відношення радіуса кривошипа до довжини шатуна - для розрахунку переміщення поршня S
         private double Lambda { get; set; } = 0.25;
         //діаметр цилідндра
@@ -28,6 +30,12 @@ namespace Mechanic
         private double Epsilon { get; set; } = 12.5;
         // тиск повітря у надувному колекторі
         private double Pk { get; set; } = 0.142;
+        // коеф Pa
+        private double koefPa;
+        // pC
+        private double pC;
+        // lambda - ступінь підвищення -тиску
+        private double lambdaDegreeIncreasePressure;
 
         // дані про політропу     
         public DataPolitropsOfComprassionAndExpansion DataPolitrops { get; private set; } = null;
@@ -36,10 +44,9 @@ namespace Mechanic
         private const double DEFAULT_INDICATOR_POLITROP_EXPANSION = 1.27;
 
         private const double MU = 1.035; // дійсний коефіцієнт молекул зміни
-        private const double Tz = 1953; //1953K
-        private const double LAMBDA_Z = 1.77; // ступінь підвищення тиску
+        private const double Tz = 1953; //1953K        
         private const double Ta = 342.2; // температура тіла на початку стиснення
-        private readonly double Tc;
+        private readonly double Tc;        
 
         //середній показник стиснення політропи
         private double n1;
@@ -63,7 +70,7 @@ namespace Mechanic
         //середній показник розширення політропи
         private double n2;
 
-        private const double PZ = 7.0; // pz
+        private double pZ; // pz
 
         public double N2
         {
@@ -87,6 +94,19 @@ namespace Mechanic
 
         //об'єм камери стиснення
         public double Vc { get; }
+        public double PC { get => pC; private set => pC = value; }
+        public double PZ { get => pZ; set => pZ = value; }
+        public double RO { get; private set; }
+
+        public double LambdaDegreeIncreasePressure {
+            get => lambdaDegreeIncreasePressure;
+            set
+            {
+                lambdaDegreeIncreasePressure = value;
+                this.PZ = value * this.PC;
+                this.RO = (MU * Tz) / (this.LambdaDegreeIncreasePressure * Tc);
+            }
+        }
 
         public CalcPolitropsOfComprassionAndExpansion(DataPolitropsOfComprassionAndExpansion dataPolitrops)
         {
@@ -97,6 +117,8 @@ namespace Mechanic
             this.Vh = ((PI * this.DiamOfCylinder * this.DiamOfCylinder) / 4) * this.RunningOfPiston;
             this.Vc = this.Vh / (this.Epsilon - 1);
             this.Tc = Ta * Pow(this.Epsilon, this.N1 - 1);
+            this.koefPa = 0.93 * this.Pk; ;
+            this.PC = Round( this.koefPa * Pow(this.Epsilon, this.N1), 2);            
         }
 
         public async Task CalcPolitropsDataAsync(int deltaAngle)
@@ -116,34 +138,37 @@ namespace Mechanic
                 //кути політроп
                 this.DataPolitrops.Angles.Add(currentAngle);
                 //переміщення поршня
-                double s = calcMovementPiston(currentAngle);
-                this.DataPolitrops.S.Add(s);
+                double s = calcMovementPiston(currentAngle);                
+                this.DataPolitrops.S.Add(Round(s, DEFAULT_ROUND_NUMB));
                 //добуток Fn*S
                 double multiplesFnAndS = calcMultipleFnAndS(s);
-                this.DataPolitrops.MultiplesFnAndS.Add(multiplesFnAndS);
+                this.DataPolitrops.MultiplesFnAndS.Add(Round(multiplesFnAndS, 4));
                 //поточний об'єм циліндра
                 double v = calcVolumeCylinder(multiplesFnAndS);
-                this.DataPolitrops.V.Add(v);
+                this.DataPolitrops.V.Add(Round(v, 5));
                 //відношення об'ємів  Va/V
                 double Va = calcVa();
                 double ratioVaToV = Va / v;
-                this.DataPolitrops.RatioVaToV.Add(ratioVaToV);
+                this.DataPolitrops.RatioVaToV.Add(Round(ratioVaToV, DEFAULT_ROUND_NUMB));
                 //відношення об'ємів  (Va/V)^n1
                 double ratioVaToVInDegreeN1 = Pow(ratioVaToV, this.N1);
-                this.DataPolitrops.RatioVaToVInDegreeN1.Add(ratioVaToVInDegreeN1);
+                this.DataPolitrops.RatioVaToVInDegreeN1.Add(Round(ratioVaToVInDegreeN1, DEFAULT_ROUND_NUMB));
                 //поточний тиск p на лінії стиснення
                 double pressureOnLineCompression = calcPressureOnLineCompression(ratioVaToVInDegreeN1);
-                this.DataPolitrops.PressureOnLineCompression.Add(pressureOnLineCompression);
+                this.DataPolitrops.PressureOnLineCompression.Add(Round(pressureOnLineCompression, DEFAULT_ROUND_NUMB));
                 //відношення об'ємів  Vz/V
-                double Vz = calcVz(calcRo());
-                double ratioVzToV = Vz / v;
-                this.DataPolitrops.RatioVzToV.Add(ratioVzToV);
+                double Vz = calcVz();
+                Console.WriteLine(Vz);
+                double ratioVToVz = v / Vz;
+                this.DataPolitrops.RatioVToVz.Add(Round(ratioVToVz, DEFAULT_ROUND_NUMB));
                 //відношення об'ємів (Vz/V)^n2
-                double ratioVzToVInDegreeN2 = Pow(ratioVzToV, this.N2);
-                this.DataPolitrops.RatioVzToVInDegreeN2.Add(ratioVzToVInDegreeN2);
+                double ratioVzToVInDegreeN2 = Pow(ratioVToVz, this.N2);
+                this.DataPolitrops.RatioVzToVInDegreeN2.Add(Round(ratioVzToVInDegreeN2, DEFAULT_ROUND_NUMB));
                 //поточний тиск p на лінії розширення
                 double pressureOnLineExpansion = calcPressureOnLineExpansion(ratioVzToVInDegreeN2);
-                this.DataPolitrops.PressureOnLineExpansion.Add(pressureOnLineExpansion);
+                // замінити на pZ, якщо тиск більший pZ
+                pressureOnLineExpansion = pressureOnLineExpansion > PZ ? PZ : pressureOnLineExpansion;
+                this.DataPolitrops.PressureOnLineExpansion.Add(Round(pressureOnLineExpansion, DEFAULT_ROUND_NUMB));
                 //cancel execute calc func
                 if (token.IsCancellationRequested)
                 {
@@ -166,27 +191,17 @@ namespace Mechanic
         }
 
         //Vz
-        private double calcVz(double ro)
+        private double calcVz()
         {
             //Vz = p(ro) * Vc        
-            return ro * this.Vc;
-        }
-
-        // ступінь попереднього розміщення
-        private double calcRo()
-        {
-            // ro = (mu*Tz)/(lamdaZ * Tc)
-            // mu = (mu0 + gamma)/(1+gamma)            
-            double ro = (MU * Tz) / (LAMBDA_Z * Tc);
-            return ro;
+            return this.RO * this.Vc;
         }
 
         //поточний тиск p на лінії стиснення
         private double calcPressureOnLineCompression(double ratioVaToVInDegreeN)
         {
-            //тиск на початку стиснення pa = [0.9...0.96]*pk
-            double koefPa = 0.93 * this.Pk;
-            return koefPa * ratioVaToVInDegreeN;
+            //тиск на початку стиснення pa = [0.9...0.96]*pk            
+            return this.koefPa * ratioVaToVInDegreeN;
         }
 
         //поточний об'єм циліндра
@@ -204,9 +219,11 @@ namespace Mechanic
         //переміщення поршня
         private double calcMovementPiston(int currentAngle)
         {
+
+            double angleInRad = currentAngle * (PI / 180.0);
             return this.R * (
-                (1 - Cos(currentAngle)) +
-                (1 / this.Lambda) * (1 - Sqrt(1 - this.Lambda * this.Lambda * Sin(currentAngle) * Sin(currentAngle)))
+                (1 - Cos(angleInRad)) +
+                (1 / this.Lambda) * (1 - Sqrt(1 - this.Lambda * this.Lambda * Sin(angleInRad) * Sin(angleInRad)))
                 );
         }
     }

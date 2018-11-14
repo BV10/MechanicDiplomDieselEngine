@@ -23,7 +23,7 @@ namespace Mechanic
         //поточний тиск p на лінії стиснення
         public List<double> PressureOnLineCompression { get; set; } = new List<double>();
         //відношення об'ємів  Vz/V
-        public List<double> RatioVzToV { get; set; } = new List<double>();
+        public List<double> RatioVToVz { get; set; } = new List<double>();
         //відношення об'ємів (Vz/V)^n2
         public List<double> RatioVzToVInDegreeN2 { get; set; } = new List<double>();
         //поточний тиск p на лінії розширення
