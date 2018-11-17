@@ -32,6 +32,23 @@ namespace Mechanic
             calcSpecificForces = new CalcSpecificForces(calcPolitrops);
             timer.Interval = WAITING_EXECUTE_CALCULATING;
             this.label_Pc.Text = "Pc:  " + calcPolitrops.PC.ToString();
+            this.chartOfSpecificForcesP.Top = this.dataGridView_CalcSpecifForces.Bottom + SHIFT_OF_ELEM;
+            this.chartOfSpecificForces_KAndN.Top = this.chartOfSpecificForcesP.Bottom + SHIFT_OF_ELEM;
+            this.chartOfSpecificForces_TAndZ.Top = this.chartOfSpecificForces_KAndN.Bottom + SHIFT_OF_ELEM;
+
+            this.chart_IndicatorDiagram.ChartAreas[0].AxisX.Title = "V";
+            this.chart_IndicatorDiagram.ChartAreas[0].AxisY.Title = "p";
+
+
+            this.chartOfSpecificForcesP.ChartAreas[0].AxisX.Title = "\u03c6";
+            this.chartOfSpecificForcesP.ChartAreas[0].AxisY.Title = "Pr, Pj, P\u2A0A";
+
+            this.chartOfSpecificForces_KAndN.ChartAreas[0].AxisX.Title = "\u03c6";
+            this.chartOfSpecificForces_KAndN.ChartAreas[0].AxisY.Title = "K, N, МПа";
+
+
+            this.chartOfSpecificForces_TAndZ.ChartAreas[0].AxisX.Title = "\u03c6";
+            this.chartOfSpecificForces_TAndZ.ChartAreas[0].AxisY.Title = "T, Z, МПа";
         }
 
         private void btnCalcAndBuildDiagr_Click(object sender, EventArgs e)
@@ -118,7 +135,7 @@ namespace Mechanic
 
             if (TaskCalcPolitropData.IsCompleted && !isShowCalcDataPolitr)
             {                
-                ShowDataPolitropOnDataGridView();
+                ShowDataPolitrop();
                 isShowCalcDataPolitr = true;
             }
             if(TaskCalcSpecificForces.IsCompleted && !isShowCalcSpecificForces)
@@ -130,8 +147,16 @@ namespace Mechanic
 
         private void ShowDataSpecificForces()
         {
-            // очистка старого графіка
-            //....
+            // очистка старых графіков            
+            chartOfSpecificForcesP.Series["SeriesPr"].Points.Clear();
+            chartOfSpecificForcesP.Series["SeriesPj"].Points.Clear();
+            chartOfSpecificForcesP.Series["SeriesPsum"].Points.Clear();
+
+            chartOfSpecificForces_KAndN.Series["SeriesK"].Points.Clear();
+            chartOfSpecificForces_KAndN.Series["SeriesN"].Points.Clear();
+
+            chartOfSpecificForces_TAndZ.Series["SeriesT"].Points.Clear();
+            chartOfSpecificForces_TAndZ.Series["SeriesZ"].Points.Clear();
 
 
             for (int iterInternalSpecficForcesData = 0;
@@ -156,11 +181,45 @@ namespace Mechanic
                     dataOfSpecificForces.CosPhiPlBetaOnCosBeta[iterInternalSpecficForcesData],
                     dataOfSpecificForces.Z[iterInternalSpecficForcesData]
                     );
+
+                // будувати графік по точкам Pr, Pj, Psum
+                chartOfSpecificForcesP.Series["SeriesPr"].Points.
+                AddXY(dataOfSpecificForces.Angles[iterInternalSpecficForcesData], // V
+                    dataOfSpecificForces.Pr[iterInternalSpecficForcesData] // p compression
+                    );
+
+                chartOfSpecificForcesP.Series["SeriesPj"].Points.
+               AddXY(dataOfSpecificForces.Angles[iterInternalSpecficForcesData], // V
+                   dataOfSpecificForces.Pj[iterInternalSpecficForcesData] // p expansion
+                   );
+
+                chartOfSpecificForcesP.Series["SeriesPsum"].Points.
+               AddXY(dataOfSpecificForces.Angles[iterInternalSpecficForcesData], // V
+                   dataOfSpecificForces.Psum[iterInternalSpecficForcesData] // p expansion
+                   );
+                // K, N
+                chartOfSpecificForces_KAndN.Series["SeriesK"].Points.
+                    AddXY(dataOfSpecificForces.Angles[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.K[iterInternalSpecficForcesData]);
+
+                chartOfSpecificForces_KAndN.Series["SeriesN"].Points.
+                    AddXY(dataOfSpecificForces.Angles[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.N[iterInternalSpecficForcesData]);
+
+                //T, Z
+                chartOfSpecificForces_TAndZ.Series["SeriesT"].Points.
+                    AddXY(dataOfSpecificForces.Angles[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.T[iterInternalSpecficForcesData]);
+
+                chartOfSpecificForces_TAndZ.Series["SeriesZ"].Points.
+                    AddXY(dataOfSpecificForces.Angles[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.Z[iterInternalSpecficForcesData]);
             }
+
             AutosizeGridView(this.dataGridView_CalcSpecifForces);
         }
 
-        private void ShowDataPolitropOnDataGridView()
+        private void ShowDataPolitrop()
         {
             // очистка старого графіка
             chart_IndicatorDiagram.Series["PolitropOfComprassion"].Points.Clear();
@@ -223,6 +282,21 @@ namespace Mechanic
             //placement datagridview of calc specif forcews after movement chartIndicDiagr
             this.dataGridView_CalcSpecifForces.Top = this.chart_IndicatorDiagram.Bottom + SHIFT_OF_ELEM;
 
+        }
+
+        private void dataGridView_CalcSpecifForces_Resize(object sender, EventArgs e)
+        {
+            this.chartOfSpecificForcesP.Top = this.dataGridView_CalcSpecifForces.Bottom + SHIFT_OF_ELEM;
+        }
+
+        private void chartOfSpecificForcesP_Move(object sender, EventArgs e)
+        {
+            this.chartOfSpecificForces_KAndN.Top = this.chartOfSpecificForcesP.Bottom + SHIFT_OF_ELEM;
+        }
+
+        private void chartOfSpecificForces_KAndN_Move(object sender, EventArgs e)
+        {
+            this.chartOfSpecificForces_TAndZ.Top = this.chartOfSpecificForces_KAndN.Bottom + SHIFT_OF_ELEM;
         }
     }
 }

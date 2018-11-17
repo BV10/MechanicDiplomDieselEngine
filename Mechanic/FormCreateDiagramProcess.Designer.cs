@@ -32,12 +32,27 @@ namespace Mechanic
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            //график политроп
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();            
+            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title4 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.label1 = new System.Windows.Forms.Label();
             this.btnCalcAndBuildDiagr = new System.Windows.Forms.Button();
             this.textBox_N1_IndicPolitrCompres = new System.Windows.Forms.TextBox();
@@ -78,9 +93,15 @@ namespace Mechanic
             this.T = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cosPhiPlusBetaOnCosBeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Z = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chartOfSpecificForcesP = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chartOfSpecificForces_KAndN = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chartOfSpecificForces_TAndZ = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Politrop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart_IndicatorDiagram)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_CalcSpecifForces)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartOfSpecificForcesP)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartOfSpecificForces_KAndN)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartOfSpecificForces_TAndZ)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -192,13 +213,13 @@ namespace Mechanic
             // 
             // multiplyMovementAndF
             // 
-            this.multiplyMovementAndF.HeaderText = "FпS, м^3";
+            this.multiplyMovementAndF.HeaderText = "FпS, м³";
             this.multiplyMovementAndF.Name = "multiplyMovementAndF";
             this.multiplyMovementAndF.ReadOnly = true;
             // 
             // volumeOfCylinder
             // 
-            this.volumeOfCylinder.HeaderText = "V, м^3";
+            this.volumeOfCylinder.HeaderText = "V, м³";
             this.volumeOfCylinder.Name = "volumeOfCylinder";
             this.volumeOfCylinder.ReadOnly = true;
             // 
@@ -210,7 +231,7 @@ namespace Mechanic
             // 
             // attitudeVolumeVaToVInPower
             // 
-            this.attitudeVolumeVaToVInPower.HeaderText = "(Va/V)^n1";
+            this.attitudeVolumeVaToVInPower.HeaderText = "(Va/V)ⁿ¹";
             this.attitudeVolumeVaToVInPower.Name = "attitudeVolumeVaToVInPower";
             this.attitudeVolumeVaToVInPower.ReadOnly = true;
             // 
@@ -228,7 +249,7 @@ namespace Mechanic
             // 
             // attitudeVolumeInPowerVToVz
             // 
-            this.attitudeVolumeInPowerVToVz.HeaderText = "(V/Vz)^n2";
+            this.attitudeVolumeInPowerVToVz.HeaderText = "(V/Vz)ⁿ²";
             this.attitudeVolumeInPowerVToVz.Name = "attitudeVolumeInPowerVToVz";
             this.attitudeVolumeInPowerVToVz.ReadOnly = true;
             // 
@@ -337,6 +358,7 @@ namespace Mechanic
             this.dataGridView_CalcSpecifForces.Name = "dataGridView_CalcSpecifForces";
             this.dataGridView_CalcSpecifForces.Size = new System.Drawing.Size(1163, 150);
             this.dataGridView_CalcSpecifForces.TabIndex = 17;
+            this.dataGridView_CalcSpecifForces.Resize += new System.EventHandler(this.dataGridView_CalcSpecifForces_Resize);
             // 
             // angle
             // 
@@ -358,7 +380,7 @@ namespace Mechanic
             // 
             // accelerationOfPiston_J
             // 
-            this.accelerationOfPiston_J.HeaderText = "j, м/c^2";
+            this.accelerationOfPiston_J.HeaderText = "j, м/c²";
             this.accelerationOfPiston_J.Name = "accelerationOfPiston_J";
             this.accelerationOfPiston_J.Width = 60;
             // 
@@ -415,12 +437,107 @@ namespace Mechanic
             this.Z.HeaderText = "Z, МПа";
             this.Z.Name = "Z";
             // 
+            // chartOfSpecificForcesP
+            // 
+            chartArea2.Name = "ChartArea1";
+            this.chartOfSpecificForcesP.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartOfSpecificForcesP.Legends.Add(legend2);
+            this.chartOfSpecificForcesP.Location = new System.Drawing.Point(108, 345);
+            this.chartOfSpecificForcesP.Name = "chartOfSpecificForcesP";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series3.Legend = "Legend1";
+            series3.LegendText = "Pr";
+            series3.Name = "SeriesPr";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series4.Legend = "Legend1";
+            series4.LegendText = "Pj";
+            series4.Name = "SeriesPj";
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series5.Legend = "Legend1";
+            series5.LegendText = "PΣ";
+            series5.Name = "SeriesPsum";
+            this.chartOfSpecificForcesP.Series.Add(series3);
+            this.chartOfSpecificForcesP.Series.Add(series4);
+            this.chartOfSpecificForcesP.Series.Add(series5);
+            this.chartOfSpecificForcesP.Size = new System.Drawing.Size(1044, 300);
+            this.chartOfSpecificForcesP.TabIndex = 18;
+            this.chartOfSpecificForcesP.Text = "chart1";
+            title2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title2.Name = "Title1";
+            title2.Text = "Залежність питомих сил Pr, Pj, PΣ від кута для чотирьохтактного двигуна";
+            this.chartOfSpecificForcesP.Titles.Add(title2);
+            this.chartOfSpecificForcesP.Move += new System.EventHandler(this.chartOfSpecificForcesP_Move);
+            // 
+            // chartOfSpecificForces_KAndN
+            // 
+            chartArea3.Name = "ChartArea1";
+            this.chartOfSpecificForces_KAndN.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chartOfSpecificForces_KAndN.Legends.Add(legend3);
+            this.chartOfSpecificForces_KAndN.Location = new System.Drawing.Point(108, 408);
+            this.chartOfSpecificForces_KAndN.Name = "chartOfSpecificForces_KAndN";
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series6.Legend = "Legend1";
+            series6.LegendText = "K";
+            series6.Name = "SeriesK";
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series7.Legend = "Legend1";
+            series7.LegendText = "N";
+            series7.Name = "SeriesN";
+            this.chartOfSpecificForces_KAndN.Series.Add(series6);
+            this.chartOfSpecificForces_KAndN.Series.Add(series7);
+            this.chartOfSpecificForces_KAndN.Size = new System.Drawing.Size(1044, 300);
+            this.chartOfSpecificForces_KAndN.TabIndex = 19;
+            this.chartOfSpecificForces_KAndN.Text = "chart1";
+            title3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title3.Name = "Title1";
+            title3.Text = "Залежність питомих сил K i N від кута для чотирьохтактного двигуна";
+            this.chartOfSpecificForces_KAndN.Titles.Add(title3);
+            this.chartOfSpecificForces_KAndN.Move += new System.EventHandler(this.chartOfSpecificForces_KAndN_Move);
+            // 
+            // chartOfSpecificForces_TAndZ
+            // 
+            chartArea4.Name = "ChartArea1";
+            this.chartOfSpecificForces_TAndZ.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.chartOfSpecificForces_TAndZ.Legends.Add(legend4);
+            this.chartOfSpecificForces_TAndZ.Location = new System.Drawing.Point(108, 475);
+            this.chartOfSpecificForces_TAndZ.Name = "chartOfSpecificForces_TAndZ";
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series8.Legend = "Legend1";
+            series8.LegendText = "T";
+            series8.Name = "SeriesT";
+            series9.ChartArea = "ChartArea1";
+            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series9.Legend = "Legend1";
+            series9.LegendText = "Z";
+            series9.Name = "SeriesZ";
+            this.chartOfSpecificForces_TAndZ.Series.Add(series8);
+            this.chartOfSpecificForces_TAndZ.Series.Add(series9);
+            this.chartOfSpecificForces_TAndZ.Size = new System.Drawing.Size(1044, 300);
+            this.chartOfSpecificForces_TAndZ.TabIndex = 20;
+            this.chartOfSpecificForces_TAndZ.Text = "chart1";
+            title4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title4.Name = "Title1";
+            title4.Text = "Залежність питомих сил T i Z від кута для чотирьохтактного двигуна";
+            this.chartOfSpecificForces_TAndZ.Titles.Add(title4);
+            // 
             // FormCreateDiagramProcess
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1264, 813);
+            this.Controls.Add(this.chartOfSpecificForces_TAndZ);
+            this.Controls.Add(this.chartOfSpecificForces_KAndN);
+            this.Controls.Add(this.chartOfSpecificForcesP);
             this.Controls.Add(this.dataGridView_CalcSpecifForces);
             this.Controls.Add(this.chart_IndicatorDiagram);
             this.Controls.Add(this.label_PZ);
@@ -442,6 +559,9 @@ namespace Mechanic
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Politrop)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart_IndicatorDiagram)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_CalcSpecifForces)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartOfSpecificForcesP)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartOfSpecificForces_KAndN)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartOfSpecificForces_TAndZ)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -458,6 +578,14 @@ namespace Mechanic
         private System.Windows.Forms.TextBox textBox_Lambda_DegreeOfPressureIncrease;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dataGridView_Politrop;
+        private System.Windows.Forms.TextBox textBox_DeltaAngle;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Label label_Pc;
+        private System.Windows.Forms.Label label_PZ;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart_IndicatorDiagram;
+        private System.Windows.Forms.DataGridView dataGridView_CalcSpecifForces;
+        private Chart chartOfSpecificForcesP;
         private System.Windows.Forms.DataGridViewTextBoxColumn degree;
         private System.Windows.Forms.DataGridViewTextBoxColumn pistonMovement;
         private System.Windows.Forms.DataGridViewTextBoxColumn multiplyMovementAndF;
@@ -468,13 +596,6 @@ namespace Mechanic
         private System.Windows.Forms.DataGridViewTextBoxColumn attitudeVolumeVToVz;
         private System.Windows.Forms.DataGridViewTextBoxColumn attitudeVolumeInPowerVToVz;
         private System.Windows.Forms.DataGridViewTextBoxColumn pressureOnLineExpansion;
-        private System.Windows.Forms.TextBox textBox_DeltaAngle;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Timer timer;
-        private System.Windows.Forms.Label label_Pc;
-        private System.Windows.Forms.Label label_PZ;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart_IndicatorDiagram;
-        private System.Windows.Forms.DataGridView dataGridView_CalcSpecifForces;
         private System.Windows.Forms.DataGridViewTextBoxColumn angle;
         private System.Windows.Forms.DataGridViewTextBoxColumn pressureOnPiston_P;
         private System.Windows.Forms.DataGridViewTextBoxColumn specificPressureOnPiston_Pr;
@@ -489,5 +610,7 @@ namespace Mechanic
         private System.Windows.Forms.DataGridViewTextBoxColumn T;
         private System.Windows.Forms.DataGridViewTextBoxColumn cosPhiPlusBetaOnCosBeta;
         private System.Windows.Forms.DataGridViewTextBoxColumn Z;
+        private Chart chartOfSpecificForces_KAndN;
+        private Chart chartOfSpecificForces_TAndZ;
     }
 }
