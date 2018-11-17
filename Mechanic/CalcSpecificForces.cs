@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.Math;
 
 namespace Mechanic
 {
-    class CalcSpecificForces
+    internal class CalcSpecificForces
     {
         //-------КОНСТАНТЫ
         //кути
@@ -24,21 +21,18 @@ namespace Mechanic
         private readonly double W;
         //
 
-        
+
         //данные и методы из политропы
         private CalcPolitrops CalcPolitrops { get; set; }
         // данные для питомих сил        
         public DataOfCalculationSpecificForces DataSpecificForces { get; private set; }
         //токен отмены метода вычисления
-        public CancellationTokenSource CancellationTokenSource { get; private set; }
+        public CancellationTokenSource CancellationTokenSource { get; private set; } = null;
 
-        public CalcSpecificForces(DataOfCalculationSpecificForces dataOfCalculationSpecificForces,
-            CalcPolitrops calcPolitrops)
+        public CalcSpecificForces(CalcPolitrops calcPolitrops)
         {
-            this.CalcPolitrops = calcPolitrops;
-            this.DataSpecificForces = dataOfCalculationSpecificForces;
-
-            this.W = 2 * Math.PI * CalcSpecificForces.N;            
+            this.CalcPolitrops = calcPolitrops;           
+            this.W = 2 * Math.PI * CalcSpecificForces.N;
         }
 
         public async Task CalcDataOfSpecificForcesAsync(int deltaAngle)
@@ -62,18 +56,41 @@ namespace Mechanic
                 this.DataSpecificForces.P.Add(CalcSpecificForces.P);
                 //тиск газів зі сторони картера
                 double pr = CalcSpecificForces.P - CalcSpecificForces.P0;
-                this.DataSpecificForces.Pr.Add(pr);
-                //прискорення поршня     
+                this.DataSpecificForces.Pr.Add(Round(pr, 3));
+                //прискорення поршня    
                 double j = calcJ(currentAngleInRad);
-                this.DataSpecificForces.J.Add(j);
+                this.DataSpecificForces.J.Add(Round(j, 3));
                 //питомы сили інерції мас
                 double pj = calcPj(j);
-                this.DataSpecificForces.Pj.Add(pj);
+                this.DataSpecificForces.Pj.Add(Round(pj, 3));
                 //сумарна питома сила
-                this.DataSpecificForces.Psum.Add(pj + pr);
+                double pSum = pj + pr;
+                this.DataSpecificForces.Psum.Add(Round(pSum, 3));
                 //tgBeta
-                this.DataSpecificForces.TgBeta.Add(Tan(currentAngleInRad));
+                double cosBeta = Sqrt(1 - CalcPolitrops.LAMBDA * CalcPolitrops.LAMBDA *
+                    Sin(currentAngleInRad) * Sin(currentAngleInRad));
+                double beta = Math.Acos(cosBeta);
+                double tanBeta = Tan(beta);
+                this.DataSpecificForces.TgBeta.Add(Round(tanBeta, 3));
                 //N сила що спрямована нормально до осі циліндра
+                this.DataSpecificForces.N.Add(Round(pSum * tanBeta, 3));
+                //cosBeta
+                this.DataSpecificForces.CosBeta.Add(Round(cosBeta,3));
+                //K сила що діє вздовж осі циліндра
+                this.DataSpecificForces.K.Add(Round(pSum / cosBeta, 3));
+                //sin(phi+beta)/cos(beta)
+                this.DataSpecificForces.SinPhiPlBetaOnCosBeta.Add(Round(Sin(currentAngleInRad + beta) / cosBeta, 3));
+                //T тангенціальна сила
+                this.DataSpecificForces.T.Add(Round(pSum * (Sin(currentAngleInRad + beta) / cosBeta), 3));
+                //cos(phi+beta)/cos(beta)
+                this.DataSpecificForces.CosPhiPlBetaOnCosBeta.Add(Round(Cos(currentAngleInRad + beta) / cosBeta, 3));
+                //Z нормальна сила спрямована вздовж кривошипа
+                this.DataSpecificForces.Z.Add(Round(pSum * (Cos(currentAngleInRad * beta) / cosBeta), 3));
+                //cancel execute calc func
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
             }
         }
 
@@ -86,7 +103,6 @@ namespace Mechanic
         //прискорення поршня
         private double calcJ(double angle)
         {
-            double
             return CalcPolitrops.R * this.W * this.W * (Cos(angle) + CalcPolitrops.LAMBDA * Cos(2 * angle));
         }
     }

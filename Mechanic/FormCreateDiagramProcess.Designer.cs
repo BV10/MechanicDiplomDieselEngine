@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Mechanic
 {
@@ -31,11 +32,12 @@ namespace Mechanic
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            //график политроп
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();            
             this.label1 = new System.Windows.Forms.Label();
             this.btnCalcAndBuildDiagr = new System.Windows.Forms.Button();
             this.textBox_N1_IndicPolitrCompres = new System.Windows.Forms.TextBox();
@@ -94,7 +96,7 @@ namespace Mechanic
             // btnCalcAndBuildDiagr
             // 
             this.btnCalcAndBuildDiagr.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnCalcAndBuildDiagr.Location = new System.Drawing.Point(749, 68);
+            this.btnCalcAndBuildDiagr.Location = new System.Drawing.Point(749, 77);
             this.btnCalcAndBuildDiagr.Name = "btnCalcAndBuildDiagr";
             this.btnCalcAndBuildDiagr.Size = new System.Drawing.Size(204, 45);
             this.btnCalcAndBuildDiagr.TabIndex = 1;
@@ -284,7 +286,7 @@ namespace Mechanic
             this.chart_IndicatorDiagram.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart_IndicatorDiagram.Legends.Add(legend1);
-            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(108, 281);
+            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(108, 284);
             this.chart_IndicatorDiagram.Name = "chart_IndicatorDiagram";
             series1.BorderWidth = 3;
             series1.ChartArea = "ChartArea1";
@@ -311,7 +313,7 @@ namespace Mechanic
             title1.Name = "indicateDiagram";
             title1.Text = "Індикаторна діаграма";
             this.chart_IndicatorDiagram.Titles.Add(title1);
-            this.chart_IndicatorDiagram.Resize += new System.EventHandler(this.chart_IndicatorDiagram_Resize);
+            this.chart_IndicatorDiagram.Move += new System.EventHandler(this.chart_IndicatorDiagram_Move);
             // 
             // dataGridView_CalcSpecifForces
             // 
@@ -418,7 +420,7 @@ namespace Mechanic
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1264, 861);
+            this.ClientSize = new System.Drawing.Size(1264, 813);
             this.Controls.Add(this.dataGridView_CalcSpecifForces);
             this.Controls.Add(this.chart_IndicatorDiagram);
             this.Controls.Add(this.label_PZ);

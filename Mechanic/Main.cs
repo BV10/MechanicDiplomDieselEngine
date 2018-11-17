@@ -16,6 +16,7 @@ namespace Mechanic
         public Main()
         {
             InitializeComponent();
+            this.btnDrawDiagram.Select();
         }       
 
         private void btnDrawDiagram_Click(object sender, EventArgs e)
@@ -28,6 +29,11 @@ namespace Mechanic
                 formCreateDiagramProcess.NumberOfCylinder = i + 1;
                 formCreateDiagramProcess.Show();
             }            
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

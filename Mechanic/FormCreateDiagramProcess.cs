@@ -16,7 +16,12 @@ namespace Mechanic
         private const int SHIFT_OF_ELEM = 100;
         private CalcPolitrops calcPolitrops = new CalcPolitrops(
             new DataPolitropsOfComprassionAndExpansion());
+        private CalcSpecificForces calcSpecificForces;
+        private bool isShowCalcDataPolitr;
+        private bool isShowCalcSpecificForces;
+
         private Task TaskCalcPolitropData { get; set; } = null;
+        private Task TaskCalcSpecificForces { get; set; } = null;
 
         public int NumberOfCylinder { get; set; } = 0;
 
@@ -24,6 +29,7 @@ namespace Mechanic
         public FormCreateDiagramProcess()
         {
             InitializeComponent();
+            calcSpecificForces = new CalcSpecificForces(calcPolitrops);
             timer.Interval = WAITING_EXECUTE_CALCULATING;
             this.label_Pc.Text = "Pc:  " + calcPolitrops.PC.ToString();
         }
@@ -32,10 +38,15 @@ namespace Mechanic
         {
             // clear data in grid view
             ClearGridView(this.dataGridView_Politrop);
+            ClearGridView(this.dataGridView_CalcSpecifForces);
 
             if (calcPolitrops.CancellationTokenSource != null)
             {
                 calcPolitrops.CancellationTokenSource.Cancel();
+            }
+            if(calcSpecificForces.CancellationTokenSource != null)
+            {
+                calcSpecificForces.CancellationTokenSource.Cancel();
             }
 
             double n1 = double.Parse(textBox_N1_IndicPolitrCompres.Text);
@@ -76,6 +87,9 @@ namespace Mechanic
             int deltaAngle = int.Parse(textBox_DeltaAngle.Text);
 
             TaskCalcPolitropData = calcPolitrops.CalcPolitropsDataAsync(deltaAngle);
+            TaskCalcSpecificForces = calcSpecificForces.CalcDataOfSpecificForcesAsync(deltaAngle);
+            isShowCalcDataPolitr = false;
+            isShowCalcSpecificForces = false;
             timer.Start(); // begin calculation
 
         }
@@ -94,11 +108,56 @@ namespace Mechanic
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (TaskCalcPolitropData.IsCompleted)
+            if(TaskCalcPolitropData.IsCompleted || TaskCalcPolitropData.IsCanceled)
             {
-                timer.Stop();
-                ShowDataPolitropOnDataGridView();
+                if(TaskCalcSpecificForces.IsCompleted || TaskCalcSpecificForces.IsCanceled)
+                {
+                    timer.Stop();
+                }
             }
+
+            if (TaskCalcPolitropData.IsCompleted && !isShowCalcDataPolitr)
+            {                
+                ShowDataPolitropOnDataGridView();
+                isShowCalcDataPolitr = true;
+            }
+            if(TaskCalcSpecificForces.IsCompleted && !isShowCalcSpecificForces)
+            {
+                ShowDataSpecificForces();
+                isShowCalcSpecificForces = true;
+            }
+        }
+
+        private void ShowDataSpecificForces()
+        {
+            // очистка старого графіка
+            //....
+
+
+            for (int iterInternalSpecficForcesData = 0;
+                 iterInternalSpecficForcesData < calcSpecificForces.DataSpecificForces.LengthInternalObject;
+                 iterInternalSpecficForcesData++
+                )
+            {
+                DataOfCalculationSpecificForces dataOfSpecificForces = calcSpecificForces.DataSpecificForces;
+                dataGridView_CalcSpecifForces.Rows.Add(
+                    dataOfSpecificForces.Angles[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.P[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.Pr[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.J[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.Pj[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.Psum[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.TgBeta[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.N[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.CosBeta[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.K[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.SinPhiPlBetaOnCosBeta[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.T[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.CosPhiPlBetaOnCosBeta[iterInternalSpecficForcesData],
+                    dataOfSpecificForces.Z[iterInternalSpecficForcesData]
+                    );
+            }
+            AutosizeGridView(this.dataGridView_CalcSpecifForces);
         }
 
         private void ShowDataPolitropOnDataGridView()
@@ -159,9 +218,9 @@ namespace Mechanic
             this.chart_IndicatorDiagram.Top = dataGridView_Politrop.Bottom + SHIFT_OF_ELEM;
         }
 
-        private void chart_IndicatorDiagram_Resize(object sender, EventArgs e)
+        private void chart_IndicatorDiagram_Move(object sender, EventArgs e)
         {
-            //placement datagridview of calc specif forcews after resize chartIndicDiagr
+            //placement datagridview of calc specif forcews after movement chartIndicDiagr
             this.dataGridView_CalcSpecifForces.Top = this.chart_IndicatorDiagram.Bottom + SHIFT_OF_ELEM;
 
         }
