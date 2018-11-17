@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalcSpecificForces.cs" />
+    <Compile Include="DataOfCalculationSpecificForces.cs" />
     <Compile Include="DataPolitropsOfComprassionAndExpansion.cs" />
     <Compile Include="FormCreateDiagramProcess.cs">
       <SubType>Form</SubType>
@@ -62,7 +64,7 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="CalcPolitropsOfComprassionAndExpansion.cs" />
+    <Compile Include="CalcPolitrops.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormCreateDiagramProcess.resx">

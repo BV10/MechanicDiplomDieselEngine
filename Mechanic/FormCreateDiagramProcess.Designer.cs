@@ -61,15 +61,31 @@ namespace Mechanic
             this.label_Pc = new System.Windows.Forms.Label();
             this.label_PZ = new System.Windows.Forms.Label();
             this.chart_IndicatorDiagram = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.dataGridView_CalcSpecifForces = new System.Windows.Forms.DataGridView();
+            this.angle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pressureOnPiston_P = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.specificPressureOnPiston_Pr = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.accelerationOfPiston_J = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pJ = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pSum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tgBeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.N = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cosBeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.K = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sinPhiOnCosBeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.T = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cosPhiPlusBetaOnCosBeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Z = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Politrop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart_IndicatorDiagram)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_CalcSpecifForces)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(112, 69);
+            this.label1.Location = new System.Drawing.Point(157, 69);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(374, 16);
             this.label1.TabIndex = 0;
@@ -78,7 +94,7 @@ namespace Mechanic
             // btnCalcAndBuildDiagr
             // 
             this.btnCalcAndBuildDiagr.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnCalcAndBuildDiagr.Location = new System.Drawing.Point(704, 68);
+            this.btnCalcAndBuildDiagr.Location = new System.Drawing.Point(749, 68);
             this.btnCalcAndBuildDiagr.Name = "btnCalcAndBuildDiagr";
             this.btnCalcAndBuildDiagr.Size = new System.Drawing.Size(204, 45);
             this.btnCalcAndBuildDiagr.TabIndex = 1;
@@ -88,7 +104,7 @@ namespace Mechanic
             // 
             // textBox_N1_IndicPolitrCompres
             // 
-            this.textBox_N1_IndicPolitrCompres.Location = new System.Drawing.Point(505, 68);
+            this.textBox_N1_IndicPolitrCompres.Location = new System.Drawing.Point(550, 68);
             this.textBox_N1_IndicPolitrCompres.Name = "textBox_N1_IndicPolitrCompres";
             this.textBox_N1_IndicPolitrCompres.Size = new System.Drawing.Size(90, 20);
             this.textBox_N1_IndicPolitrCompres.TabIndex = 2;
@@ -98,7 +114,7 @@ namespace Mechanic
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(240, 22);
+            this.label2.Location = new System.Drawing.Point(285, 22);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(289, 24);
             this.label2.TabIndex = 3;
@@ -106,7 +122,7 @@ namespace Mechanic
             // 
             // textBox_N2_IndicPolitrExpansion
             // 
-            this.textBox_N2_IndicPolitrExpansion.Location = new System.Drawing.Point(505, 105);
+            this.textBox_N2_IndicPolitrExpansion.Location = new System.Drawing.Point(550, 105);
             this.textBox_N2_IndicPolitrExpansion.Name = "textBox_N2_IndicPolitrExpansion";
             this.textBox_N2_IndicPolitrExpansion.Size = new System.Drawing.Size(90, 20);
             this.textBox_N2_IndicPolitrExpansion.TabIndex = 7;
@@ -116,7 +132,7 @@ namespace Mechanic
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(112, 106);
+            this.label4.Location = new System.Drawing.Point(157, 106);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(386, 16);
             this.label4.TabIndex = 6;
@@ -124,7 +140,7 @@ namespace Mechanic
             // 
             // textBox_Lambda_DegreeOfPressureIncrease
             // 
-            this.textBox_Lambda_DegreeOfPressureIncrease.Location = new System.Drawing.Point(505, 139);
+            this.textBox_Lambda_DegreeOfPressureIncrease.Location = new System.Drawing.Point(550, 139);
             this.textBox_Lambda_DegreeOfPressureIncrease.Name = "textBox_Lambda_DegreeOfPressureIncrease";
             this.textBox_Lambda_DegreeOfPressureIncrease.Size = new System.Drawing.Size(90, 20);
             this.textBox_Lambda_DegreeOfPressureIncrease.TabIndex = 9;
@@ -134,7 +150,7 @@ namespace Mechanic
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(112, 137);
+            this.label3.Location = new System.Drawing.Point(157, 137);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(198, 16);
             this.label3.TabIndex = 8;
@@ -154,10 +170,11 @@ namespace Mechanic
             this.attitudeVolumeVToVz,
             this.attitudeVolumeInPowerVToVz,
             this.pressureOnLineExpansion});
-            this.dataGridView_Politrop.Location = new System.Drawing.Point(63, 205);
+            this.dataGridView_Politrop.Location = new System.Drawing.Point(108, 205);
             this.dataGridView_Politrop.Name = "dataGridView_Politrop";
             this.dataGridView_Politrop.Size = new System.Drawing.Size(1044, 47);
             this.dataGridView_Politrop.TabIndex = 10;
+            this.dataGridView_Politrop.Resize += new System.EventHandler(this.dataGridView_Politrop_Resize);
             // 
             // degree
             // 
@@ -221,7 +238,7 @@ namespace Mechanic
             // 
             // textBox_DeltaAngle
             // 
-            this.textBox_DeltaAngle.Location = new System.Drawing.Point(506, 173);
+            this.textBox_DeltaAngle.Location = new System.Drawing.Point(551, 173);
             this.textBox_DeltaAngle.Name = "textBox_DeltaAngle";
             this.textBox_DeltaAngle.Size = new System.Drawing.Size(90, 20);
             this.textBox_DeltaAngle.TabIndex = 12;
@@ -231,7 +248,7 @@ namespace Mechanic
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(113, 171);
+            this.label5.Location = new System.Drawing.Point(158, 171);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(291, 16);
             this.label5.TabIndex = 11;
@@ -245,7 +262,7 @@ namespace Mechanic
             // 
             this.label_Pc.AutoSize = true;
             this.label_Pc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label_Pc.Location = new System.Drawing.Point(701, 146);
+            this.label_Pc.Location = new System.Drawing.Point(746, 146);
             this.label_Pc.Name = "label_Pc";
             this.label_Pc.Size = new System.Drawing.Size(31, 16);
             this.label_Pc.TabIndex = 14;
@@ -255,7 +272,7 @@ namespace Mechanic
             // 
             this.label_PZ.AutoSize = true;
             this.label_PZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label_PZ.Location = new System.Drawing.Point(701, 173);
+            this.label_PZ.Location = new System.Drawing.Point(746, 173);
             this.label_PZ.Name = "label_PZ";
             this.label_PZ.Size = new System.Drawing.Size(30, 16);
             this.label_PZ.TabIndex = 15;
@@ -267,20 +284,20 @@ namespace Mechanic
             this.chart_IndicatorDiagram.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart_IndicatorDiagram.Legends.Add(legend1);
-            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(63, 281);
+            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(108, 281);
             this.chart_IndicatorDiagram.Name = "chart_IndicatorDiagram";
-            series1.Font = new Font("Courier New", 15.0f, FontStyle.Italic);
+            series1.BorderWidth = 3;
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series1.Legend = "Legend1";            
+            series1.Font = new System.Drawing.Font("Courier New", 15F, System.Drawing.FontStyle.Italic);
+            series1.Legend = "Legend1";
             series1.LegendText = "Політропа стиснення";
             series1.MarkerBorderWidth = 3;
             series1.Name = "PolitropOfComprassion";
-            series1.BorderWidth = 3;
+            series2.BorderWidth = 3;
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series2.Legend = "Legend1";
-            series2.BorderWidth = 3;
             series2.LegendText = "Політропа розширення";
             series2.MarkerBorderColor = System.Drawing.Color.Transparent;
             series2.MarkerBorderWidth = 3;
@@ -294,26 +311,115 @@ namespace Mechanic
             title1.Name = "indicateDiagram";
             title1.Text = "Індикаторна діаграма";
             this.chart_IndicatorDiagram.Titles.Add(title1);
-
-            //this.chart_IndicatorDiagram.
-            this.chart_IndicatorDiagram.ChartAreas[0].AxisX.LabelAutoFitMinFontSize = 10;            
-            this.chart_IndicatorDiagram.ChartAreas[0].AxisX.TitleAlignment = System.Drawing.StringAlignment.Far;
-            this.chart_IndicatorDiagram.ChartAreas[0].AxisX.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12, System.Drawing.FontStyle.Bold);
-            this.chart_IndicatorDiagram.ChartAreas[0].AxisX.Title = "V";
-
-
-
-            this.chart_IndicatorDiagram.ChartAreas[0].AxisY.LabelAutoFitMinFontSize = 10;
-            this.chart_IndicatorDiagram.ChartAreas[0].AxisY.TitleAlignment = System.Drawing.StringAlignment.Far;
-            this.chart_IndicatorDiagram.ChartAreas[0].AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12, System.Drawing.FontStyle.Bold);
-            this.chart_IndicatorDiagram.ChartAreas[0].AxisY.Title = "p";
+            this.chart_IndicatorDiagram.Resize += new System.EventHandler(this.chart_IndicatorDiagram_Resize);
+            // 
+            // dataGridView_CalcSpecifForces
+            // 
+            this.dataGridView_CalcSpecifForces.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_CalcSpecifForces.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.angle,
+            this.pressureOnPiston_P,
+            this.specificPressureOnPiston_Pr,
+            this.accelerationOfPiston_J,
+            this.pJ,
+            this.pSum,
+            this.tgBeta,
+            this.N,
+            this.cosBeta,
+            this.K,
+            this.sinPhiOnCosBeta,
+            this.T,
+            this.cosPhiPlusBetaOnCosBeta,
+            this.Z});
+            this.dataGridView_CalcSpecifForces.Location = new System.Drawing.Point(47, 625);
+            this.dataGridView_CalcSpecifForces.Name = "dataGridView_CalcSpecifForces";
+            this.dataGridView_CalcSpecifForces.Size = new System.Drawing.Size(1163, 150);
+            this.dataGridView_CalcSpecifForces.TabIndex = 17;
+            // 
+            // angle
+            // 
+            this.angle.HeaderText = "φ";
+            this.angle.Name = "angle";
+            this.angle.Width = 60;
+            // 
+            // pressureOnPiston_P
+            // 
+            this.pressureOnPiston_P.HeaderText = "p, МПа";
+            this.pressureOnPiston_P.Name = "pressureOnPiston_P";
+            this.pressureOnPiston_P.Width = 60;
+            // 
+            // specificPressureOnPiston_Pr
+            // 
+            this.specificPressureOnPiston_Pr.HeaderText = "Pr, МПа";
+            this.specificPressureOnPiston_Pr.Name = "specificPressureOnPiston_Pr";
+            this.specificPressureOnPiston_Pr.Width = 60;
+            // 
+            // accelerationOfPiston_J
+            // 
+            this.accelerationOfPiston_J.HeaderText = "j, м/c^2";
+            this.accelerationOfPiston_J.Name = "accelerationOfPiston_J";
+            this.accelerationOfPiston_J.Width = 60;
+            // 
+            // pJ
+            // 
+            this.pJ.HeaderText = "Pj, МПа";
+            this.pJ.Name = "pJ";
+            this.pJ.Width = 60;
+            // 
+            // pSum
+            // 
+            this.pSum.HeaderText = "PΣ, МПа";
+            this.pSum.Name = "pSum";
+            this.pSum.Width = 60;
+            // 
+            // tgBeta
+            // 
+            this.tgBeta.HeaderText = "tgβ";
+            this.tgBeta.Name = "tgBeta";
+            this.tgBeta.Width = 60;
+            // 
+            // N
+            // 
+            this.N.HeaderText = "N, МПа";
+            this.N.Name = "N";
+            // 
+            // cosBeta
+            // 
+            this.cosBeta.HeaderText = "cosβ";
+            this.cosBeta.Name = "cosBeta";
+            // 
+            // K
+            // 
+            this.K.HeaderText = "K, МПа";
+            this.K.Name = "K";
+            // 
+            // sinPhiOnCosBeta
+            // 
+            this.sinPhiOnCosBeta.HeaderText = "sin(φ+β)/cosβ";
+            this.sinPhiOnCosBeta.Name = "sinPhiOnCosBeta";
+            // 
+            // T
+            // 
+            this.T.HeaderText = "T, МПа";
+            this.T.Name = "T";
+            // 
+            // cosPhiPlusBetaOnCosBeta
+            // 
+            this.cosPhiPlusBetaOnCosBeta.HeaderText = "cos(φ+β)/cosβ";
+            this.cosPhiPlusBetaOnCosBeta.Name = "cosPhiPlusBetaOnCosBeta";
+            // 
+            // Z
+            // 
+            this.Z.HeaderText = "Z, МПа";
+            this.Z.Name = "Z";
             // 
             // FormCreateDiagramProcess
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1174, 637);
+            this.ClientSize = new System.Drawing.Size(1264, 861);
+            this.Controls.Add(this.dataGridView_CalcSpecifForces);
             this.Controls.Add(this.chart_IndicatorDiagram);
             this.Controls.Add(this.label_PZ);
             this.Controls.Add(this.label_Pc);
@@ -333,6 +439,7 @@ namespace Mechanic
             this.Text = "Діаграма робочого процесу для цилінндра";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Politrop)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart_IndicatorDiagram)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_CalcSpecifForces)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -365,5 +472,20 @@ namespace Mechanic
         private System.Windows.Forms.Label label_Pc;
         private System.Windows.Forms.Label label_PZ;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart_IndicatorDiagram;
+        private System.Windows.Forms.DataGridView dataGridView_CalcSpecifForces;
+        private System.Windows.Forms.DataGridViewTextBoxColumn angle;
+        private System.Windows.Forms.DataGridViewTextBoxColumn pressureOnPiston_P;
+        private System.Windows.Forms.DataGridViewTextBoxColumn specificPressureOnPiston_Pr;
+        private System.Windows.Forms.DataGridViewTextBoxColumn accelerationOfPiston_J;
+        private System.Windows.Forms.DataGridViewTextBoxColumn pJ;
+        private System.Windows.Forms.DataGridViewTextBoxColumn pSum;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tgBeta;
+        private System.Windows.Forms.DataGridViewTextBoxColumn N;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cosBeta;
+        private System.Windows.Forms.DataGridViewTextBoxColumn K;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sinPhiOnCosBeta;
+        private System.Windows.Forms.DataGridViewTextBoxColumn T;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cosPhiPlusBetaOnCosBeta;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Z;
     }
 }

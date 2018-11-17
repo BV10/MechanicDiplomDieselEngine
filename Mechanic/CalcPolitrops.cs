@@ -6,7 +6,7 @@ using static System.Math;
 
 namespace Mechanic
 {
-    class CalcPolitropsOfComprassionAndExpansion
+    class CalcPolitrops
     {
         // дефолтная константа округления дробных чисел
         private const int DEFAULT_ROUND_NUMB = 3;
@@ -19,9 +19,9 @@ namespace Mechanic
         private int StartAngle { get; set; } = 0;
         private int EndAngle { get; set; } = 180;
         // R(в метрах)  - для розрахунку переміщення поршня S в м
-        private double R { get; set; } = 0.165;
+        public const double R  = 0.165;
         // відношення радіуса кривошипа до довжини шатуна - для розрахунку переміщення поршня S
-        private double Lambda { get; set; } = 0.25;
+        public const double LAMBDA = 0.25;
         //діаметр цилідндра
         private double DiamOfCylinder { get; set; } = 0.318;
         //хід поршня
@@ -46,7 +46,10 @@ namespace Mechanic
         private const double MU = 1.035; // дійсний коефіцієнт молекул зміни
         private const double Tz = 1953; //1953K        
         private const double Ta = 342.2; // температура тіла на початку стиснення
-        private readonly double Tc;        
+        private readonly double Tc;
+
+        //площа поршня
+        public double Fn { get; private set; }
 
         //середній показник стиснення політропи
         private double n1;
@@ -108,7 +111,7 @@ namespace Mechanic
             }
         }
 
-        public CalcPolitropsOfComprassionAndExpansion(DataPolitropsOfComprassionAndExpansion dataPolitrops)
+        public CalcPolitrops(DataPolitropsOfComprassionAndExpansion dataPolitrops)
         {
             this.DataPolitrops = dataPolitrops;
             this.N1 = DEFAULT_INDICATOR_POLITROP_COMPRASS;
@@ -118,7 +121,8 @@ namespace Mechanic
             this.Vc = this.Vh / (this.Epsilon - 1);
             this.Tc = Ta * Pow(this.Epsilon, this.N1 - 1);
             this.koefPa = 0.93 * this.Pk; ;
-            this.PC = Round( this.koefPa * Pow(this.Epsilon, this.N1), 2);            
+            this.PC = Round( this.koefPa * Pow(this.Epsilon, this.N1), 2);
+            this.Fn = (PI * this.DiamOfCylinder * this.DiamOfCylinder) / 4;
         }
 
         public async Task CalcPolitropsDataAsync(int deltaAngle)
@@ -213,7 +217,7 @@ namespace Mechanic
         //добуток Fn*S
         private double calcMultipleFnAndS(double s)
         {
-            return ((PI * this.DiamOfCylinder * this.DiamOfCylinder) / 4) * s;
+            return (this.Fn) * s;
         }
 
         //переміщення поршня
@@ -221,9 +225,9 @@ namespace Mechanic
         {
 
             double angleInRad = currentAngle * (PI / 180.0);
-            return this.R * (
+            return R * (
                 (1 - Cos(angleInRad)) +
-                (1 / this.Lambda) * (1 - Sqrt(1 - this.Lambda * this.Lambda * Sin(angleInRad) * Sin(angleInRad)))
+                (1 / CalcPolitrops.LAMBDA) * (1 - Sqrt(1 - CalcPolitrops.LAMBDA * CalcPolitrops.LAMBDA * Sin(angleInRad) * Sin(angleInRad)))
                 );
         }
     }

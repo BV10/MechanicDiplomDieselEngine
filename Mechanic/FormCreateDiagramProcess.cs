@@ -13,8 +13,8 @@ namespace Mechanic
     public partial class FormCreateDiagramProcess : Form
     {
         private const int WAITING_EXECUTE_CALCULATING = 10; // wait on execute calc data in milisec
-        private const int SHIFT_OF_CHART_ABOUT_TABLETOP = 100;
-        private CalcPolitropsOfComprassionAndExpansion calcPolitrops = new CalcPolitropsOfComprassionAndExpansion(
+        private const int SHIFT_OF_ELEM = 100;
+        private CalcPolitrops calcPolitrops = new CalcPolitrops(
             new DataPolitropsOfComprassionAndExpansion());
         private Task TaskCalcPolitropData { get; set; } = null;
 
@@ -31,16 +31,7 @@ namespace Mechanic
         private void btnCalcAndBuildDiagr_Click(object sender, EventArgs e)
         {
             // clear data in grid view
-            if (dataGridView_Politrop.RowCount > 1)
-            {
-                for (int i = dataGridView_Politrop.RowCount - 2; i >= 0; i--)
-                {
-                    dataGridView_Politrop.Rows.RemoveAt(i);
-                }
-                dataGridView_Politrop.Refresh();
-                //placement chart after refresh datagrid
-                this.chart_IndicatorDiagram.Top = dataGridView_Politrop.Top + SHIFT_OF_CHART_ABOUT_TABLETOP;
-            }
+            ClearGridView(this.dataGridView_Politrop);
 
             if (calcPolitrops.CancellationTokenSource != null)
             {
@@ -57,7 +48,7 @@ namespace Mechanic
                 MessageBox.Show(this, ex.Message, "Помилка в заданому значенні", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            
+
 
             double n2 = double.Parse(textBox_N2_IndicPolitrExpansion.Text); ;
             try
@@ -87,6 +78,18 @@ namespace Mechanic
             TaskCalcPolitropData = calcPolitrops.CalcPolitropsDataAsync(deltaAngle);
             timer.Start(); // begin calculation
 
+        }
+
+        private void ClearGridView(DataGridView dataGridView)
+        {
+            if (dataGridView.RowCount > 1)
+            {
+                for (int i = dataGridView.RowCount - 2; i >= 0; i--)
+                {
+                    dataGridView.Rows.RemoveAt(i);
+                }
+                dataGridView.Refresh();                
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -123,7 +126,7 @@ namespace Mechanic
                     dataPolitrop.RatioVzToVInDegreeN2[iterInternalPolitrData],
                     dataPolitrop.PressureOnLineExpansion[iterInternalPolitrData]
                     );
-                
+
                 // будувати графік по точкам
                 chart_IndicatorDiagram.Series["PolitropOfComprassion"].Points.
                 AddXY(dataPolitrop.V[iterInternalPolitrData], // V
@@ -137,15 +140,30 @@ namespace Mechanic
             }
 
             // autosize height
+            AutosizeGridView(this.dataGridView_Politrop);
+        }
+
+        private void AutosizeGridView(DataGridView dataGridView)
+        {
             var height = 40;
-            foreach (DataGridViewRow dr in dataGridView_Politrop.Rows)
+            foreach (DataGridViewRow dr in dataGridView.Rows)
             {
                 height += dr.Height;
             }
+            dataGridView.Height = height;
+        }
 
-            dataGridView_Politrop.Height = height;
-            //смещение графика 
-            chart_IndicatorDiagram.Top += height;
+        private void dataGridView_Politrop_Resize(object sender, EventArgs e)
+        {
+            //placement chart after resize datagrid
+            this.chart_IndicatorDiagram.Top = dataGridView_Politrop.Bottom + SHIFT_OF_ELEM;
+        }
+
+        private void chart_IndicatorDiagram_Resize(object sender, EventArgs e)
+        {
+            //placement datagridview of calc specif forcews after resize chartIndicDiagr
+            this.dataGridView_CalcSpecifForces.Top = this.chart_IndicatorDiagram.Bottom + SHIFT_OF_ELEM;
+
         }
     }
 }
