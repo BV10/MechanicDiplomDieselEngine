@@ -1,13 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Mechanic
 {
-    class DataPolitropsOfComprassionAndExpansion
-    {        
+    public class DataPolitropsOfComprassionAndExpansion
+    {
+        public enum IterPosition
+        {
+            Start,
+            End
+        }
+
+        public class Iterator
+        {
+            private IterPosition iterStarter;
+            private int currentPosition;
+            private DataPolitropsOfComprassionAndExpansion dataPolitrops;
+
+            public Iterator(DataPolitropsOfComprassionAndExpansion dataPolitrops, IterPosition iterPosition)
+            {
+                this.iterStarter = iterPosition;
+                this.dataPolitrops = dataPolitrops;
+                this.currentPosition = iterPosition == IterPosition.Start ? -1 : this.dataPolitrops.Angles.Count;
+            }
+
+            public bool hasNext()
+            {
+                if (iterStarter == IterPosition.Start)
+                {
+                    return currentPosition < dataPolitrops.LengthInternalObject;
+                }
+                else
+                {
+                    return currentPosition > -1;
+                }
+            }
+
+            public int next()
+            {
+                return iterStarter == IterPosition.Start ? ++currentPosition : --currentPosition;
+            }
+
+            public void reset(IterPosition iterPosition)
+            {
+                this.iterStarter = iterPosition;
+                this.currentPosition = iterPosition == IterPosition.Start ? -1 : this.dataPolitrops.Angles.Count;
+            }
+        }
+
         //кути політроп
         public List<int> Angles { get; set; } = new List<int>();
         //переміщення поршня
@@ -28,6 +67,11 @@ namespace Mechanic
         public List<double> RatioVzToVInDegreeN2 { get; set; } = new List<double>();
         //поточний тиск p на лінії розширення
         public List<double> PressureOnLineExpansion { get; set; } = new List<double>();
+
+        public Iterator getIterator(IterPosition iterPosition)
+        {
+            return new Iterator(this, iterPosition);
+        }
 
         public int LengthInternalObject
         {

@@ -18,7 +18,9 @@ namespace Mechanic
             new DataPolitropsOfComprassionAndExpansion());
         private CalcSpecificForces calcSpecificForces;
         private bool isShowCalcDataPolitr;
-        private bool isShowCalcSpecificForces;
+        private int deltaAngle; // кут введений з клавіатури
+
+        //private bool isShowCalcSpecificForces;
 
         private Task TaskCalcPolitropData { get; set; } = null;
         private Task TaskCalcSpecificForces { get; set; } = null;
@@ -29,7 +31,7 @@ namespace Mechanic
         public FormCreateDiagramProcess()
         {
             InitializeComponent();
-            calcSpecificForces = new CalcSpecificForces(calcPolitrops);
+            calcSpecificForces = new CalcSpecificForces();
             timer.Interval = WAITING_EXECUTE_CALCULATING;
             this.label_Pc.Text = "Pc:  " + calcPolitrops.PC.ToString();
             this.chartOfSpecificForcesP.Top = this.dataGridView_CalcSpecifForces.Bottom + SHIFT_OF_ELEM;
@@ -52,19 +54,23 @@ namespace Mechanic
         }
 
         private void btnCalcAndBuildDiagr_Click(object sender, EventArgs e)
-        {
+        {     
+            //отменяем предыдущий расчет
+            if (TaskCalcPolitropData != null && !TaskCalcPolitropData.IsCompleted && calcPolitrops.CancellationTokenSource != null)
+            {
+                timer.Stop();
+                calcPolitrops.CancellationTokenSource.Cancel();
+                TaskCalcPolitropData = null;                             
+            }
+            else if(TaskCalcSpecificForces != null && !TaskCalcSpecificForces.IsCompleted && calcSpecificForces.CancellationTokenSource != null)
+            {
+                timer.Stop();
+                calcSpecificForces.CancellationTokenSource.Cancel();
+                TaskCalcSpecificForces = null;
+            }
             // clear data in grid view
             ClearGridView(this.dataGridView_Politrop);
             ClearGridView(this.dataGridView_CalcSpecifForces);
-
-            if (calcPolitrops.CancellationTokenSource != null)
-            {
-                calcPolitrops.CancellationTokenSource.Cancel();
-            }
-            if(calcSpecificForces.CancellationTokenSource != null)
-            {
-                calcSpecificForces.CancellationTokenSource.Cancel();
-            }
 
             double n1 = double.Parse(textBox_N1_IndicPolitrCompres.Text);
             try
@@ -101,12 +107,12 @@ namespace Mechanic
                 return;
             }
 
-            int deltaAngle = int.Parse(textBox_DeltaAngle.Text);
+            deltaAngle = int.Parse(textBox_DeltaAngle.Text);
 
             TaskCalcPolitropData = calcPolitrops.CalcPolitropsDataAsync(deltaAngle);
-            TaskCalcSpecificForces = calcSpecificForces.CalcDataOfSpecificForcesAsync(deltaAngle);
+            
             isShowCalcDataPolitr = false;
-            isShowCalcSpecificForces = false;
+            //isShowCalcSpecificForces = false;
             timer.Start(); // begin calculation
 
         }
@@ -124,24 +130,19 @@ namespace Mechanic
         }
 
         private void timer1_Tick(object sender, EventArgs e)
-        {
-            if(TaskCalcPolitropData.IsCompleted || TaskCalcPolitropData.IsCanceled)
-            {
-                if(TaskCalcSpecificForces.IsCompleted || TaskCalcSpecificForces.IsCanceled)
-                {
-                    timer.Stop();
-                }
-            }
-
+        {                      
             if (TaskCalcPolitropData.IsCompleted && !isShowCalcDataPolitr)
             {                
                 ShowDataPolitrop();
                 isShowCalcDataPolitr = true;
+                calcSpecificForces.CalcPolitrops = calcPolitrops;
+                TaskCalcSpecificForces = calcSpecificForces.CalcDataOfSpecificForcesAsync(this.deltaAngle);
             }
-            if(TaskCalcSpecificForces.IsCompleted && !isShowCalcSpecificForces)
+
+            if(TaskCalcSpecificForces != null && TaskCalcSpecificForces.IsCompleted)
             {
                 ShowDataSpecificForces();
-                isShowCalcSpecificForces = true;
+                timer.Stop();
             }
         }
 

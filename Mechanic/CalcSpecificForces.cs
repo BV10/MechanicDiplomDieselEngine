@@ -19,20 +19,29 @@ namespace Mechanic
         private const double N = 12.5;
         //кутова швидкысть
         private readonly double W;
+        private CalcPolitrops calcPolitrops;
+
         //
 
 
         //данные и методы из политропы
-        private CalcPolitrops CalcPolitrops { get; set; }
+        public CalcPolitrops CalcPolitrops
+        {
+            get { return calcPolitrops; }
+            set
+            {
+                calcPolitrops = value;
+            }
+        }
         // данные для питомих сил        
         public DataOfCalculationSpecificForces DataSpecificForces { get; private set; }
         //токен отмены метода вычисления
         public CancellationTokenSource CancellationTokenSource { get; private set; } = null;
 
-        public CalcSpecificForces(CalcPolitrops calcPolitrops)
+        public CalcSpecificForces()
         {
-            this.CalcPolitrops = calcPolitrops;           
             this.W = 2 * Math.PI * CalcSpecificForces.N;
+
         }
 
         public async Task CalcDataOfSpecificForcesAsync(int deltaAngle)
@@ -46,6 +55,10 @@ namespace Mechanic
 
         private void CalcDataOfSpecificForces(int deltaAngle, CancellationToken token)
         {
+            DataPolitropsOfComprassionAndExpansion.Iterator iterOfEndPolitropsData =
+                CalcPolitrops.DataPolitrops.getIterator(DataPolitropsOfComprassionAndExpansion.IterPosition.End);
+            DataPolitropsOfComprassionAndExpansion.Iterator iterOfStartPolitropsData =
+                CalcPolitrops.DataPolitrops.getIterator(DataPolitropsOfComprassionAndExpansion.IterPosition.Start);
             for (int currentAngle = START_ANGLE; currentAngle <= END_ANGLE; currentAngle += deltaAngle)
             {
                 //кут в радианах
@@ -53,9 +66,10 @@ namespace Mechanic
                 //кути
                 this.DataSpecificForces.Angles.Add(currentAngle);
                 //тиск газів на поршень
-                this.DataSpecificForces.P.Add(CalcSpecificForces.P);
+                double p = CalcP(currentAngle, iterOfStartPolitropsData, iterOfEndPolitropsData);
+                this.DataSpecificForces.P.Add(p);
                 //тиск газів зі сторони картера
-                double pr = CalcSpecificForces.P - CalcSpecificForces.P0;
+                double pr = p - CalcSpecificForces.P0;
                 this.DataSpecificForces.Pr.Add(Round(pr, 3));
                 //прискорення поршня    
                 double j = calcJ(currentAngleInRad);
@@ -75,7 +89,7 @@ namespace Mechanic
                 //N сила що спрямована нормально до осі циліндра
                 this.DataSpecificForces.N.Add(Round(pSum * tanBeta, 3));
                 //cosBeta
-                this.DataSpecificForces.CosBeta.Add(Round(cosBeta,3));
+                this.DataSpecificForces.CosBeta.Add(Round(cosBeta, 3));
                 //K сила що діє вздовж осі циліндра
                 this.DataSpecificForces.K.Add(Round(pSum / cosBeta, 3));
                 //sin(phi+beta)/cos(beta)
@@ -91,7 +105,49 @@ namespace Mechanic
                 {
                     token.ThrowIfCancellationRequested();
                 }
+                if (DataSpecificForces.Angles[DataSpecificForces.Angles.Count - 1] == 360 &&
+                    DataSpecificForces.Angles[DataSpecificForces.Angles.Count - 2] != 360) // add repeated record with 360 degree with pressure expansion
+                {
+                    currentAngle -= deltaAngle;
+                }
             }
+        }
+
+        private double CalcP(int currentAngle, DataPolitropsOfComprassionAndExpansion.Iterator iterBeg, DataPolitropsOfComprassionAndExpansion.Iterator iterEnd)
+        {
+
+            if (currentAngle < 180)
+            {
+                return CalcPolitrops.KoefPa;
+            }
+
+            if (currentAngle >= 180 && currentAngle < 360)
+            {
+                return CalcPolitrops.DataPolitrops.PressureOnLineCompression[iterEnd.next()];
+            }
+
+            if (DataSpecificForces.Angles[DataSpecificForces.Angles.Count - 1] == 360 &&
+                    DataSpecificForces.Angles[DataSpecificForces.Angles.Count - 2] != 360) // last record with 360 degree with pressure compression
+            {
+                return CalcPolitrops.DataPolitrops.PressureOnLineCompression[iterEnd.next()];
+            }
+            else if (DataSpecificForces.Angles[DataSpecificForces.Angles.Count - 1] == 360 &&
+                  DataSpecificForces.Angles[DataSpecificForces.Angles.Count - 2] == 360) // add repeated record with 360 degree with pressure expansion
+            {
+                return CalcPolitrops.DataPolitrops.PressureOnLineExpansion[iterBeg.next()];
+            }
+
+            if (currentAngle > 360 && currentAngle <= 540)
+            {
+                return CalcPolitrops.DataPolitrops.PressureOnLineExpansion[iterBeg.next()];
+            }
+
+            if (currentAngle > 540)
+            {
+                return CalcPolitrops.KoefPa;
+            }
+
+            return 0.0;
         }
 
         private double calcPj(double j)

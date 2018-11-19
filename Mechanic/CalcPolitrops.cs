@@ -111,6 +111,8 @@ namespace Mechanic
             }
         }
 
+        public double KoefPa { get => koefPa; private set => koefPa = value; }
+
         public CalcPolitrops(DataPolitropsOfComprassionAndExpansion dataPolitrops)
         {
             this.DataPolitrops = dataPolitrops;
@@ -120,8 +122,9 @@ namespace Mechanic
             this.Vh = ((PI * this.DiamOfCylinder * this.DiamOfCylinder) / 4) * this.RunningOfPiston;
             this.Vc = this.Vh / (this.Epsilon - 1);
             this.Tc = Ta * Pow(this.Epsilon, this.N1 - 1);
-            this.koefPa = 0.93 * this.Pk; ;
-            this.PC = Round( this.koefPa * Pow(this.Epsilon, this.N1), 2);
+            this.KoefPa = Round(0.93 * this.Pk, 3);
+            Console.WriteLine(KoefPa);
+            this.PC = Round( this.KoefPa * Pow(this.Epsilon, this.N1), 2);
             this.Fn = (PI * this.DiamOfCylinder * this.DiamOfCylinder) / 4;
         }
 
@@ -205,7 +208,7 @@ namespace Mechanic
         private double calcPressureOnLineCompression(double ratioVaToVInDegreeN)
         {
             //тиск на початку стиснення pa = [0.9...0.96]*pk            
-            return this.koefPa * ratioVaToVInDegreeN;
+            return this.KoefPa * ratioVaToVInDegreeN;
         }
 
         //поточний об'єм циліндра
