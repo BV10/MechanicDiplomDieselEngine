@@ -9,8 +9,8 @@ namespace Mechanic
     {
         //-------КОНСТАНТЫ
         //кути
-        private const int START_ANGLE = 0;
-        private const int END_ANGLE = 720;
+        public const int START_ANGLE = 0;
+        public const int END_ANGLE = 720;
         //тиск газів на поршень
         private const double P = 6.3;
         // тиск газів зі сторони картера

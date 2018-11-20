@@ -7,33 +7,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Mechanic
 {
-    public partial class FormCreateDiagramProcess : Form
+    public partial class FormDiagramProcessOfCylinder : Form
     {
         private const int WAITING_EXECUTE_CALCULATING = 10; // wait on execute calc data in milisec
-        private const int SHIFT_OF_ELEM = 100;
+        public const int SHIFT_OF_ELEM = 100;
         private CalcPolitrops calcPolitrops = new CalcPolitrops(
             new DataPolitropsOfComprassionAndExpansion());
         private CalcSpecificForces calcSpecificForces;
         private bool isShowCalcDataPolitr;
         private int deltaAngle; // кут введений з клавіатури
 
-        //private bool isShowCalcSpecificForces;
-
         private Task TaskCalcPolitropData { get; set; } = null;
-        private Task TaskCalcSpecificForces { get; set; } = null;
+        public Task TaskCalcSpecificForces { get; set; } = null;
+        
+        internal CalcSpecificForces CalcSpecificForces { get => calcSpecificForces; set => calcSpecificForces = value; }
+        internal CalcPolitrops CalcPolitrops { get => calcPolitrops; set => calcPolitrops = value; }
+        public int DeltaAngle { get => deltaAngle; set => deltaAngle = value; }
 
-        public int NumberOfCylinder { get; set; } = 0;
-
-
-        public FormCreateDiagramProcess()
+        public FormDiagramProcessOfCylinder()
         {
             InitializeComponent();
-            calcSpecificForces = new CalcSpecificForces();
+            CalcSpecificForces = new CalcSpecificForces();
             timer.Interval = WAITING_EXECUTE_CALCULATING;
-            this.label_Pc.Text = "Pc:  " + calcPolitrops.PC.ToString();
+            this.label_Pc.Text = "Pc:  " + CalcPolitrops.PC.ToString();
             this.chartOfSpecificForcesP.Top = this.dataGridView_CalcSpecifForces.Bottom + SHIFT_OF_ELEM;
             this.chartOfSpecificForces_KAndN.Top = this.chartOfSpecificForcesP.Bottom + SHIFT_OF_ELEM;
             this.chartOfSpecificForces_TAndZ.Top = this.chartOfSpecificForces_KAndN.Bottom + SHIFT_OF_ELEM;
@@ -43,29 +43,29 @@ namespace Mechanic
 
 
             this.chartOfSpecificForcesP.ChartAreas[0].AxisX.Title = "\u03c6";
-            this.chartOfSpecificForcesP.ChartAreas[0].AxisY.Title = "Pr, Pj, P\u2A0A";
+            this.chartOfSpecificForcesP.ChartAreas[0].AxisY.Title = "Pr, Pj, P\u2A0A";//sum unicode
 
             this.chartOfSpecificForces_KAndN.ChartAreas[0].AxisX.Title = "\u03c6";
             this.chartOfSpecificForces_KAndN.ChartAreas[0].AxisY.Title = "K, N, МПа";
 
 
-            this.chartOfSpecificForces_TAndZ.ChartAreas[0].AxisX.Title = "\u03c6";
+            this.chartOfSpecificForces_TAndZ.ChartAreas[0].AxisX.Title = "\u03c6";//phi unicode
             this.chartOfSpecificForces_TAndZ.ChartAreas[0].AxisY.Title = "T, Z, МПа";
         }
 
         private void btnCalcAndBuildDiagr_Click(object sender, EventArgs e)
         {     
             //отменяем предыдущий расчет
-            if (TaskCalcPolitropData != null && !TaskCalcPolitropData.IsCompleted && calcPolitrops.CancellationTokenSource != null)
+            if (TaskCalcPolitropData != null && !TaskCalcPolitropData.IsCompleted && CalcPolitrops.CancellationTokenSource != null)
             {
                 timer.Stop();
-                calcPolitrops.CancellationTokenSource.Cancel();
+                CalcPolitrops.CancellationTokenSource.Cancel();
                 TaskCalcPolitropData = null;                             
             }
-            else if(TaskCalcSpecificForces != null && !TaskCalcSpecificForces.IsCompleted && calcSpecificForces.CancellationTokenSource != null)
+            else if(TaskCalcSpecificForces != null && !TaskCalcSpecificForces.IsCompleted && CalcSpecificForces.CancellationTokenSource != null)
             {
                 timer.Stop();
-                calcSpecificForces.CancellationTokenSource.Cancel();
+                CalcSpecificForces.CancellationTokenSource.Cancel();
                 TaskCalcSpecificForces = null;
             }
             // clear data in grid view
@@ -75,7 +75,7 @@ namespace Mechanic
             double n1 = double.Parse(textBox_N1_IndicPolitrCompres.Text);
             try
             {
-                calcPolitrops.N1 = n1;
+                CalcPolitrops.N1 = n1;
             }
             catch (Exception ex)
             {
@@ -87,7 +87,7 @@ namespace Mechanic
             double n2 = double.Parse(textBox_N2_IndicPolitrExpansion.Text); ;
             try
             {
-                calcPolitrops.N2 = n2;
+                CalcPolitrops.N2 = n2;
             }
             catch (Exception ex)
             {
@@ -98,8 +98,8 @@ namespace Mechanic
             double lambdaDegreeIncreasePressure = double.Parse(textBox_Lambda_DegreeOfPressureIncrease.Text);
             try
             {
-                calcPolitrops.LambdaDegreeIncreasePressure = lambdaDegreeIncreasePressure;
-                label_PZ.Text = "Pz:  " + Math.Round(calcPolitrops.PZ, 3).ToString();
+                CalcPolitrops.LambdaDegreeIncreasePressure = lambdaDegreeIncreasePressure;
+                label_PZ.Text = "Pz:  " + Math.Round(CalcPolitrops.PZ, 3).ToString();
             }
             catch (Exception ex)
             {
@@ -107,9 +107,9 @@ namespace Mechanic
                 return;
             }
 
-            deltaAngle = int.Parse(textBox_DeltaAngle.Text);
+            DeltaAngle = int.Parse(textBox_DeltaAngle.Text);
 
-            TaskCalcPolitropData = calcPolitrops.CalcPolitropsDataAsync(deltaAngle);
+            TaskCalcPolitropData = CalcPolitrops.CalcPolitropsDataAsync(DeltaAngle);
             
             isShowCalcDataPolitr = false;
             //isShowCalcSpecificForces = false;
@@ -117,7 +117,7 @@ namespace Mechanic
 
         }
 
-        private void ClearGridView(DataGridView dataGridView)
+        public static void ClearGridView(DataGridView dataGridView)
         {
             if (dataGridView.RowCount > 1)
             {
@@ -135,8 +135,8 @@ namespace Mechanic
             {                
                 ShowDataPolitrop();
                 isShowCalcDataPolitr = true;
-                calcSpecificForces.CalcPolitrops = calcPolitrops;
-                TaskCalcSpecificForces = calcSpecificForces.CalcDataOfSpecificForcesAsync(this.deltaAngle);
+                CalcSpecificForces.CalcPolitrops = CalcPolitrops;
+                TaskCalcSpecificForces = CalcSpecificForces.CalcDataOfSpecificForcesAsync(this.DeltaAngle);
             }
 
             if(TaskCalcSpecificForces != null && TaskCalcSpecificForces.IsCompleted)
@@ -146,26 +146,28 @@ namespace Mechanic
             }
         }
 
+        public static void ClearChart(Chart chart)
+        {
+            for (int i = 0; i < chart.Series.Count; i++)
+            {
+                chart.Series[i].Points.Clear();
+            }
+        }
+
         private void ShowDataSpecificForces()
         {
             // очистка старых графіков            
-            chartOfSpecificForcesP.Series["SeriesPr"].Points.Clear();
-            chartOfSpecificForcesP.Series["SeriesPj"].Points.Clear();
-            chartOfSpecificForcesP.Series["SeriesPsum"].Points.Clear();
-
-            chartOfSpecificForces_KAndN.Series["SeriesK"].Points.Clear();
-            chartOfSpecificForces_KAndN.Series["SeriesN"].Points.Clear();
-
-            chartOfSpecificForces_TAndZ.Series["SeriesT"].Points.Clear();
-            chartOfSpecificForces_TAndZ.Series["SeriesZ"].Points.Clear();
+            ClearChart(chartOfSpecificForcesP);
+            ClearChart(chartOfSpecificForces_KAndN);
+            ClearChart(chartOfSpecificForces_TAndZ);
 
 
             for (int iterInternalSpecficForcesData = 0;
-                 iterInternalSpecficForcesData < calcSpecificForces.DataSpecificForces.LengthInternalObject;
+                 iterInternalSpecficForcesData < CalcSpecificForces.DataSpecificForces.LengthInternalObject;
                  iterInternalSpecficForcesData++
                 )
             {
-                DataOfCalculationSpecificForces dataOfSpecificForces = calcSpecificForces.DataSpecificForces;
+                DataOfCalculationSpecificForces dataOfSpecificForces = CalcSpecificForces.DataSpecificForces;
                 dataGridView_CalcSpecifForces.Rows.Add(
                     dataOfSpecificForces.Angles[iterInternalSpecficForcesData],
                     dataOfSpecificForces.P[iterInternalSpecficForcesData],
@@ -223,16 +225,15 @@ namespace Mechanic
         private void ShowDataPolitrop()
         {
             // очистка старого графіка
-            chart_IndicatorDiagram.Series["PolitropOfComprassion"].Points.Clear();
-            chart_IndicatorDiagram.Series["PolitropOfExpansion"].Points.Clear();
+            ClearChart(chart_IndicatorDiagram);
 
 
             for (int iterInternalPolitrData = 0;
-                 iterInternalPolitrData < calcPolitrops.DataPolitrops.LengthInternalObject;
+                 iterInternalPolitrData < CalcPolitrops.DataPolitrops.LengthInternalObject;
                  iterInternalPolitrData++
                 )
             {
-                DataPolitropsOfComprassionAndExpansion dataPolitrop = calcPolitrops.DataPolitrops;
+                DataPolitropsOfComprassionAndExpansion dataPolitrop = CalcPolitrops.DataPolitrops;
                 dataGridView_Politrop.Rows.Add(
                     dataPolitrop.Angles[iterInternalPolitrData],
                     dataPolitrop.S[iterInternalPolitrData],
@@ -240,6 +241,7 @@ namespace Mechanic
                     dataPolitrop.V[iterInternalPolitrData],
                     dataPolitrop.RatioVaToV[iterInternalPolitrData],
                     dataPolitrop.RatioVaToVInDegreeN1[iterInternalPolitrData],
+                    dataPolitrop.PressureOnLineCompression[iterInternalPolitrData],
                     dataPolitrop.PressureOnLineCompression[iterInternalPolitrData],
                     dataPolitrop.RatioVToVz[iterInternalPolitrData],
                     dataPolitrop.RatioVzToVInDegreeN2[iterInternalPolitrData],
@@ -262,7 +264,7 @@ namespace Mechanic
             AutosizeGridView(this.dataGridView_Politrop);
         }
 
-        private void AutosizeGridView(DataGridView dataGridView)
+        public static void AutosizeGridView(DataGridView dataGridView)
         {
             var height = 40;
             foreach (DataGridViewRow dr in dataGridView.Rows)

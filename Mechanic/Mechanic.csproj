@@ -86,11 +86,11 @@
     <Compile Include="CalcSpecificForces.cs" />
     <Compile Include="DataOfCalculationSpecificForces.cs" />
     <Compile Include="DataPolitropsOfComprassionAndExpansion.cs" />
-    <Compile Include="FormCreateDiagramProcess.cs">
+    <Compile Include="FormDiagramProcessOfCylinder.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormCreateDiagramProcess.Designer.cs">
-      <DependentUpon>FormCreateDiagramProcess.cs</DependentUpon>
+    <Compile Include="FormDiagramProcessOfCylinder.Designer.cs">
+      <DependentUpon>FormDiagramProcessOfCylinder.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -101,8 +101,8 @@
     <Compile Include="CalcPolitrops.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormCreateDiagramProcess.resx">
-      <DependentUpon>FormCreateDiagramProcess.cs</DependentUpon>
+    <EmbeddedResource Include="FormDiagramProcessOfCylinder.resx">
+      <DependentUpon>FormDiagramProcessOfCylinder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
