@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using static System.Math;
 
+
 namespace Mechanic
 {
     public partial class Main : Form
@@ -47,8 +48,10 @@ namespace Mechanic
             for (int i = 0; i < COUNT_CYLINDER_ENGINE; i++)
             {
                 FormDiagramProcessOfCylinder formCreateDiagramProcess = new FormDiagramProcessOfCylinder();
+                
                 FormsCylinderProcesses.Add(formCreateDiagramProcess);
                 formCreateDiagramProcess.Text += " " + (i + 1);
+                formCreateDiagramProcess.LabelDataForCreateDiagr.Text += " " + (i + 1) + "-го " + "циліндра.";
                 CalcSpecificForcesOfCylinders.Add(formCreateDiagramProcess.CalcSpecificForces);
                 formCreateDiagramProcess.Show();
             }
@@ -65,13 +68,36 @@ namespace Mechanic
 
         private void btnTotalTorqueEngine_Click(object sender, EventArgs e)
         {
+            //checked calculation data for cylinder
+            if(CalcSpecificForcesOfCylinders.Count == 0)
+            {
+                MessageBox.Show("Дані для циліндрів не були розраховані.");
+                return;
+            }
+            //minimize other windows
+            foreach (var formCylinderProc in FormsCylinderProcesses)
+            {
+                if(formCylinderProc != null)
+                {
+                    formCylinderProc.WindowState = FormWindowState.Minimized;
+                }
+            } 
+
             //check - are calculated data for all cylinders
             for (int i = 0; i < CalcSpecificForcesOfCylinders.Count; i++)
             {
                 if (CalcSpecificForcesOfCylinders[i] == null || CalcSpecificForcesOfCylinders[i].DataSpecificForces == null || //данные существуют
                     (FormsCylinderProcesses[i].TaskCalcSpecificForces != null && !FormsCylinderProcesses[i].TaskCalcSpecificForces.IsCompleted)) //данные вычислены полностью
                 {
-                    MessageBox.Show("Дані для циліндра " + (i + 1) + " не були розраховані.");
+                    DialogResult dialogResult = MessageBox.Show("Дані для циліндра " + (i + 1) + " не були розраховані.");
+                    if(dialogResult == DialogResult.OK)
+                    {
+                        this.WindowState = FormWindowState.Minimized;
+                        if (FormsCylinderProcesses[i] != null)
+                        {
+                            FormsCylinderProcesses[i].WindowState = FormWindowState.Normal;
+                        }                        
+                    }
                     return;
                 }
             }
@@ -101,8 +127,11 @@ namespace Mechanic
             CalcSpecificForcesOfCylinders.ForEach(calcSpecForces =>
             {
                 int indexRecordWith360Degree = calcSpecForces.DataSpecificForces.Angles.BinarySearch(360);
-                calcSpecForces.DataSpecificForces.Angles.RemoveAt(indexRecordWith360Degree);
-                calcSpecForces.DataSpecificForces.T.RemoveAt(indexRecordWith360Degree);
+                if(calcSpecForces.DataSpecificForces.Angles[indexRecordWith360Degree]+1 == 360) // data for 360 degree was remmoved
+                {
+                    calcSpecForces.DataSpecificForces.Angles.RemoveAt(indexRecordWith360Degree);
+                    calcSpecForces.DataSpecificForces.T.RemoveAt(indexRecordWith360Degree);
+                }                
             });
 
             //CalcSpecificForcesOfCylinders[FIRST_CYLINDER].
