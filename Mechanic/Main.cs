@@ -13,10 +13,10 @@ namespace Mechanic
         //totsl torque - сумарний обертальний момент
         //const
         private const int START_ANGLE_T1 = 0;
-        private const int START_ANGLE_T2 = 600;
-        private const int START_ANGLE_T3 = 120;
-        private const int START_ANGLE_T4 = 480;
-        private const int START_ANGLE_T5 = 240;
+        private const int START_ANGLE_T2 = 120;
+        private const int START_ANGLE_T3 = 600;
+        private const int START_ANGLE_T4 = 240;
+        private const int START_ANGLE_T5 = 480;
         private const int START_ANGLE_T6 = 360;
 
         private const int COUNT_CYLINDER_ENGINE = 6;
@@ -189,8 +189,8 @@ namespace Mechanic
 
             int lengthInternalObjectsInDataSpecForces = CalcSpecificForcesOfCylinders[FIRST_CYLINDER].DataSpecificForces.LengthInternalObject;
 
-            //get lengthInt - 1 cause record with 0 degree is the same with 720 degree
-            for (int iterT = 0; iterT < lengthInternalObjectsInDataSpecForces - 1; iterT++) // go along DataSpecificForces for get T of differentcylinder
+
+            for (int iterT = 0; iterT < lengthInternalObjectsInDataSpecForces; iterT++) // go along DataSpecificForces for get T of differentcylinder
             {
                 double T1 = CalcSpecificForcesOfCylinders[FIRST_CYLINDER].DataSpecificForces.T[bearingIndexT1];
                 double T2 = CalcSpecificForcesOfCylinders[SECOND_CYLINDER].DataSpecificForces.T[bearingIndexT2];
@@ -229,40 +229,40 @@ namespace Mechanic
                 bearingIndexT4++;
                 bearingIndexT5++;
                 bearingIndexT6++;
-
-                if (bearingIndexT1 == lengthInternalObjectsInDataSpecForces) //index in end - go from start
+                //lengthInternalObjectsInDataSpecForces-1 cause value in 720 degree is the same as 0 degree
+                if (bearingIndexT1 == lengthInternalObjectsInDataSpecForces - 1) //index in end - go from start, 
                 {
                     bearingIndexT1 = 0;
                 }
 
-                if (bearingIndexT2 == lengthInternalObjectsInDataSpecForces) //index in end - go from start
+                if (bearingIndexT2 == lengthInternalObjectsInDataSpecForces - 1) //index in end - go from start
                 {
                     bearingIndexT2 = 0;
                 }
 
-                if (bearingIndexT3 == lengthInternalObjectsInDataSpecForces) //index in end - go from start
+                if (bearingIndexT3 == lengthInternalObjectsInDataSpecForces - 1) //index in end - go from start
                 {
                     bearingIndexT3 = 0;
                 }
 
-                if (bearingIndexT4 == lengthInternalObjectsInDataSpecForces) //index in end - go from start
+                if (bearingIndexT4 == lengthInternalObjectsInDataSpecForces - 1) //index in end - go from start
                 {
                     bearingIndexT4 = 0;
                 }
 
-                if (bearingIndexT5 == lengthInternalObjectsInDataSpecForces) //index in end - go from start
+                if (bearingIndexT5 == lengthInternalObjectsInDataSpecForces - 1) //index in end - go from start
                 {
                     bearingIndexT5 = 0;
                 }
 
-                if (bearingIndexT6 == lengthInternalObjectsInDataSpecForces) //index in end - go from start
+                if (bearingIndexT6 == lengthInternalObjectsInDataSpecForces - 1) //index in end - go from start
                 {
                     bearingIndexT6 = 0;
                 }
             }
 
             //save average total torque
-            this.averageTotalTorque = (this.maxTotalTorque + this.minTotalTorque) / 2;            
+            this.averageTotalTorque = (this.maxTotalTorque + this.minTotalTorque) / 2;
             FormDiagramProcessOfCylinder.AutosizeGridView(dataGridView);
         }
 
@@ -312,7 +312,24 @@ namespace Mechanic
                     break;
                 }
             }
-            return torqueUniformities;
+            //change order of cylinder for process
+            List<TorqueUniformity> torqueUniformitiesResult = new List<TorqueUniformity>();
+            torqueUniformitiesResult.Add(torqueUniformities[3]);
+            torqueUniformitiesResult.Add(torqueUniformities[2]);
+            torqueUniformitiesResult.Add(torqueUniformities[4]);
+            torqueUniformitiesResult.Add(torqueUniformities[1]);
+            torqueUniformitiesResult.Add(torqueUniformities[5]);
+            torqueUniformitiesResult.Add(torqueUniformities[0]);
+
+            return torqueUniformitiesResult;
+        }
+
+        static void Swap<T>(ref T lhs, ref T rhs)
+        {
+            T temp;
+            temp = lhs;
+            lhs = rhs;
+            rhs = temp;
         }
 
         private void ShowTorqueUniformities(List<TorqueUniformity> torqueUniformities, DataGridView dataGridView)
