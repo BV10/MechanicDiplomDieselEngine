@@ -32,6 +32,13 @@ namespace Mechanic
         private List<FormDiagramProcessOfCylinder> FormsCylinderProcesses { get; set; } = new List<FormDiagramProcessOfCylinder>();
         private List<double> TotalTorqueOfCylinders { get; set; } = new List<double>(); // обертальні моменти двигунів
 
+        //max total torques
+        private double maxTotalTorque = 0.0;
+        //min total torques
+        private double minTotalTorque = 0.0;
+        // average total torque
+        private double averageTotalTorque = 0.0;
+
         public Main()
         {
             InitializeComponent();
@@ -42,13 +49,14 @@ namespace Mechanic
 
         private void btnDrawDiagram_Click(object sender, EventArgs e)
         {
-            //закрываем и очищаем предыдущие окна рассчетов
+            //закрываем и очищаем предыдущие окна рассчетов и рассчеты
             ResetOldCalcFormProcess();
+            CalcSpecificForcesOfCylinders.Clear();
 
             for (int i = 0; i < COUNT_CYLINDER_ENGINE; i++)
             {
                 FormDiagramProcessOfCylinder formCreateDiagramProcess = new FormDiagramProcessOfCylinder();
-                
+
                 FormsCylinderProcesses.Add(formCreateDiagramProcess);
                 formCreateDiagramProcess.Text += " " + (i + 1);
                 formCreateDiagramProcess.LabelDataForCreateDiagr.Text += " " + (i + 1) + "-го " + "циліндра.";
@@ -59,7 +67,7 @@ namespace Mechanic
 
         private void ResetOldCalcFormProcess()
         {
-            if(FormsCylinderProcesses.Count > 0)
+            if (FormsCylinderProcesses.Count > 0)
             {
                 FormsCylinderProcesses.ForEach(form => form.Close());
             }
@@ -69,7 +77,7 @@ namespace Mechanic
         private void btnTotalTorqueEngine_Click(object sender, EventArgs e)
         {
             //checked calculation data for cylinder
-            if(CalcSpecificForcesOfCylinders.Count == 0)
+            if (CalcSpecificForcesOfCylinders.Count == 0)
             {
                 MessageBox.Show("Дані для циліндрів не були розраховані.");
                 return;
@@ -77,11 +85,11 @@ namespace Mechanic
             //minimize other windows
             foreach (var formCylinderProc in FormsCylinderProcesses)
             {
-                if(formCylinderProc != null)
+                if (formCylinderProc != null)
                 {
                     formCylinderProc.WindowState = FormWindowState.Minimized;
                 }
-            } 
+            }
 
             //check - are calculated data for all cylinders
             for (int i = 0; i < CalcSpecificForcesOfCylinders.Count; i++)
@@ -90,13 +98,13 @@ namespace Mechanic
                     (FormsCylinderProcesses[i].TaskCalcSpecificForces != null && !FormsCylinderProcesses[i].TaskCalcSpecificForces.IsCompleted)) //данные вычислены полностью
                 {
                     DialogResult dialogResult = MessageBox.Show("Дані для циліндра " + (i + 1) + " не були розраховані.");
-                    if(dialogResult == DialogResult.OK)
+                    if (dialogResult == DialogResult.OK)
                     {
                         this.WindowState = FormWindowState.Minimized;
                         if (FormsCylinderProcesses[i] != null)
                         {
                             FormsCylinderProcesses[i].WindowState = FormWindowState.Normal;
-                        }                        
+                        }
                     }
                     return;
                 }
@@ -108,17 +116,49 @@ namespace Mechanic
             //очистити графік залежності обертального моменту від кута 
             FormDiagramProcessOfCylinder.ClearChart(chartTotalToque);
             //побудувати графік залежності обертального моменту від кута
-            BuildChartTotalToque(chartTotalToque);
+            BuildChartTotalToque(chartTotalToque);            //
+            // показати табцицю коэффициентов неравномерности крутящего момента для всех цилиндров
+            ShowTorqueUniformities(CalcTorqueUniformities(TotalTorqueOfCylinders));
         }
 
         private void BuildChartTotalToque(Chart chartTotalToque)
         {
-            for (int angle = CalcSpecificForces.START_ANGLE, iterTotalTorque=0; 
+            chartTotalToque.ChartAreas[0].AxisX.Minimum = 0;
+            chartTotalToque.ChartAreas[0].AxisX.Maximum = 720;
+
+            for (int angle = CalcSpecificForces.START_ANGLE, iterTotalTorque = 0;
                 angle <= CalcSpecificForces.END_ANGLE && iterTotalTorque < TotalTorqueOfCylinders.Count;
                 angle += FormsCylinderProcesses[FIRST_CYLINDER].DeltaAngle, iterTotalTorque++)
             {
                 chartTotalToque.Series[0].Points.AddXY(angle, TotalTorqueOfCylinders[iterTotalTorque]);
+                //changle color of points on ecery 120 degrees
+                if (angle <= 120)
+                {
+                    chartTotalToque.Series[0].Points[iterTotalTorque].Color = Color.Blue;
+                }
+                else if (angle <= 240)
+                {
+                    chartTotalToque.Series[0].Points[iterTotalTorque].Color = Color.Green;
+                }
+                else if (angle <= 360)
+                {
+                    chartTotalToque.Series[0].Points[iterTotalTorque].Color = Color.Aqua;
+                }
+                else if (angle <= 480)
+                {
+                    chartTotalToque.Series[0].Points[iterTotalTorque].Color = Color.Red;
+                }
+                else if (angle <= 600)
+                {
+                    chartTotalToque.Series[0].Points[iterTotalTorque].Color = Color.Violet;
+                }
+                else if (angle <= 720)
+                {
+                    chartTotalToque.Series[0].Points[iterTotalTorque].Color = Color.Brown;
+                }
             }
+            //chartTotalToque.
+            //int i = 0;
         }
 
         private void ShowSpecificForcesAndTorqueEngineOnGridView(DataGridView dataGridView)
@@ -127,11 +167,11 @@ namespace Mechanic
             CalcSpecificForcesOfCylinders.ForEach(calcSpecForces =>
             {
                 int indexRecordWith360Degree = calcSpecForces.DataSpecificForces.Angles.BinarySearch(360);
-                if(calcSpecForces.DataSpecificForces.Angles[indexRecordWith360Degree]+1 == 360) // data for 360 degree was remmoved
+                if (calcSpecForces.DataSpecificForces.Angles[indexRecordWith360Degree] + 1 == 360) // data for 360 degree was remmoved
                 {
                     calcSpecForces.DataSpecificForces.Angles.RemoveAt(indexRecordWith360Degree);
                     calcSpecForces.DataSpecificForces.T.RemoveAt(indexRecordWith360Degree);
-                }                
+                }
             });
 
             //CalcSpecificForcesOfCylinders[FIRST_CYLINDER].
@@ -146,6 +186,7 @@ namespace Mechanic
             int bearingIndexT6 = CalcSpecificForcesOfCylinders[SIXTH_CYLINDER].DataSpecificForces.Angles.BinarySearch(START_ANGLE_T6);
 
             int lengthInternalObjectsInDataSpecForces = CalcSpecificForcesOfCylinders[FIRST_CYLINDER].DataSpecificForces.LengthInternalObject;
+
             for (int iterT = 0; iterT < lengthInternalObjectsInDataSpecForces; iterT++) // go along DataSpecificForces for get T of differentcylinder
             {
                 double T1 = CalcSpecificForcesOfCylinders[FIRST_CYLINDER].DataSpecificForces.T[bearingIndexT1];
@@ -158,6 +199,24 @@ namespace Mechanic
                 //Mi = 1000 * TSum * Fn * R
                 double totalTorque = Round(1000 * Tsum * FormsCylinderProcesses[FIRST_CYLINDER].CalcPolitrops.Fn * CalcPolitrops.R, 3);
                 TotalTorqueOfCylinders.Add(totalTorque);
+
+                //save max totalTorque and min totalTorque  
+                if (iterT == 0)
+                {
+                    this.maxTotalTorque = totalTorque;
+                    this.minTotalTorque = totalTorque;
+                }
+                else
+                {
+                    if (totalTorque > maxTotalTorque)
+                    {
+                        this.maxTotalTorque = totalTorque;
+                    }
+                    if (totalTorque < minTotalTorque)
+                    {
+                        this.minTotalTorque = totalTorque;
+                    }
+                }
 
                 dataGridView.Rows.Add(T1, T2, T3, T4, T5, T6, Tsum, totalTorque);
                 //increase index
@@ -198,12 +257,87 @@ namespace Mechanic
                     bearingIndexT6 = 0;
                 }
             }
+
+            //save average total torque
+            this.averageTotalTorque = (this.maxTotalTorque + this.minTotalTorque) / 2;
+            Console.WriteLine(this.averageTotalTorque);
+            Console.WriteLine(this.maxTotalTorque);
+            Console.WriteLine(this.minTotalTorque);
             FormDiagramProcessOfCylinder.AutosizeGridView(dataGridView);
         }
 
         private void dataGridView_TiAndMi_Resize(object sender, EventArgs e)
         {
             chartTotalToque.Top = dataGridView_TiAndMi.Bottom + SHIFT_ELEM_CONTROL;
+        }
+
+        private void chartTotalToque_Move(object sender, EventArgs e)
+        {
+            dataGridView_TorqueUniformity.Top = chartTotalToque.Bottom + SHIFT_ELEM_CONTROL;
+        }
+
+        private List<TorqueUniformity> CalcTorqueUniformities(List<double> totalTorque)
+        {
+            List<TorqueUniformity> torqueUniformities = new List<TorqueUniformity>();
+
+            double totalTorqueMaxOnRange = totalTorque[0];
+            double totalTorqueMinRange = totalTorque[0];
+            for (int angle = CalcSpecificForces.START_ANGLE, iterTotalTorque = 1;
+               angle <= CalcSpecificForces.END_ANGLE && iterTotalTorque < totalTorque.Count;
+               angle += FormsCylinderProcesses[FIRST_CYLINDER].DeltaAngle, iterTotalTorque++)
+            {
+                if (totalTorqueMaxOnRange < totalTorque[iterTotalTorque])
+                {
+                    totalTorqueMaxOnRange = totalTorque[iterTotalTorque];
+                }
+                if (totalTorqueMinRange > totalTorque[iterTotalTorque])
+                {
+                    totalTorqueMinRange = totalTorque[iterTotalTorque];
+                }
+
+                //save Mmax and Mmin, Mu on ranges
+                if (angle == 120 || angle == 240 || angle == 360 || angle == 480
+                    || angle == 600
+                    )
+                {
+                    torqueUniformities.Add(new TorqueUniformity(totalTorqueMaxOnRange, totalTorqueMinRange, (totalTorqueMaxOnRange - totalTorqueMinRange) / this.averageTotalTorque));
+
+                    // for seek next max and min on ranges
+                    totalTorqueMaxOnRange = totalTorque[iterTotalTorque + 1];
+                    totalTorqueMinRange = totalTorque[iterTotalTorque + 1];
+                }
+                else if (angle == 720)
+                {
+                    torqueUniformities.Add(new TorqueUniformity(totalTorqueMaxOnRange, totalTorqueMinRange, (totalTorqueMaxOnRange - totalTorqueMinRange) / this.averageTotalTorque));
+                    break;
+                }
+            }
+            return torqueUniformities;
+        }
+
+        private void ShowTorqueUniformities(List<TorqueUniformity> torqueUniformities)
+        {
+            int iter = 0;
+            torqueUniformities.ForEach(torqueUniformity =>
+            {
+                dataGridView_TorqueUniformity.Rows.Add(iter + 1, Round(torqueUniformity.Mmax, 3), Round(torqueUniformity.Mmin, 3), Round(torqueUniformity.Mu, 3));
+                iter++;
+            });
+            FormDiagramProcessOfCylinder.AutosizeGridView(dataGridView_TorqueUniformity);
+        }
+
+        //customize labels of angles on chart
+        private void chartTotalToque_Customize(object sender, EventArgs e)
+        {
+            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Clear();
+
+            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(-20, 20, "0", 0, LabelMarkStyle.None));
+            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(100, 140, "120", 0, LabelMarkStyle.None));
+            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(220, 260, "240", 0, LabelMarkStyle.None));
+            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(340, 380, "360", 0, LabelMarkStyle.None));
+            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(460, 500, "480", 0, LabelMarkStyle.None));
+            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(580, 620, "600", 0, LabelMarkStyle.None));
+            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(700, 740, "720", 0, LabelMarkStyle.None));
         }
     }
 }

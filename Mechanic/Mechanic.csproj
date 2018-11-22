@@ -101,6 +101,7 @@
     <Compile Include="CalcPolitrops.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TorqueUniformity.cs" />
     <EmbeddedResource Include="FormDiagramProcessOfCylinder.resx">
       <DependentUpon>FormDiagramProcessOfCylinder.cs</DependentUpon>
     </EmbeddedResource>
