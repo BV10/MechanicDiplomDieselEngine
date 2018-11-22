@@ -49,14 +49,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnTotalTorqueEngine = new System.Windows.Forms.Button();
             this.dataGridView_TiAndMi = new System.Windows.Forms.DataGridView();
-            this.T1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.T2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.T3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.T4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.T5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.T6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tsum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Mi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.chartTotalToque = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -65,6 +57,15 @@
             this.mMax = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.mMin = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Mu = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Phi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.T1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.T2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.T3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.T4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.T5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.T6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tsum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Mi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_TiAndMi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTotalToque)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_TorqueUniformity)).BeginInit();
@@ -116,6 +117,7 @@
             // 
             this.dataGridView_TiAndMi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_TiAndMi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Phi,
             this.T1,
             this.T2,
             this.T3,
@@ -126,57 +128,9 @@
             this.Mi});
             this.dataGridView_TiAndMi.Location = new System.Drawing.Point(153, 310);
             this.dataGridView_TiAndMi.Name = "dataGridView_TiAndMi";
-            this.dataGridView_TiAndMi.Size = new System.Drawing.Size(683, 44);
+            this.dataGridView_TiAndMi.Size = new System.Drawing.Size(783, 44);
             this.dataGridView_TiAndMi.TabIndex = 6;
             this.dataGridView_TiAndMi.Resize += new System.EventHandler(this.dataGridView_TiAndMi_Resize);
-            // 
-            // T1
-            // 
-            this.T1.HeaderText = "T1";
-            this.T1.Name = "T1";
-            this.T1.Width = 80;
-            // 
-            // T2
-            // 
-            this.T2.HeaderText = "T2";
-            this.T2.Name = "T2";
-            this.T2.Width = 80;
-            // 
-            // T3
-            // 
-            this.T3.HeaderText = "T3";
-            this.T3.Name = "T3";
-            this.T3.Width = 80;
-            // 
-            // T4
-            // 
-            this.T4.HeaderText = "T4";
-            this.T4.Name = "T4";
-            this.T4.Width = 80;
-            // 
-            // T5
-            // 
-            this.T5.HeaderText = "T5";
-            this.T5.Name = "T5";
-            this.T5.Width = 80;
-            // 
-            // T6
-            // 
-            this.T6.HeaderText = "T6";
-            this.T6.Name = "T6";
-            this.T6.Width = 80;
-            // 
-            // Tsum
-            // 
-            this.Tsum.HeaderText = "ΣT";
-            this.Tsum.Name = "Tsum";
-            this.Tsum.Width = 80;
-            // 
-            // Mi
-            // 
-            this.Mi.HeaderText = "Mᵢ";
-            this.Mi.Name = "Mi";
-            this.Mi.Width = 80;
             // 
             // label4
             // 
@@ -290,6 +244,59 @@
             this.Mu.Name = "Mu";
             this.Mu.Width = 60;
             // 
+            // Phi
+            // 
+            this.Phi.HeaderText = "φ";
+            this.Phi.Name = "Phi";
+            // 
+            // T1
+            // 
+            this.T1.HeaderText = "T1";
+            this.T1.Name = "T1";
+            this.T1.Width = 80;
+            // 
+            // T2
+            // 
+            this.T2.HeaderText = "T2";
+            this.T2.Name = "T2";
+            this.T2.Width = 80;
+            // 
+            // T3
+            // 
+            this.T3.HeaderText = "T3";
+            this.T3.Name = "T3";
+            this.T3.Width = 80;
+            // 
+            // T4
+            // 
+            this.T4.HeaderText = "T4";
+            this.T4.Name = "T4";
+            this.T4.Width = 80;
+            // 
+            // T5
+            // 
+            this.T5.HeaderText = "T5";
+            this.T5.Name = "T5";
+            this.T5.Width = 80;
+            // 
+            // T6
+            // 
+            this.T6.HeaderText = "T6";
+            this.T6.Name = "T6";
+            this.T6.Width = 80;
+            // 
+            // Tsum
+            // 
+            this.Tsum.HeaderText = "ΣT";
+            this.Tsum.Name = "Tsum";
+            this.Tsum.Width = 80;
+            // 
+            // Mi
+            // 
+            this.Mi.HeaderText = "Mᵢ";
+            this.Mi.Name = "Mi";
+            this.Mi.Width = 80;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -325,6 +332,13 @@
         private System.Windows.Forms.DataGridView dataGridView_TiAndMi;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartTotalToque;
+        private System.Windows.Forms.DataGridView dataGridView_TorqueUniformity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numberOfCylinder;
+        private System.Windows.Forms.DataGridViewTextBoxColumn mMax;
+        private System.Windows.Forms.DataGridViewTextBoxColumn mMin;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Mu;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Phi;
         private System.Windows.Forms.DataGridViewTextBoxColumn T1;
         private System.Windows.Forms.DataGridViewTextBoxColumn T2;
         private System.Windows.Forms.DataGridViewTextBoxColumn T3;
@@ -333,12 +347,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn T6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Tsum;
         private System.Windows.Forms.DataGridViewTextBoxColumn Mi;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartTotalToque;
-        private System.Windows.Forms.DataGridView dataGridView_TorqueUniformity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn numberOfCylinder;
-        private System.Windows.Forms.DataGridViewTextBoxColumn mMax;
-        private System.Windows.Forms.DataGridViewTextBoxColumn mMin;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Mu;
     }
 }
 

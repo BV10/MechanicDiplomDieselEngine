@@ -169,7 +169,7 @@ namespace Mechanic
             CalcSpecificForcesOfCylinders.ForEach(calcSpecForces =>
             {
                 int indexRecordWith360Degree = calcSpecForces.DataSpecificForces.Angles.BinarySearch(360);
-                if (calcSpecForces.DataSpecificForces.Angles[indexRecordWith360Degree] + 1 == 360) // data for 360 degree was remmoved
+                if (calcSpecForces.DataSpecificForces.Angles[indexRecordWith360Degree + 1] == 360) // data for 360 degree was remmoved
                 {
                     calcSpecForces.DataSpecificForces.Angles.RemoveAt(indexRecordWith360Degree);
                     calcSpecForces.DataSpecificForces.T.RemoveAt(indexRecordWith360Degree);
@@ -189,7 +189,8 @@ namespace Mechanic
 
             int lengthInternalObjectsInDataSpecForces = CalcSpecificForcesOfCylinders[FIRST_CYLINDER].DataSpecificForces.LengthInternalObject;
 
-            for (int iterT = 0; iterT < lengthInternalObjectsInDataSpecForces; iterT++) // go along DataSpecificForces for get T of differentcylinder
+            //get lengthInt - 1 cause record with 0 degree is the same with 720 degree
+            for (int iterT = 0; iterT < lengthInternalObjectsInDataSpecForces - 1; iterT++) // go along DataSpecificForces for get T of differentcylinder
             {
                 double T1 = CalcSpecificForcesOfCylinders[FIRST_CYLINDER].DataSpecificForces.T[bearingIndexT1];
                 double T2 = CalcSpecificForcesOfCylinders[SECOND_CYLINDER].DataSpecificForces.T[bearingIndexT2];
@@ -220,7 +221,7 @@ namespace Mechanic
                     }
                 }
 
-                dataGridView.Rows.Add(T1, T2, T3, T4, T5, T6, Tsum, totalTorque);
+                dataGridView.Rows.Add(CalcSpecificForcesOfCylinders[FIRST_CYLINDER].DataSpecificForces.Angles[iterT], T1, T2, T3, T4, T5, T6, Tsum, totalTorque);
                 //increase index
                 bearingIndexT1++;
                 bearingIndexT2++;
@@ -261,10 +262,7 @@ namespace Mechanic
             }
 
             //save average total torque
-            this.averageTotalTorque = (this.maxTotalTorque + this.minTotalTorque) / 2;
-            Console.WriteLine(this.averageTotalTorque);
-            Console.WriteLine(this.maxTotalTorque);
-            Console.WriteLine(this.minTotalTorque);
+            this.averageTotalTorque = (this.maxTotalTorque + this.minTotalTorque) / 2;            
             FormDiagramProcessOfCylinder.AutosizeGridView(dataGridView);
         }
 
@@ -308,7 +306,7 @@ namespace Mechanic
                     totalTorqueMaxOnRange = totalTorque[iterTotalTorque + 1];
                     totalTorqueMinRange = totalTorque[iterTotalTorque + 1];
                 }
-                else if (angle == 720)
+                else if (iterTotalTorque == totalTorque.Count - 1)
                 {
                     torqueUniformities.Add(new TorqueUniformity(totalTorqueMaxOnRange, totalTorqueMinRange, (totalTorqueMaxOnRange - totalTorqueMinRange) / this.averageTotalTorque));
                     break;
