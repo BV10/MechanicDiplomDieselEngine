@@ -109,16 +109,18 @@ namespace Mechanic
                     return;
                 }
             }
-            //очистити таблицю выд старих питомі сили циліндрів та сумарний обертальний момент двигуна
+            //очистити таблицю від старих питомі сили циліндрів та сумарний обертальний момент двигуна
             FormDiagramProcessOfCylinder.ClearGridView(dataGridView_TiAndMi);
             //показати питомі сили циліндрів та сумарний обертальний момент двигуна
             ShowSpecificForcesAndTorqueEngineOnGridView(dataGridView_TiAndMi);
             //очистити графік залежності обертального моменту від кута 
             FormDiagramProcessOfCylinder.ClearChart(chartTotalToque);
             //побудувати графік залежності обертального моменту від кута
-            BuildChartTotalToque(chartTotalToque);            //
+            BuildChartTotalToque(chartTotalToque);
+            ////очистити таблицю від старих оэффициентов неравномерности крутящего момента для всех цилиндров
+            FormDiagramProcessOfCylinder.ClearGridView(dataGridView_TorqueUniformity);
             // показати табцицю коэффициентов неравномерности крутящего момента для всех цилиндров
-            ShowTorqueUniformities(CalcTorqueUniformities(TotalTorqueOfCylinders));
+            ShowTorqueUniformities(CalcTorqueUniformities(TotalTorqueOfCylinders), dataGridView_TorqueUniformity);
         }
 
         private void BuildChartTotalToque(Chart chartTotalToque)
@@ -315,15 +317,15 @@ namespace Mechanic
             return torqueUniformities;
         }
 
-        private void ShowTorqueUniformities(List<TorqueUniformity> torqueUniformities)
+        private void ShowTorqueUniformities(List<TorqueUniformity> torqueUniformities, DataGridView dataGridView)
         {
             int iter = 0;
             torqueUniformities.ForEach(torqueUniformity =>
             {
-                dataGridView_TorqueUniformity.Rows.Add(iter + 1, Round(torqueUniformity.Mmax, 3), Round(torqueUniformity.Mmin, 3), Round(torqueUniformity.Mu, 3));
+                dataGridView.Rows.Add(iter + 1, Round(torqueUniformity.Mmax, 3), Round(torqueUniformity.Mmin, 3), Round(torqueUniformity.Mu, 3));
                 iter++;
             });
-            FormDiagramProcessOfCylinder.AutosizeGridView(dataGridView_TorqueUniformity);
+            FormDiagramProcessOfCylinder.AutosizeGridView(dataGridView);
         }
 
         //customize labels of angles on chart
