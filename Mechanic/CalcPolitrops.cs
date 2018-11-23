@@ -27,7 +27,7 @@ namespace Mechanic
         //хід поршня
         private double RunningOfPiston { get; set; } = 0.330;
         //геометрична ступінь стиснення двигуна
-        private double Epsilon { get; set; } = 12.5;
+        public double Epsilon { get; private set; } = 12.5;
         // тиск повітря у надувному колекторі
         private readonly double pk = 0.142;
         // коеф Pa

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Net.Sockets;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using static System.Math;
@@ -40,12 +43,14 @@ namespace Mechanic
         private double averageTotalTorque = 0.0;
 
         public Main()
-        {
+        {       
             InitializeComponent();
             this.btnDrawDiagram.Select();
             this.chartTotalToque.ChartAreas[0].AxisX.Title = "\u03c6";
             this.chartTotalToque.ChartAreas[0].AxisY.Title = "M";
         }
+
+        
 
         private void btnDrawDiagram_Click(object sender, EventArgs e)
         {
@@ -366,6 +371,6 @@ namespace Mechanic
             chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(460, 500, "480", 0, LabelMarkStyle.None));
             chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(580, 620, "600", 0, LabelMarkStyle.None));
             chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(700, 740, "720", 0, LabelMarkStyle.None));
-        }
+        }        
     }
 }

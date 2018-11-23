@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using static System.Math;
 
 namespace Mechanic
 {
@@ -23,7 +18,7 @@ namespace Mechanic
 
         private Task TaskCalcPolitropData { get; set; } = null;
         public Task TaskCalcSpecificForces { get; set; } = null;
-        
+
         internal CalcSpecificForces CalcSpecificForces { get => calcSpecificForces; set => calcSpecificForces = value; }
         internal CalcPolitrops CalcPolitrops { get => calcPolitrops; set => calcPolitrops = value; }
         public int DeltaAngle { get => deltaAngle; set => deltaAngle = value; }
@@ -36,11 +31,12 @@ namespace Mechanic
             CalcPolitrops = new CalcPolitrops(Pk, new DataPolitropsOfComprassionAndExpansion());
             timer.Interval = WAITING_EXECUTE_CALCULATING;
             this.label_Pc.Text = "Pc:  " + CalcPolitrops.PC.ToString();
+            this.chart_IndicatorDiagram.Top = dataGridView_Politrop.Bottom + SHIFT_OF_ELEM;
             this.chartOfGasPressureOnPistonFromAngle.Top = this.dataGridView_CalcSpecifForces.Bottom + SHIFT_OF_ELEM;
             this.chartOfSpecificForcesP.Top = this.chartOfGasPressureOnPistonFromAngle.Bottom + SHIFT_OF_ELEM;
             this.chartOfSpecificForces_KAndN.Top = this.chartOfSpecificForcesP.Bottom + SHIFT_OF_ELEM;
             this.chartOfSpecificForces_TAndZ.Top = this.chartOfSpecificForces_KAndN.Bottom + SHIFT_OF_ELEM;
-           
+
 
             this.chart_IndicatorDiagram.ChartAreas[0].AxisX.Title = "V";
             this.chart_IndicatorDiagram.ChartAreas[0].AxisY.Title = "p";
@@ -58,18 +54,21 @@ namespace Mechanic
 
             this.chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisX.Title = "Кут повороту колінчатого валу, град";//phi unicode
             this.chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisY.Title = "Тиск газів, МПа";
+
+            this.label_Pip.Top = this.chart_IndicatorDiagram.Bottom + 50;
+            this.label_Pip.Left = this.chart_IndicatorDiagram.Size.Width / 2 + this.chart_IndicatorDiagram.Left - (this.label_Pip.Size.Width / 2);
         }
 
         private void btnCalcAndBuildDiagr_Click(object sender, EventArgs e)
-        {     
+        {
             //отменяем предыдущий расчет
             if (TaskCalcPolitropData != null && !TaskCalcPolitropData.IsCompleted && CalcPolitrops.CancellationTokenSource != null)
             {
                 timer.Stop();
                 CalcPolitrops.CancellationTokenSource.Cancel();
-                TaskCalcPolitropData = null;                             
+                TaskCalcPolitropData = null;
             }
-            else if(TaskCalcSpecificForces != null && !TaskCalcSpecificForces.IsCompleted && CalcSpecificForces.CancellationTokenSource != null)
+            else if (TaskCalcSpecificForces != null && !TaskCalcSpecificForces.IsCompleted && CalcSpecificForces.CancellationTokenSource != null)
             {
                 timer.Stop();
                 CalcSpecificForces.CancellationTokenSource.Cancel();
@@ -117,8 +116,8 @@ namespace Mechanic
             DeltaAngle = int.Parse(textBox_DeltaAngle.Text);
 
             TaskCalcPolitropData = CalcPolitrops.CalcPolitropsDataAsync(DeltaAngle);
-            
-            isShowCalcDataPolitr = false;            
+
+            isShowCalcDataPolitr = false;
             timer.Start(); // begin calculation
 
         }
@@ -131,26 +130,41 @@ namespace Mechanic
                 {
                     dataGridView.Rows.RemoveAt(i);
                 }
-                dataGridView.Refresh();                
+                dataGridView.Refresh();
             }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
-        {                      
+        {
             if (TaskCalcPolitropData.IsCompleted && !isShowCalcDataPolitr)
-            {                
+            {
                 ShowDataPolitrop();
+                //show Pip розрахунковий середній індикаторний тиск
+                this.label_Pip.Text = "P\u1D62\u209A = " + Round(CalcPip(CalcPolitrops), 3);
                 isShowCalcDataPolitr = true;
                 CalcSpecificForces.CalcPolitrops = CalcPolitrops;
                 TaskCalcSpecificForces = CalcSpecificForces.CalcDataOfSpecificForcesAsync(this.DeltaAngle, this.lambdaDegreeIncreasePressureFromTextBox);
             }
 
-            if(TaskCalcSpecificForces != null && TaskCalcSpecificForces.IsCompleted)
+            if (TaskCalcSpecificForces != null && TaskCalcSpecificForces.IsCompleted)
             {
                 ShowDataSpecificForces();
-                BuildChartOfGasPressureOnPistonFromAngle(chartOfGasPressureOnPistonFromAngle ,CalcSpecificForces.DataSpecificForces);
+                BuildChartOfGasPressureOnPistonFromAngle(chartOfGasPressureOnPistonFromAngle, CalcSpecificForces.DataSpecificForces);
                 timer.Stop();
             }
+        }
+
+        // визначення Pip - розрахунковий середній індикаторний тиск
+        private double CalcPip(CalcPolitrops calcPolitrops)
+        {
+            double valOfFormula1 = calcPolitrops.PC / (calcPolitrops.Epsilon - 1);
+            double valOfFormula2 = calcPolitrops.LambdaDegreeIncreasePressure * (calcPolitrops.RO - 1);
+            double valOfFormula3 = ((calcPolitrops.LambdaDegreeIncreasePressure * calcPolitrops.RO) / (calcPolitrops.N2 - 1)) *
+                (1 - 1 / (Pow(calcPolitrops.Epsilon / calcPolitrops.RO, calcPolitrops.N2 - 1)));
+            double valOfFormula4 = (1 / (calcPolitrops.N1 - 1)) *
+                (1 - 1 / (Pow(calcPolitrops.Epsilon, calcPolitrops.N1 - 1)));
+
+            return valOfFormula1 * (valOfFormula2 + valOfFormula3 - valOfFormula4);
         }
 
         private void BuildChartOfGasPressureOnPistonFromAngle(Chart chart, DataOfCalculationSpecificForces dataSpecificForces)
@@ -171,14 +185,14 @@ namespace Mechanic
                  iterInternalSpecficForcesData++
                 )
             {
-                
+
                 chart.Series[1].Points.AddXY(dataSpecificForces.Angles[iterInternalSpecficForcesData], dataSpecificForces.P[iterInternalSpecficForcesData]);
             }
 
             int iterBackInInternalSpecficForcesData = 0; // для прохода назад
             for (iterBackInInternalSpecficForcesData = iterInternalSpecficForcesData;
                  iterBackInInternalSpecficForcesData > -1 && iterInternalSpecficForcesData < dataSpecificForces.LengthInternalObject; // от 360 и назад для P, углы дальше до 720
-                 iterBackInInternalSpecficForcesData-- ,iterInternalSpecficForcesData++
+                 iterBackInInternalSpecficForcesData--, iterInternalSpecficForcesData++
                 )
             {
 
@@ -280,7 +294,7 @@ namespace Mechanic
                     dataPolitrop.MultiplesFnAndS[iterInternalPolitrData],
                     dataPolitrop.V[iterInternalPolitrData],
                     dataPolitrop.RatioVaToV[iterInternalPolitrData],
-                    dataPolitrop.RatioVaToVInDegreeN1[iterInternalPolitrData],                    
+                    dataPolitrop.RatioVaToVInDegreeN1[iterInternalPolitrData],
                     dataPolitrop.PressureOnLineCompression[iterInternalPolitrData],
                     dataPolitrop.RatioVToVz[iterInternalPolitrData],
                     dataPolitrop.RatioVzToVInDegreeN2[iterInternalPolitrData],
@@ -323,7 +337,9 @@ namespace Mechanic
         {
             //placement datagridview of calc specif forcews after movement chartIndicDiagr
             this.dataGridView_CalcSpecifForces.Top = this.chart_IndicatorDiagram.Bottom + SHIFT_OF_ELEM;
-
+            //Pip under chart
+            this.label_Pip.Top = this.chart_IndicatorDiagram.Bottom + 50;
+            this.label_Pip.Left = this.chart_IndicatorDiagram.Size.Width / 2 + this.chart_IndicatorDiagram.Left - (this.label_Pip.Size.Width / 2);
         }
 
         private void dataGridView_CalcSpecifForces_Resize(object sender, EventArgs e)

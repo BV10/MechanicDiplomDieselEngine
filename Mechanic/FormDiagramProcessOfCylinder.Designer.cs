@@ -103,6 +103,7 @@ namespace Mechanic
             this.chartOfSpecificForces_KAndN = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartOfSpecificForces_TAndZ = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartOfGasPressureOnPistonFromAngle = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.label_Pip = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Politrop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart_IndicatorDiagram)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_CalcSpecifForces)).BeginInit();
@@ -315,7 +316,7 @@ namespace Mechanic
             this.chart_IndicatorDiagram.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart_IndicatorDiagram.Legends.Add(legend1);
-            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(108, 200);
+            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(91, 165);
             this.chart_IndicatorDiagram.Name = "chart_IndicatorDiagram";
             series1.BorderWidth = 3;
             series1.ChartArea = "ChartArea1";
@@ -451,7 +452,7 @@ namespace Mechanic
             this.chartOfSpecificForcesP.ChartAreas.Add(chartArea2);
             legend2.Name = "Legend1";
             this.chartOfSpecificForcesP.Legends.Add(legend2);
-            this.chartOfSpecificForcesP.Location = new System.Drawing.Point(108, 261);
+            this.chartOfSpecificForcesP.Location = new System.Drawing.Point(31, 278);
             this.chartOfSpecificForcesP.Name = "chartOfSpecificForcesP";
             series3.ChartArea = "ChartArea1";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
@@ -486,7 +487,7 @@ namespace Mechanic
             this.chartOfSpecificForces_KAndN.ChartAreas.Add(chartArea3);
             legend3.Name = "Legend1";
             this.chartOfSpecificForces_KAndN.Legends.Add(legend3);
-            this.chartOfSpecificForces_KAndN.Location = new System.Drawing.Point(108, 324);
+            this.chartOfSpecificForces_KAndN.Location = new System.Drawing.Point(91, 330);
             this.chartOfSpecificForces_KAndN.Name = "chartOfSpecificForces_KAndN";
             series6.ChartArea = "ChartArea1";
             series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
@@ -515,7 +516,7 @@ namespace Mechanic
             this.chartOfSpecificForces_TAndZ.ChartAreas.Add(chartArea4);
             legend4.Name = "Legend1";
             this.chartOfSpecificForces_TAndZ.Legends.Add(legend4);
-            this.chartOfSpecificForces_TAndZ.Location = new System.Drawing.Point(108, 402);
+            this.chartOfSpecificForces_TAndZ.Location = new System.Drawing.Point(91, 475);
             this.chartOfSpecificForces_TAndZ.Name = "chartOfSpecificForces_TAndZ";
             series8.ChartArea = "ChartArea1";
             series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
@@ -543,7 +544,7 @@ namespace Mechanic
             this.chartOfGasPressureOnPistonFromAngle.ChartAreas.Add(chartArea5);
             legend5.Name = "Legend1";
             this.chartOfGasPressureOnPistonFromAngle.Legends.Add(legend5);
-            this.chartOfGasPressureOnPistonFromAngle.Location = new System.Drawing.Point(108, 459);
+            this.chartOfGasPressureOnPistonFromAngle.Location = new System.Drawing.Point(108, 407);
             this.chartOfGasPressureOnPistonFromAngle.Name = "chartOfGasPressureOnPistonFromAngle";
             series10.ChartArea = "ChartArea1";
             series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
@@ -566,12 +567,23 @@ namespace Mechanic
             this.chartOfGasPressureOnPistonFromAngle.Titles.Add(title5);
             this.chartOfGasPressureOnPistonFromAngle.Move += new System.EventHandler(this.chartOfGasPressureOnPistonFromAngle_Move);
             // 
+            // label_Pip
+            // 
+            this.label_Pip.AutoSize = true;
+            this.label_Pip.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_Pip.Location = new System.Drawing.Point(976, 91);
+            this.label_Pip.Name = "label_Pip";
+            this.label_Pip.Size = new System.Drawing.Size(37, 16);
+            this.label_Pip.TabIndex = 22;
+            this.label_Pip.Text = "Pᵢₚ = ";
+            // 
             // FormDiagramProcessOfCylinder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1264, 813);
+            this.Controls.Add(this.label_Pip);
             this.Controls.Add(this.chartOfGasPressureOnPistonFromAngle);
             this.Controls.Add(this.chartOfSpecificForces_TAndZ);
             this.Controls.Add(this.chartOfSpecificForces_KAndN);
@@ -652,6 +664,7 @@ namespace Mechanic
         private Chart chartOfSpecificForces_KAndN;
         private Chart chartOfSpecificForces_TAndZ;
         private Chart chartOfGasPressureOnPistonFromAngle;
+        private Label label_Pip;
 
         public Label LabelDataForCreateDiagr { get => labelDataForCreateDiagr; set => labelDataForCreateDiagr = value; }
     }
