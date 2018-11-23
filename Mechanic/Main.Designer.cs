@@ -28,22 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem1 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell1 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem2 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell2 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem3 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell3 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem4 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell4 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem5 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell5 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem6 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell6 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem7 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell7 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem8 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell8 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem9 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell9 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem10 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell10 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem11 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell11 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem12 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell12 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.label1 = new System.Windows.Forms.Label();
             this.btnDrawDiagram = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -66,6 +66,8 @@
             this.mMax = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.mMin = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Mu = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBox_Pk = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_TiAndMi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTotalToque)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_TorqueUniformity)).BeginInit();
@@ -84,7 +86,7 @@
             // btnDrawDiagram
             // 
             this.btnDrawDiagram.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnDrawDiagram.Location = new System.Drawing.Point(380, 101);
+            this.btnDrawDiagram.Location = new System.Drawing.Point(376, 133);
             this.btnDrawDiagram.Name = "btnDrawDiagram";
             this.btnDrawDiagram.Size = new System.Drawing.Size(194, 39);
             this.btnDrawDiagram.TabIndex = 3;
@@ -207,57 +209,57 @@
             // 
             // chartTotalToque
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chartTotalToque.ChartAreas.Add(chartArea1);
-            legendCell1.BackColor = System.Drawing.Color.Transparent;
-            legendCell1.ForeColor = System.Drawing.Color.Red;
-            legendCell1.Name = "Cell1";
-            legendCell1.Text = "1-ий циліндр";
-            legendItem1.Cells.Add(legendCell1);
-            legendCell2.ForeColor = System.Drawing.Color.Aqua;
-            legendCell2.Name = "Cell1";
-            legendCell2.Text = "2-ий циліндр";
-            legendItem2.Cells.Add(legendCell2);
-            legendCell3.ForeColor = System.Drawing.Color.Violet;
-            legendCell3.Name = "Cell1";
-            legendCell3.Text = "3-ій циліндр";
-            legendItem3.Cells.Add(legendCell3);
-            legendCell4.ForeColor = System.Drawing.Color.Green;
-            legendCell4.Name = "Cell1";
-            legendCell4.Text = "4-ий циліндр";
-            legendItem4.Cells.Add(legendCell4);
-            legendCell5.ForeColor = System.Drawing.Color.Brown;
-            legendCell5.Name = "Cell1";
-            legendCell5.Text = "5-ий циліндр";
-            legendItem5.Cells.Add(legendCell5);
-            legendCell6.ForeColor = System.Drawing.Color.Blue;
-            legendCell6.Name = "Cell1";
-            legendCell6.Text = "6-ий циліндр";
-            legendItem6.Cells.Add(legendCell6);
-            legend1.CustomItems.Add(legendItem1);
-            legend1.CustomItems.Add(legendItem2);
-            legend1.CustomItems.Add(legendItem3);
-            legend1.CustomItems.Add(legendItem4);
-            legend1.CustomItems.Add(legendItem5);
-            legend1.CustomItems.Add(legendItem6);
-            legend1.Name = "Legend1";
-            this.chartTotalToque.Legends.Add(legend1);
+            chartArea2.Name = "ChartArea1";
+            this.chartTotalToque.ChartAreas.Add(chartArea2);
+            legendCell7.BackColor = System.Drawing.Color.Transparent;
+            legendCell7.ForeColor = System.Drawing.Color.Red;
+            legendCell7.Name = "Cell1";
+            legendCell7.Text = "1-ий циліндр";
+            legendItem7.Cells.Add(legendCell7);
+            legendCell8.ForeColor = System.Drawing.Color.Aqua;
+            legendCell8.Name = "Cell1";
+            legendCell8.Text = "2-ий циліндр";
+            legendItem8.Cells.Add(legendCell8);
+            legendCell9.ForeColor = System.Drawing.Color.Violet;
+            legendCell9.Name = "Cell1";
+            legendCell9.Text = "3-ій циліндр";
+            legendItem9.Cells.Add(legendCell9);
+            legendCell10.ForeColor = System.Drawing.Color.Green;
+            legendCell10.Name = "Cell1";
+            legendCell10.Text = "4-ий циліндр";
+            legendItem10.Cells.Add(legendCell10);
+            legendCell11.ForeColor = System.Drawing.Color.Brown;
+            legendCell11.Name = "Cell1";
+            legendCell11.Text = "5-ий циліндр";
+            legendItem11.Cells.Add(legendCell11);
+            legendCell12.ForeColor = System.Drawing.Color.Blue;
+            legendCell12.Name = "Cell1";
+            legendCell12.Text = "6-ий циліндр";
+            legendItem12.Cells.Add(legendCell12);
+            legend2.CustomItems.Add(legendItem7);
+            legend2.CustomItems.Add(legendItem8);
+            legend2.CustomItems.Add(legendItem9);
+            legend2.CustomItems.Add(legendItem10);
+            legend2.CustomItems.Add(legendItem11);
+            legend2.CustomItems.Add(legendItem12);
+            legend2.Name = "Legend1";
+            this.chartTotalToque.Legends.Add(legend2);
             this.chartTotalToque.Location = new System.Drawing.Point(36, 371);
             this.chartTotalToque.Name = "chartTotalToque";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series1.IsVisibleInLegend = false;
-            series1.Legend = "Legend1";
-            series1.LegendText = "M";
-            series1.Name = "SeriesM";
-            this.chartTotalToque.Series.Add(series1);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series2.IsVisibleInLegend = false;
+            series2.Legend = "Legend1";
+            series2.LegendText = "M";
+            series2.Name = "SeriesM";
+            this.chartTotalToque.Series.Add(series2);
             this.chartTotalToque.Size = new System.Drawing.Size(946, 296);
             this.chartTotalToque.TabIndex = 9;
             this.chartTotalToque.Text = "chart1";
-            title1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            title1.Name = "Title1";
-            title1.Text = "Сумарний обертальний момент дизеля";
-            this.chartTotalToque.Titles.Add(title1);
+            title2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title2.Name = "Title1";
+            title2.Text = "Сумарний обертальний момент дизеля";
+            this.chartTotalToque.Titles.Add(title2);
             this.chartTotalToque.Customize += new System.EventHandler(this.chartTotalToque_Customize);
             this.chartTotalToque.Move += new System.EventHandler(this.chartTotalToque_Move);
             // 
@@ -297,12 +299,32 @@
             this.Mu.Name = "Mu";
             this.Mu.Width = 60;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label5.Location = new System.Drawing.Point(416, 95);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(35, 20);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Pk :";
+            // 
+            // textBox_Pk
+            // 
+            this.textBox_Pk.Location = new System.Drawing.Point(458, 96);
+            this.textBox_Pk.Name = "textBox_Pk";
+            this.textBox_Pk.Size = new System.Drawing.Size(74, 20);
+            this.textBox_Pk.TabIndex = 12;
+            this.textBox_Pk.Text = "0,142";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1006, 747);
+            this.Controls.Add(this.textBox_Pk);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.dataGridView_TorqueUniformity);
             this.Controls.Add(this.chartTotalToque);
             this.Controls.Add(this.label2);
@@ -347,6 +369,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn T6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Tsum;
         private System.Windows.Forms.DataGridViewTextBoxColumn Mi;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBox_Pk;
     }
 }
 

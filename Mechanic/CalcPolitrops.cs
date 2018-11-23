@@ -29,7 +29,7 @@ namespace Mechanic
         //геометрична ступінь стиснення двигуна
         private double Epsilon { get; set; } = 12.5;
         // тиск повітря у надувному колекторі
-        private double Pk { get; set; } = 0.142;
+        private readonly double pk = 0.142;
         // коеф Pa
         private double koefPa;
         // pC
@@ -62,7 +62,7 @@ namespace Mechanic
 
             set
             {
-                if (value < 1.36 || value > 1.38)
+                if (value < 0.0 || value > 2.0)
                 {
                     throw new Exception("Значення середнього показника політропи може бути від 1.36 до 1.38");
                 }
@@ -84,7 +84,7 @@ namespace Mechanic
 
             set
             {
-                if (value < 1.26 || value > 1.28)
+                if (value < 0.0 || value > 2.0)
                 {
                     throw new Exception("Значення середнього показника політропи розширення може бути від 1.26 до 1.28");
                 }
@@ -113,8 +113,8 @@ namespace Mechanic
 
         public double KoefPa { get => koefPa; private set => koefPa = value; }
 
-        public CalcPolitrops(DataPolitropsOfComprassionAndExpansion dataPolitrops)
-        {
+        public CalcPolitrops(double Pk, DataPolitropsOfComprassionAndExpansion dataPolitrops)
+        {            
             this.DataPolitrops = dataPolitrops;
             this.N1 = DEFAULT_INDICATOR_POLITROP_COMPRASS;
             this.N2 = DEFAULT_INDICATOR_POLITROP_EXPANSION;
@@ -122,9 +122,11 @@ namespace Mechanic
             this.Vh = ((PI * this.DiamOfCylinder * this.DiamOfCylinder) / 4) * this.RunningOfPiston;
             this.Vc = this.Vh / (this.Epsilon - 1);
             this.Tc = Ta * Pow(this.Epsilon, this.N1 - 1);
-            this.KoefPa = Round(0.93 * this.Pk, 3);
-            Console.WriteLine(KoefPa);
+
+            this.pk = Pk;
+            this.KoefPa = Round(0.93 * this.pk, 3);            
             this.PC = Round( this.KoefPa * Pow(this.Epsilon, this.N1), 2);
+
             this.Fn = (PI * this.DiamOfCylinder * this.DiamOfCylinder) / 4;
         }
 

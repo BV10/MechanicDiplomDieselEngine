@@ -15,8 +15,7 @@ namespace Mechanic
     {
         private const int WAITING_EXECUTE_CALCULATING = 10; // wait on execute calc data in milisec
         public const int SHIFT_OF_ELEM = 100;
-        private CalcPolitrops calcPolitrops = new CalcPolitrops(
-            new DataPolitropsOfComprassionAndExpansion());
+        private CalcPolitrops calcPolitrops;
         private CalcSpecificForces calcSpecificForces;
         private bool isShowCalcDataPolitr;
         private int deltaAngle; // кут введений з клавіатури
@@ -28,10 +27,12 @@ namespace Mechanic
         internal CalcPolitrops CalcPolitrops { get => calcPolitrops; set => calcPolitrops = value; }
         public int DeltaAngle { get => deltaAngle; set => deltaAngle = value; }
 
-        public FormDiagramProcessOfCylinder()
+        // тиск повітря у надувному колекторі  для кожного циліндра
+        public FormDiagramProcessOfCylinder(double Pk)
         {
             InitializeComponent();
             CalcSpecificForces = new CalcSpecificForces();
+            CalcPolitrops = new CalcPolitrops(Pk, new DataPolitropsOfComprassionAndExpansion());
             timer.Interval = WAITING_EXECUTE_CALCULATING;
             this.label_Pc.Text = "Pc:  " + CalcPolitrops.PC.ToString();
             this.chartOfSpecificForcesP.Top = this.dataGridView_CalcSpecifForces.Bottom + SHIFT_OF_ELEM;

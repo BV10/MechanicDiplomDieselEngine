@@ -53,9 +53,20 @@ namespace Mechanic
             ResetOldCalcFormProcess();
             CalcSpecificForcesOfCylinders.Clear();
 
+            double pk = 0.0;
+            try
+            {
+                pk = double.Parse(textBox_Pk.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Неверный формат данных для Pk.");
+                return;
+            }
+
             for (int i = 0; i < COUNT_CYLINDER_ENGINE; i++)
             {
-                FormDiagramProcessOfCylinder formCreateDiagramProcess = new FormDiagramProcessOfCylinder();
+                FormDiagramProcessOfCylinder formCreateDiagramProcess = new FormDiagramProcessOfCylinder(pk);
 
                 FormsCylinderProcesses.Add(formCreateDiagramProcess);
                 formCreateDiagramProcess.Text += " " + (i + 1);
@@ -190,7 +201,7 @@ namespace Mechanic
             int lengthInternalObjectsInDataSpecForces = CalcSpecificForcesOfCylinders[FIRST_CYLINDER].DataSpecificForces.LengthInternalObject;
 
 
-            for (int iterT = 0; iterT < lengthInternalObjectsInDataSpecForces; iterT++) // go along DataSpecificForces for get T of differentcylinder
+            for (int iterT = 0; iterT < lengthInternalObjectsInDataSpecForces - 1; iterT++) // go along DataSpecificForces for get T of differentcylinder
             {
                 double T1 = CalcSpecificForcesOfCylinders[FIRST_CYLINDER].DataSpecificForces.T[bearingIndexT1];
                 double T2 = CalcSpecificForcesOfCylinders[SECOND_CYLINDER].DataSpecificForces.T[bearingIndexT2];
