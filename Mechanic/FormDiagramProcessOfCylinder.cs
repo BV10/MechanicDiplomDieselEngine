@@ -19,6 +19,7 @@ namespace Mechanic
         private CalcSpecificForces calcSpecificForces;
         private bool isShowCalcDataPolitr;
         private int deltaAngle; // кут введений з клавіатури
+        private double lambdaDegreeIncreasePressureFromTextBox;
 
         private Task TaskCalcPolitropData { get; set; } = null;
         public Task TaskCalcSpecificForces { get; set; } = null;
@@ -35,9 +36,11 @@ namespace Mechanic
             CalcPolitrops = new CalcPolitrops(Pk, new DataPolitropsOfComprassionAndExpansion());
             timer.Interval = WAITING_EXECUTE_CALCULATING;
             this.label_Pc.Text = "Pc:  " + CalcPolitrops.PC.ToString();
-            this.chartOfSpecificForcesP.Top = this.dataGridView_CalcSpecifForces.Bottom + SHIFT_OF_ELEM;
+            this.chartOfGasPressureOnPistonFromAngle.Top = this.dataGridView_CalcSpecifForces.Bottom + SHIFT_OF_ELEM;
+            this.chartOfSpecificForcesP.Top = this.chartOfGasPressureOnPistonFromAngle.Bottom + SHIFT_OF_ELEM;
             this.chartOfSpecificForces_KAndN.Top = this.chartOfSpecificForcesP.Bottom + SHIFT_OF_ELEM;
             this.chartOfSpecificForces_TAndZ.Top = this.chartOfSpecificForces_KAndN.Bottom + SHIFT_OF_ELEM;
+           
 
             this.chart_IndicatorDiagram.ChartAreas[0].AxisX.Title = "V";
             this.chart_IndicatorDiagram.ChartAreas[0].AxisY.Title = "p";
@@ -52,6 +55,9 @@ namespace Mechanic
 
             this.chartOfSpecificForces_TAndZ.ChartAreas[0].AxisX.Title = "\u03c6";//phi unicode
             this.chartOfSpecificForces_TAndZ.ChartAreas[0].AxisY.Title = "T, Z, МПа";
+
+            this.chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisX.Title = "Кут повороту колінчатого валу, град";//phi unicode
+            this.chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisY.Title = "Тиск газів, МПа";
         }
 
         private void btnCalcAndBuildDiagr_Click(object sender, EventArgs e)
@@ -96,10 +102,10 @@ namespace Mechanic
                 return;
             }
 
-            double lambdaDegreeIncreasePressure = double.Parse(textBox_Lambda_DegreeOfPressureIncrease.Text);
+            lambdaDegreeIncreasePressureFromTextBox = double.Parse(textBox_Lambda_DegreeOfPressureIncrease.Text);
             try
             {
-                CalcPolitrops.LambdaDegreeIncreasePressure = lambdaDegreeIncreasePressure;
+                CalcPolitrops.LambdaDegreeIncreasePressure = lambdaDegreeIncreasePressureFromTextBox;
                 label_PZ.Text = "Pz:  " + Math.Round(CalcPolitrops.PZ, 3).ToString();
             }
             catch (Exception ex)
@@ -112,8 +118,7 @@ namespace Mechanic
 
             TaskCalcPolitropData = CalcPolitrops.CalcPolitropsDataAsync(DeltaAngle);
             
-            isShowCalcDataPolitr = false;
-            //isShowCalcSpecificForces = false;
+            isShowCalcDataPolitr = false;            
             timer.Start(); // begin calculation
 
         }
@@ -137,13 +142,47 @@ namespace Mechanic
                 ShowDataPolitrop();
                 isShowCalcDataPolitr = true;
                 CalcSpecificForces.CalcPolitrops = CalcPolitrops;
-                TaskCalcSpecificForces = CalcSpecificForces.CalcDataOfSpecificForcesAsync(this.DeltaAngle);
+                TaskCalcSpecificForces = CalcSpecificForces.CalcDataOfSpecificForcesAsync(this.DeltaAngle, this.lambdaDegreeIncreasePressureFromTextBox);
             }
 
             if(TaskCalcSpecificForces != null && TaskCalcSpecificForces.IsCompleted)
             {
                 ShowDataSpecificForces();
+                BuildChartOfGasPressureOnPistonFromAngle(chartOfGasPressureOnPistonFromAngle ,CalcSpecificForces.DataSpecificForces);
                 timer.Stop();
+            }
+        }
+
+        private void BuildChartOfGasPressureOnPistonFromAngle(Chart chart, DataOfCalculationSpecificForces dataSpecificForces)
+        {
+            int iterInternalSpecficForcesData = 0;
+            for (iterInternalSpecficForcesData = 0;
+                 iterInternalSpecficForcesData < dataSpecificForces.LengthInternalObject;
+                 iterInternalSpecficForcesData++
+                )
+            {
+                //первая линия графика - вся P для всех углов угла
+                chart.Series[0].Points.AddXY(dataSpecificForces.Angles[iterInternalSpecficForcesData], dataSpecificForces.P[iterInternalSpecficForcesData]);
+            }
+
+            //вторая линия графика - P до 360 градусів і назад до нуля
+            for (iterInternalSpecficForcesData = 0;
+                 iterInternalSpecficForcesData < dataSpecificForces.LengthInternalObject && dataSpecificForces.Angles[iterInternalSpecficForcesData] != 360; // до 360 градусов
+                 iterInternalSpecficForcesData++
+                )
+            {
+                
+                chart.Series[1].Points.AddXY(dataSpecificForces.Angles[iterInternalSpecficForcesData], dataSpecificForces.P[iterInternalSpecficForcesData]);
+            }
+
+            int iterBackInInternalSpecficForcesData = 0; // для прохода назад
+            for (iterBackInInternalSpecficForcesData = iterInternalSpecficForcesData;
+                 iterBackInInternalSpecficForcesData > -1 && iterInternalSpecficForcesData < dataSpecificForces.LengthInternalObject; // от 360 и назад для P, углы дальше до 720
+                 iterBackInInternalSpecficForcesData-- ,iterInternalSpecficForcesData++
+                )
+            {
+
+                chart.Series[1].Points.AddXY(dataSpecificForces.Angles[iterInternalSpecficForcesData], dataSpecificForces.P[iterBackInInternalSpecficForcesData]);
             }
         }
 
@@ -289,7 +328,7 @@ namespace Mechanic
 
         private void dataGridView_CalcSpecifForces_Resize(object sender, EventArgs e)
         {
-            this.chartOfSpecificForcesP.Top = this.dataGridView_CalcSpecifForces.Bottom + SHIFT_OF_ELEM;
+            this.chartOfGasPressureOnPistonFromAngle.Top = this.dataGridView_CalcSpecifForces.Bottom + SHIFT_OF_ELEM;
         }
 
         private void chartOfSpecificForcesP_Move(object sender, EventArgs e)
@@ -300,6 +339,11 @@ namespace Mechanic
         private void chartOfSpecificForces_KAndN_Move(object sender, EventArgs e)
         {
             this.chartOfSpecificForces_TAndZ.Top = this.chartOfSpecificForces_KAndN.Bottom + SHIFT_OF_ELEM;
+        }
+
+        private void chartOfGasPressureOnPistonFromAngle_Move(object sender, EventArgs e)
+        {
+            this.chartOfSpecificForcesP.Top = this.chartOfGasPressureOnPistonFromAngle.Bottom + SHIFT_OF_ELEM;
         }
     }
 }
