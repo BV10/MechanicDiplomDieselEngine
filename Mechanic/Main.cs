@@ -141,6 +141,10 @@ namespace Mechanic
 
         private void BuildChartTotalToque(Chart chartTotalToque)
         {
+            //customize grid line
+            chartTotalToque.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
+            chartTotalToque.ChartAreas[0].AxisX.MajorGrid.Interval = 120;
+
             chartTotalToque.ChartAreas[0].AxisX.Minimum = 0;
             chartTotalToque.ChartAreas[0].AxisX.Maximum = 720;
 

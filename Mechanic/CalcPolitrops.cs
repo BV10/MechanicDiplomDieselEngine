@@ -67,6 +67,7 @@ namespace Mechanic
                     throw new Exception("Значення середнього показника політропи може бути від 1.36 до 1.38");
                 }
                 n1 = value;
+                this.PC = Round(this.KoefPa * Pow(this.Epsilon, this.n1), 2);
             }
         }
 
@@ -97,7 +98,13 @@ namespace Mechanic
 
         //об'єм камери стиснення
         public double Vc { get; }
-        public double PC { get => pC; private set => pC = value; }
+        public double PC { get => pC;
+            private set
+            {
+                this.pC = value;
+                this.PZ = this.lambdaDegreeIncreasePressure * this.pC;
+            }
+        }
         public double PZ { get => pZ; set => pZ = value; }
         public double RO { get; private set; }
 

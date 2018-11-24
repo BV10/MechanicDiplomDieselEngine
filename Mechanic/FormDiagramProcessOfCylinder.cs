@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using static System.Math;
+using System.Linq;
 
 namespace Mechanic
 {
@@ -120,6 +121,8 @@ namespace Mechanic
             isShowCalcDataPolitr = false;
             timer.Start(); // begin calculation
 
+            //change Pc
+            this.label_Pc.Text = "Pc:  " + CalcPolitrops.PC.ToString();
         }
 
         public static void ClearGridView(DataGridView dataGridView)
@@ -149,6 +152,7 @@ namespace Mechanic
             if (TaskCalcSpecificForces != null && TaskCalcSpecificForces.IsCompleted)
             {
                 ShowDataSpecificForces();
+                ClearChart(chartOfGasPressureOnPistonFromAngle);
                 BuildChartOfGasPressureOnPistonFromAngle(chartOfGasPressureOnPistonFromAngle, CalcSpecificForces.DataSpecificForces);
                 timer.Stop();
             }
@@ -302,6 +306,8 @@ namespace Mechanic
                     );
 
                 // будувати графік по точкам
+                CustomizeAxisYLabelOfChartIndicatorDiagram(chart_IndicatorDiagram, dataPolitrop);            
+
                 chart_IndicatorDiagram.Series["PolitropOfComprassion"].Points.
                 AddXY(dataPolitrop.V[iterInternalPolitrData], // V
                     dataPolitrop.PressureOnLineCompression[iterInternalPolitrData] // p compression
@@ -311,10 +317,32 @@ namespace Mechanic
                AddXY(dataPolitrop.V[iterInternalPolitrData], // V
                    dataPolitrop.PressureOnLineExpansion[iterInternalPolitrData] // p expansion
                    );
+
+                
             }
 
             // autosize height
             AutosizeGridView(this.dataGridView_Politrop);
+        }
+
+        private void CustomizeAxisYLabelOfChartIndicatorDiagram(Chart chart_IndicatorDiagram, DataPolitropsOfComprassionAndExpansion dataPolitrop)
+        {
+            chart_IndicatorDiagram.ChartAreas[0].AxisY.CustomLabels.Clear();
+            
+            double pMinOnLineCompress = dataPolitrop.PressureOnLineCompression.Min();
+            double pMinOnLineExpansion = dataPolitrop.PressureOnLineExpansion.Min();
+            double minP = pMinOnLineCompress <= pMinOnLineExpansion ? pMinOnLineCompress : pMinOnLineExpansion;
+
+            double pMaxOnLineCompress = dataPolitrop.PressureOnLineCompression.Max();
+            double pMaxOnLineExpansion = dataPolitrop.PressureOnLineExpansion.Max();
+            double maxP = pMaxOnLineCompress >= pMaxOnLineExpansion ? pMaxOnLineCompress : pMaxOnLineExpansion;
+
+            double deltaP = 0.5;
+            while(minP < maxP)
+            {
+                chart_IndicatorDiagram.ChartAreas[0].AxisY.CustomLabels.Add(new CustomLabel(minP - 15, minP + 15, minP.ToString(), 0, LabelMarkStyle.None));
+                minP += deltaP;
+            }
         }
 
         public static void AutosizeGridView(DataGridView dataGridView)

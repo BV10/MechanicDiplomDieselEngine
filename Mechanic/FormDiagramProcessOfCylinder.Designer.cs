@@ -316,7 +316,7 @@ namespace Mechanic
             this.chart_IndicatorDiagram.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart_IndicatorDiagram.Legends.Add(legend1);
-            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(91, 165);
+            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(108, 146);
             this.chart_IndicatorDiagram.Name = "chart_IndicatorDiagram";
             series1.BorderWidth = 3;
             series1.ChartArea = "ChartArea1";
@@ -452,7 +452,7 @@ namespace Mechanic
             this.chartOfSpecificForcesP.ChartAreas.Add(chartArea2);
             legend2.Name = "Legend1";
             this.chartOfSpecificForcesP.Legends.Add(legend2);
-            this.chartOfSpecificForcesP.Location = new System.Drawing.Point(31, 278);
+            this.chartOfSpecificForcesP.Location = new System.Drawing.Point(24, 308);
             this.chartOfSpecificForcesP.Name = "chartOfSpecificForcesP";
             series3.ChartArea = "ChartArea1";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
