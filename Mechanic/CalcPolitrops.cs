@@ -7,7 +7,12 @@ using static System.Math;
 namespace Mechanic
 {
     class CalcPolitrops
-    {
+    {        
+
+        //коефіцієнт надлишку повітря
+        public const double ALPHA = 1.8;
+        //теоретично необхідна кількість повітря для повного згоряння палива 1 кг
+        public const double L0 = 0.495;
         // дефолтная константа округления дробных чисел
         private const int DEFAULT_ROUND_NUMB = 3;
         // token source
@@ -19,7 +24,7 @@ namespace Mechanic
         private int StartAngle { get; set; } = 0;
         private int EndAngle { get; set; } = 180;
         // R(в метрах)  - для розрахунку переміщення поршня S в м
-        public const double R  = 0.165;
+        public const double R = 0.165;
         // відношення радіуса кривошипа до довжини шатуна - для розрахунку переміщення поршня S
         public const double LAMBDA = 0.25;
         //діаметр цилідндра
@@ -28,17 +33,23 @@ namespace Mechanic
         private double RunningOfPiston { get; set; } = 0.330;
         //геометрична ступінь стиснення двигуна
         public double Epsilon { get; private set; } = 12.5;
+        //коефіцієнт залишкових газів
+        public const double GAMMA = 0.02;
+        //ТЕМПЕРАТУРА ПОВЫТРЯ В НАДУвному колекторі 50 градусів + 273
+        public const int Tk = 323;
         // тиск повітря у надувному колекторі
-        private readonly double pk = 0.142;
+        public readonly double Pk = 0.142;
         // коеф Pa
         private double koefPa;
         // pC
         private double pC;
         // lambda - ступінь підвищення -тиску
         private double lambdaDegreeIncreasePressure;
-
+        //коефіцієнт подовження
+        public double EtaV { get; private set; } = 0.0;
         // дані про політропу     
         public DataPolitropsOfComprassionAndExpansion DataPolitrops { get; private set; } = null;
+
 
         private const double DEFAULT_INDICATOR_POLITROP_COMPRASS = 1.37;
         private const double DEFAULT_INDICATOR_POLITROP_EXPANSION = 1.27;
@@ -98,7 +109,9 @@ namespace Mechanic
 
         //об'єм камери стиснення
         public double Vc { get; }
-        public double PC { get => pC;
+        public double PC
+        {
+            get => pC;
             private set
             {
                 this.pC = value;
@@ -108,7 +121,8 @@ namespace Mechanic
         public double PZ { get => pZ; set => pZ = value; }
         public double RO { get; private set; }
 
-        public double LambdaDegreeIncreasePressure {
+        public double LambdaDegreeIncreasePressure
+        {
             get => lambdaDegreeIncreasePressure;
             set
             {
@@ -121,7 +135,7 @@ namespace Mechanic
         public double KoefPa { get => koefPa; private set => koefPa = value; }
 
         public CalcPolitrops(double Pk, DataPolitropsOfComprassionAndExpansion dataPolitrops)
-        {            
+        {
             this.DataPolitrops = dataPolitrops;
             this.N1 = DEFAULT_INDICATOR_POLITROP_COMPRASS;
             this.N2 = DEFAULT_INDICATOR_POLITROP_EXPANSION;
@@ -130,11 +144,15 @@ namespace Mechanic
             this.Vc = this.Vh / (this.Epsilon - 1);
             this.Tc = Ta * Pow(this.Epsilon, this.N1 - 1);
 
-            this.pk = Pk;
-            this.KoefPa = Round(0.93 * this.pk, 3);            
-            this.PC = Round( this.KoefPa * Pow(this.Epsilon, this.N1), 2);
+            this.Pk = Pk;
+            this.KoefPa = Round(0.93 * this.Pk, 3);
+            this.PC = Round(this.KoefPa * Pow(this.Epsilon, this.N1), 2);
 
             this.Fn = (PI * this.DiamOfCylinder * this.DiamOfCylinder) / 4;
+
+            this.EtaV = (this.Epsilon / (this.Epsilon - 1)) *
+                ((this.KoefPa * CalcPolitrops.Tk) / (this.Pk * CalcPolitrops.Ta)) *
+                (1 / (1 + GAMMA));
         }
 
         public async Task CalcPolitropsDataAsync(int deltaAngle)
@@ -154,7 +172,7 @@ namespace Mechanic
                 //кути політроп
                 this.DataPolitrops.Angles.Add(currentAngle);
                 //переміщення поршня
-                double s = calcMovementPiston(currentAngle);                
+                double s = calcMovementPiston(currentAngle);
                 this.DataPolitrops.S.Add(Round(s, DEFAULT_ROUND_NUMB));
                 //добуток Fn*S
                 double multiplesFnAndS = calcMultipleFnAndS(s);
@@ -241,6 +259,45 @@ namespace Mechanic
                 (1 - Cos(angleInRad)) +
                 (1 / CalcPolitrops.LAMBDA) * (1 - Sqrt(1 - CalcPolitrops.LAMBDA * CalcPolitrops.LAMBDA * Sin(angleInRad) * Sin(angleInRad)))
                 );
+        }
+
+        public double CalcGraphicPip(DataPolitropsOfComprassionAndExpansion dataPolitrops)
+        {
+            
+            double sumF = 0.0;
+            for (int i = 0; i < dataPolitrops.LengthInternalObject - 1; i++)
+            {
+                sumF += (dataPolitrops.V[i + 1] - dataPolitrops.V[i]) *
+                    ((dataPolitrops.PressureOnLineExpansion[i] + dataPolitrops.PressureOnLineExpansion[i + 1]) / 2 -
+                    (dataPolitrops.PressureOnLineCompression[i] + dataPolitrops.PressureOnLineCompression[i + 1]) / 2);
+            }
+
+            return sumF / this.Vh;
+        }
+
+        public double CalcAnalyticPip()
+        {
+            double valOfFormula1 = this.PC / (this.Epsilon - 1);
+            double valOfFormula2 = this.LambdaDegreeIncreasePressure * (this.RO - 1);
+            double valOfFormula3 = ((this.LambdaDegreeIncreasePressure * this.RO) / (this.N2 - 1)) *
+                (1 - 1 / (Pow(this.Epsilon / this.RO, this.N2 - 1)));
+            double valOfFormula4 = (1 / (this.N1 - 1)) *
+                (1 - 1 / (Pow(this.Epsilon, this.N1 - 1)));
+
+            return valOfFormula1 * (valOfFormula2 + valOfFormula3 - valOfFormula4);
+        }
+
+
+        public double CalcEtaI()
+        {            
+            return 8.314 *
+                ((this.CalcGraphicPip(this.DataPolitrops) * CalcPolitrops.ALPHA * CalcPolitrops.L0 * CalcPolitrops.Tk) /
+                (41500 * this.EtaV * this.Pk));
+        }
+
+        public double CalcNi()
+        {
+            return (2000 * this.CalcGraphicPip(this.DataPolitrops) * this.Vh * 12.5) / 4;
         }
     }
 }

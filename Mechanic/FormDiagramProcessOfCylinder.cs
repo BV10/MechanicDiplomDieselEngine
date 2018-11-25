@@ -28,6 +28,7 @@ namespace Mechanic
         internal CalcSpecificForces CalcSpecificForces { get => calcSpecificForces; set => calcSpecificForces = value; }
         internal CalcPolitrops CalcPolitrops { get => calcPolitrops; set => calcPolitrops = value; }
         public Main Main { get => main; set => main = value; }
+        public double Pi { get; private set; }
 
         // тиск повітря у надувному колекторі  для кожного циліндра
         public FormDiagramProcessOfCylinder(double Pk)
@@ -96,7 +97,7 @@ namespace Mechanic
             {
                 CalcPolitrops.N1 = n1;
                 //change data on main window
-                Main.Controls["textBox_N1OfCylind" + NumberCylinder].Text = n1.ToString();
+                Main.DataGridView_DataForDiagram.Rows[NumberCylinder - 1].Cells[1].Value = n1.ToString();
             }
             catch (Exception ex)
             {
@@ -109,7 +110,7 @@ namespace Mechanic
             try
             {
                 CalcPolitrops.N2 = n2;
-                Main.Controls["textBox_N2OfCylind" + NumberCylinder].Text = n2.ToString();
+                Main.DataGridView_DataForDiagram.Rows[NumberCylinder - 1].Cells[2].Value = n2.ToString();
             }
             catch (Exception ex)
             {
@@ -121,7 +122,7 @@ namespace Mechanic
             try
             {
                 CalcPolitrops.LambdaDegreeIncreasePressure = lambdaDegreeIncreasePressureFromTextBox;
-                Main.Controls["textBox_LambdaOfCylind" + NumberCylinder].Text = lambdaDegreeIncreasePressureFromTextBox.ToString();
+                Main.DataGridView_DataForDiagram.Rows[NumberCylinder - 1].Cells[2].Value = lambdaDegreeIncreasePressureFromTextBox.ToString();
                 label_PZ.Text = "Pz:  " + Math.Round(CalcPolitrops.PZ, 3).ToString();
             }
             catch (Exception ex)
@@ -157,8 +158,9 @@ namespace Mechanic
             {
                 ShowDataPolitrop();
                 //show Pip розрахунковий середній індикаторний тиск
-                this.label_AnalyticPip.Text = "Аналітичне P\u1D62\u209A = " + Round(CalcAnalyticPip(CalcPolitrops), 3);
-                this.label_GraphicPip.Text = "Графічне P\u1D62\u209A = " + Round(CalcGraphicPip(CalcPolitrops), 3);
+                this.label_AnalyticPip.Text = "Аналітичне P\u1D62\u209A = " + Round(calcPolitrops.CalcAnalyticPip(), 3);
+                this.Pi = Round(calcPolitrops.CalcGraphicPip(calcPolitrops.DataPolitrops), 3);
+                this.label_GraphicPip.Text = "Графічне P\u1D62\u209A = " + Pi;
                 isShowCalcDataPolitr = true;
                 CalcSpecificForces.CalcPolitrops = CalcPolitrops;
                 TaskCalcSpecificForces = CalcSpecificForces.CalcDataOfSpecificForcesAsync(FormDiagramProcessOfCylinder.DELTA_ANGLE, this.lambdaDegreeIncreasePressureFromTextBox);
@@ -175,32 +177,32 @@ namespace Mechanic
 
         // визначення Pip - графічний розрахунковий середній індикаторний тиск
         //Pip = sumF / Vh
-        private double CalcGraphicPip(CalcPolitrops calcPolitrops)
-        {
-            DataPolitropsOfComprassionAndExpansion dataPolitrops = calcPolitrops.DataPolitrops;
-            double sumF = 0.0;
-            for (int i = 0; i < dataPolitrops.LengthInternalObject - 1; i++)
-            {
-                sumF += (dataPolitrops.V[i + 1] - dataPolitrops.V[i]) *
-                    ((dataPolitrops.PressureOnLineExpansion[i] + dataPolitrops.PressureOnLineExpansion[i + 1]) / 2 -
-                    (dataPolitrops.PressureOnLineCompression[i] + dataPolitrops.PressureOnLineCompression[i + 1]) / 2);
-            }
+        //private double CalcGraphicPip(CalcPolitrops calcPolitrops)
+        //{
+        //    DataPolitropsOfComprassionAndExpansion dataPolitrops = calcPolitrops.DataPolitrops;
+        //    double sumF = 0.0;
+        //    for (int i = 0; i < dataPolitrops.LengthInternalObject - 1; i++)
+        //    {
+        //        sumF += (dataPolitrops.V[i + 1] - dataPolitrops.V[i]) *
+        //            ((dataPolitrops.PressureOnLineExpansion[i] + dataPolitrops.PressureOnLineExpansion[i + 1]) / 2 -
+        //            (dataPolitrops.PressureOnLineCompression[i] + dataPolitrops.PressureOnLineCompression[i + 1]) / 2);
+        //    }
 
-            return sumF / calcPolitrops.Vh;
-        }
+        //    return sumF / calcPolitrops.Vh;
+        //}
 
         // визначення Pip - аналітичний розрахунковий середній індикаторний тиск
-        private double CalcAnalyticPip(CalcPolitrops calcPolitrops)
-        {
-            double valOfFormula1 = calcPolitrops.PC / (calcPolitrops.Epsilon - 1);
-            double valOfFormula2 = calcPolitrops.LambdaDegreeIncreasePressure * (calcPolitrops.RO - 1);
-            double valOfFormula3 = ((calcPolitrops.LambdaDegreeIncreasePressure * calcPolitrops.RO) / (calcPolitrops.N2 - 1)) *
-                (1 - 1 / (Pow(calcPolitrops.Epsilon / calcPolitrops.RO, calcPolitrops.N2 - 1)));
-            double valOfFormula4 = (1 / (calcPolitrops.N1 - 1)) *
-                (1 - 1 / (Pow(calcPolitrops.Epsilon, calcPolitrops.N1 - 1)));
+        //private double CalcAnalyticPip(CalcPolitrops calcPolitrops)
+        //{
+        //    double valOfFormula1 = calcPolitrops.PC / (calcPolitrops.Epsilon - 1);
+        //    double valOfFormula2 = calcPolitrops.LambdaDegreeIncreasePressure * (calcPolitrops.RO - 1);
+        //    double valOfFormula3 = ((calcPolitrops.LambdaDegreeIncreasePressure * calcPolitrops.RO) / (calcPolitrops.N2 - 1)) *
+        //        (1 - 1 / (Pow(calcPolitrops.Epsilon / calcPolitrops.RO, calcPolitrops.N2 - 1)));
+        //    double valOfFormula4 = (1 / (calcPolitrops.N1 - 1)) *
+        //        (1 - 1 / (Pow(calcPolitrops.Epsilon, calcPolitrops.N1 - 1)));
 
-            return valOfFormula1 * (valOfFormula2 + valOfFormula3 - valOfFormula4);
-        }
+        //    return valOfFormula1 * (valOfFormula2 + valOfFormula3 - valOfFormula4);
+        //}
 
         private void BuildChartOfGasPressureOnPistonFromAngle(Chart chart, DataOfCalculationSpecificForces dataSpecificForces)
         {
