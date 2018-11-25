@@ -4,30 +4,38 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using static System.Math;
 using System.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Mechanic
 {
     public partial class FormDiagramProcessOfCylinder : Form
     {
+        private Main main;
+
         private const int WAITING_EXECUTE_CALCULATING = 10; // wait on execute calc data in milisec
         public const int SHIFT_OF_ELEM = 100;
+        private const int SHIFT_ELEM_OF_GRAPHIC_Pi = 30;
         private CalcPolitrops calcPolitrops;
         private CalcSpecificForces calcSpecificForces;
-        private bool isShowCalcDataPolitr;
-        private int deltaAngle; // кут введений з клавіатури
+        private bool isShowCalcDataPolitr;        
         private double lambdaDegreeIncreasePressureFromTextBox;
+        public const int DELTA_ANGLE = 5;
+        public int NumberCylinder { get; set; }
 
         private Task TaskCalcPolitropData { get; set; } = null;
         public Task TaskCalcSpecificForces { get; set; } = null;
 
         internal CalcSpecificForces CalcSpecificForces { get => calcSpecificForces; set => calcSpecificForces = value; }
         internal CalcPolitrops CalcPolitrops { get => calcPolitrops; set => calcPolitrops = value; }
-        public int DeltaAngle { get => deltaAngle; set => deltaAngle = value; }
+        public Main Main { get => main; set => main = value; }
 
         // тиск повітря у надувному колекторі  для кожного циліндра
         public FormDiagramProcessOfCylinder(double Pk)
         {
             InitializeComponent();
+
+            this.MaximizeBox = false;
+
             CalcSpecificForces = new CalcSpecificForces();
             CalcPolitrops = new CalcPolitrops(Pk, new DataPolitropsOfComprassionAndExpansion());
             timer.Interval = WAITING_EXECUTE_CALCULATING;
@@ -56,11 +64,15 @@ namespace Mechanic
             this.chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisX.Title = "Кут повороту колінчатого валу, град";//phi unicode
             this.chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisY.Title = "Тиск газів, МПа";
 
-            this.label_Pip.Top = this.chart_IndicatorDiagram.Bottom + 50;
-            this.label_Pip.Left = this.chart_IndicatorDiagram.Size.Width / 2 + this.chart_IndicatorDiagram.Left - (this.label_Pip.Size.Width / 2);
+            this.label_AnalyticPip.Top = this.chart_IndicatorDiagram.Bottom + 50;
+            this.label_AnalyticPip.Left = this.chart_IndicatorDiagram.Size.Width / 2 + this.chart_IndicatorDiagram.Left - (this.label_AnalyticPip.Size.Width / 2);
+
+
+            this.label_GraphicPip.Top = this.label_AnalyticPip.Top;
+            this.label_GraphicPip.Left = this.label_AnalyticPip.Left + this.label_AnalyticPip.Size.Width + SHIFT_ELEM_OF_GRAPHIC_Pi;
         }
 
-        private void btnCalcAndBuildDiagr_Click(object sender, EventArgs e)
+        public void btnCalcAndBuildDiagr_Click(object sender, EventArgs e)
         {
             //отменяем предыдущий расчет
             if (TaskCalcPolitropData != null && !TaskCalcPolitropData.IsCompleted && CalcPolitrops.CancellationTokenSource != null)
@@ -83,6 +95,8 @@ namespace Mechanic
             try
             {
                 CalcPolitrops.N1 = n1;
+                //change data on main window
+                Main.Controls["textBox_N1OfCylind" + NumberCylinder].Text = n1.ToString();
             }
             catch (Exception ex)
             {
@@ -95,6 +109,7 @@ namespace Mechanic
             try
             {
                 CalcPolitrops.N2 = n2;
+                Main.Controls["textBox_N2OfCylind" + NumberCylinder].Text = n2.ToString();
             }
             catch (Exception ex)
             {
@@ -106,6 +121,7 @@ namespace Mechanic
             try
             {
                 CalcPolitrops.LambdaDegreeIncreasePressure = lambdaDegreeIncreasePressureFromTextBox;
+                Main.Controls["textBox_LambdaOfCylind" + NumberCylinder].Text = lambdaDegreeIncreasePressureFromTextBox.ToString();
                 label_PZ.Text = "Pz:  " + Math.Round(CalcPolitrops.PZ, 3).ToString();
             }
             catch (Exception ex)
@@ -114,9 +130,7 @@ namespace Mechanic
                 return;
             }
 
-            DeltaAngle = int.Parse(textBox_DeltaAngle.Text);
-
-            TaskCalcPolitropData = CalcPolitrops.CalcPolitropsDataAsync(DeltaAngle);
+            TaskCalcPolitropData = CalcPolitrops.CalcPolitropsDataAsync(FormDiagramProcessOfCylinder.DELTA_ANGLE);
 
             isShowCalcDataPolitr = false;
             timer.Start(); // begin calculation
@@ -143,10 +157,11 @@ namespace Mechanic
             {
                 ShowDataPolitrop();
                 //show Pip розрахунковий середній індикаторний тиск
-                this.label_Pip.Text = "P\u1D62\u209A = " + Round(CalcPip(CalcPolitrops), 3);
+                this.label_AnalyticPip.Text = "Аналітичне P\u1D62\u209A = " + Round(CalcAnalyticPip(CalcPolitrops), 3);
+                this.label_GraphicPip.Text = "Графічне P\u1D62\u209A = " + Round(CalcGraphicPip(CalcPolitrops), 3);
                 isShowCalcDataPolitr = true;
                 CalcSpecificForces.CalcPolitrops = CalcPolitrops;
-                TaskCalcSpecificForces = CalcSpecificForces.CalcDataOfSpecificForcesAsync(this.DeltaAngle, this.lambdaDegreeIncreasePressureFromTextBox);
+                TaskCalcSpecificForces = CalcSpecificForces.CalcDataOfSpecificForcesAsync(FormDiagramProcessOfCylinder.DELTA_ANGLE, this.lambdaDegreeIncreasePressureFromTextBox);
             }
 
             if (TaskCalcSpecificForces != null && TaskCalcSpecificForces.IsCompleted)
@@ -158,8 +173,24 @@ namespace Mechanic
             }
         }
 
-        // визначення Pip - розрахунковий середній індикаторний тиск
-        private double CalcPip(CalcPolitrops calcPolitrops)
+        // визначення Pip - графічний розрахунковий середній індикаторний тиск
+        //Pip = sumF / Vh
+        private double CalcGraphicPip(CalcPolitrops calcPolitrops)
+        {
+            DataPolitropsOfComprassionAndExpansion dataPolitrops = calcPolitrops.DataPolitrops;
+            double sumF = 0.0;
+            for (int i = 0; i < dataPolitrops.LengthInternalObject - 1; i++)
+            {
+                sumF += (dataPolitrops.V[i + 1] - dataPolitrops.V[i]) *
+                    ((dataPolitrops.PressureOnLineExpansion[i] + dataPolitrops.PressureOnLineExpansion[i + 1]) / 2 -
+                    (dataPolitrops.PressureOnLineCompression[i] + dataPolitrops.PressureOnLineCompression[i + 1]) / 2);
+            }
+
+            return sumF / calcPolitrops.Vh;
+        }
+
+        // визначення Pip - аналітичний розрахунковий середній індикаторний тиск
+        private double CalcAnalyticPip(CalcPolitrops calcPolitrops)
         {
             double valOfFormula1 = calcPolitrops.PC / (calcPolitrops.Epsilon - 1);
             double valOfFormula2 = calcPolitrops.LambdaDegreeIncreasePressure * (calcPolitrops.RO - 1);
@@ -366,8 +397,8 @@ namespace Mechanic
             //placement datagridview of calc specif forcews after movement chartIndicDiagr
             this.dataGridView_CalcSpecifForces.Top = this.chart_IndicatorDiagram.Bottom + SHIFT_OF_ELEM;
             //Pip under chart
-            this.label_Pip.Top = this.chart_IndicatorDiagram.Bottom + 50;
-            this.label_Pip.Left = this.chart_IndicatorDiagram.Size.Width / 2 + this.chart_IndicatorDiagram.Left - (this.label_Pip.Size.Width / 2);
+            this.label_AnalyticPip.Top = this.chart_IndicatorDiagram.Bottom + 50;
+            this.label_AnalyticPip.Left = this.chart_IndicatorDiagram.Size.Width / 2 + this.chart_IndicatorDiagram.Left - (this.label_AnalyticPip.Size.Width / 2);
         }
 
         private void dataGridView_CalcSpecifForces_Resize(object sender, EventArgs e)
@@ -388,6 +419,12 @@ namespace Mechanic
         private void chartOfGasPressureOnPistonFromAngle_Move(object sender, EventArgs e)
         {
             this.chartOfSpecificForcesP.Top = this.chartOfGasPressureOnPistonFromAngle.Bottom + SHIFT_OF_ELEM;
+        }
+
+        private void label_AnalyticPip_Move(object sender, EventArgs e)
+        {
+            this.label_GraphicPip.Top = this.label_AnalyticPip.Top;
+            this.label_GraphicPip.Left = this.label_AnalyticPip.Left + this.label_AnalyticPip.Size.Width + SHIFT_ELEM_OF_GRAPHIC_Pi;
         }
     }
 }

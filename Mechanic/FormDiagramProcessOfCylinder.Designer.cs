@@ -78,7 +78,6 @@ namespace Mechanic
             this.attitudeVolumeVToVz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.attitudeVolumeInPowerVToVz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pressureOnLineExpansion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.textBox_DeltaAngle = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.label_Pc = new System.Windows.Forms.Label();
@@ -103,7 +102,9 @@ namespace Mechanic
             this.chartOfSpecificForces_KAndN = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartOfSpecificForces_TAndZ = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartOfGasPressureOnPistonFromAngle = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.label_Pip = new System.Windows.Forms.Label();
+            this.label_AnalyticPip = new System.Windows.Forms.Label();
+            this.label_GraphicPip = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Politrop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart_IndicatorDiagram)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_CalcSpecifForces)).BeginInit();
@@ -268,14 +269,6 @@ namespace Mechanic
             this.pressureOnLineExpansion.Name = "pressureOnLineExpansion";
             this.pressureOnLineExpansion.ReadOnly = true;
             // 
-            // textBox_DeltaAngle
-            // 
-            this.textBox_DeltaAngle.Location = new System.Drawing.Point(551, 173);
-            this.textBox_DeltaAngle.Name = "textBox_DeltaAngle";
-            this.textBox_DeltaAngle.Size = new System.Drawing.Size(90, 20);
-            this.textBox_DeltaAngle.TabIndex = 12;
-            this.textBox_DeltaAngle.Text = "5";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -316,7 +309,7 @@ namespace Mechanic
             this.chart_IndicatorDiagram.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart_IndicatorDiagram.Legends.Add(legend1);
-            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(108, 146);
+            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(65, 247);
             this.chart_IndicatorDiagram.Name = "chart_IndicatorDiagram";
             series1.BorderWidth = 3;
             series1.ChartArea = "ChartArea1";
@@ -567,15 +560,36 @@ namespace Mechanic
             this.chartOfGasPressureOnPistonFromAngle.Titles.Add(title5);
             this.chartOfGasPressureOnPistonFromAngle.Move += new System.EventHandler(this.chartOfGasPressureOnPistonFromAngle_Move);
             // 
-            // label_Pip
+            // label_AnalyticPip
             // 
-            this.label_Pip.AutoSize = true;
-            this.label_Pip.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label_Pip.Location = new System.Drawing.Point(976, 91);
-            this.label_Pip.Name = "label_Pip";
-            this.label_Pip.Size = new System.Drawing.Size(37, 16);
-            this.label_Pip.TabIndex = 22;
-            this.label_Pip.Text = "Pᵢₚ = ";
+            this.label_AnalyticPip.AutoSize = true;
+            this.label_AnalyticPip.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_AnalyticPip.Location = new System.Drawing.Point(994, 91);
+            this.label_AnalyticPip.Name = "label_AnalyticPip";
+            this.label_AnalyticPip.Size = new System.Drawing.Size(115, 16);
+            this.label_AnalyticPip.TabIndex = 22;
+            this.label_AnalyticPip.Text = "Аналітичне Pᵢₚ = ";
+            this.label_AnalyticPip.Move += new System.EventHandler(this.label_AnalyticPip_Move);
+            // 
+            // label_GraphicPip
+            // 
+            this.label_GraphicPip.AutoSize = true;
+            this.label_GraphicPip.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_GraphicPip.Location = new System.Drawing.Point(994, 125);
+            this.label_GraphicPip.Name = "label_GraphicPip";
+            this.label_GraphicPip.Size = new System.Drawing.Size(101, 16);
+            this.label_GraphicPip.TabIndex = 23;
+            this.label_GraphicPip.Text = "Графічне Pᵢₚ = ";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(547, 173);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(15, 16);
+            this.label2.TabIndex = 24;
+            this.label2.Text = "5";
             // 
             // FormDiagramProcessOfCylinder
             // 
@@ -583,7 +597,9 @@ namespace Mechanic
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1264, 813);
-            this.Controls.Add(this.label_Pip);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label_GraphicPip);
+            this.Controls.Add(this.label_AnalyticPip);
             this.Controls.Add(this.chartOfGasPressureOnPistonFromAngle);
             this.Controls.Add(this.chartOfSpecificForces_TAndZ);
             this.Controls.Add(this.chartOfSpecificForces_KAndN);
@@ -592,7 +608,6 @@ namespace Mechanic
             this.Controls.Add(this.chart_IndicatorDiagram);
             this.Controls.Add(this.label_PZ);
             this.Controls.Add(this.label_Pc);
-            this.Controls.Add(this.textBox_DeltaAngle);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.dataGridView_Politrop);
             this.Controls.Add(this.textBox_Lambda_DegreeOfPressureIncrease);
@@ -629,7 +644,6 @@ namespace Mechanic
         private System.Windows.Forms.TextBox textBox_Lambda_DegreeOfPressureIncrease;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dataGridView_Politrop;
-        private System.Windows.Forms.TextBox textBox_DeltaAngle;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Label label_Pc;
@@ -664,8 +678,14 @@ namespace Mechanic
         private Chart chartOfSpecificForces_KAndN;
         private Chart chartOfSpecificForces_TAndZ;
         private Chart chartOfGasPressureOnPistonFromAngle;
-        private Label label_Pip;
+        private Label label_AnalyticPip;
+        private Label label_GraphicPip;
+        private Label label2;
 
         public Label LabelDataForCreateDiagr { get => labelDataForCreateDiagr; set => labelDataForCreateDiagr = value; }
+        public TextBox TextBox_N1_IndicPolitrCompres { get => textBox_N1_IndicPolitrCompres; set => textBox_N1_IndicPolitrCompres = value; }
+        public TextBox TextBox_N2_IndicPolitrExpansion { get => textBox_N2_IndicPolitrExpansion; set => textBox_N2_IndicPolitrExpansion = value; }
+        public TextBox TextBox_Lambda_DegreeOfPressureIncrease { get => textBox_Lambda_DegreeOfPressureIncrease; set => textBox_Lambda_DegreeOfPressureIncrease = value; }
+        public Button BtnCalcAndBuildDiagr { get => btnCalcAndBuildDiagr; set => btnCalcAndBuildDiagr = value; }
     }
 }

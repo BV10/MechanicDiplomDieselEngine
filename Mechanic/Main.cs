@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using static System.Math;
@@ -30,6 +31,8 @@ namespace Mechanic
         private const int FIFTH_CYLINDER = 4;
         private const int SIXTH_CYLINDER = 5;
         private const int SHIFT_ELEM_CONTROL = 50;
+        private const int DEFAULT_SHIFT_OF_CONTROLS = 20;
+        private const int INCREASED_VALUE_FOR_CORRECT_SHOW_LAST_GRID = 200;
 
         private List<CalcSpecificForces> CalcSpecificForcesOfCylinders { get; set; } = new List<CalcSpecificForces>();
         private List<FormDiagramProcessOfCylinder> FormsCylinderProcesses { get; set; } = new List<FormDiagramProcessOfCylinder>();
@@ -45,12 +48,17 @@ namespace Mechanic
         public Main()
         {       
             InitializeComponent();
+            chartTotalToque.Top = btnTotalTorqueEngine.Bottom + DEFAULT_SHIFT_OF_CONTROLS;
+            dataGridView_TiAndMi.Top = chartTotalToque.Bottom + DEFAULT_SHIFT_OF_CONTROLS;
+            dataGridView_TorqueUniformity.Top = dataGridView_TiAndMi.Bottom + DEFAULT_SHIFT_OF_CONTROLS + 20;
+            //dataGridView_TorqueUniformity.Bottom += 20;
             this.btnDrawDiagram.Select();
             this.chartTotalToque.ChartAreas[0].AxisX.Title = "\u03c6";
             this.chartTotalToque.ChartAreas[0].AxisY.Title = "M";
+
+            this.MaximizeBox = false;            
         }
 
-        
 
         private void btnDrawDiagram_Click(object sender, EventArgs e)
         {
@@ -72,13 +80,25 @@ namespace Mechanic
             for (int i = 0; i < COUNT_CYLINDER_ENGINE; i++)
             {
                 FormDiagramProcessOfCylinder formCreateDiagramProcess = new FormDiagramProcessOfCylinder(pk);
-
+                formCreateDiagramProcess.Main = this;
                 FormsCylinderProcesses.Add(formCreateDiagramProcess);
+                formCreateDiagramProcess.NumberCylinder = i + 1;
                 formCreateDiagramProcess.Text += " " + (i + 1);
                 formCreateDiagramProcess.LabelDataForCreateDiagr.Text += " " + (i + 1) + "-го " + "циліндра.";
                 CalcSpecificForcesOfCylinders.Add(formCreateDiagramProcess.CalcSpecificForces);
+
+                // add setted data for calc politron
+                string n1OfCylind = this.Controls["textBox_N1OfCylind" + (i + 1).ToString()].Text;
+                string n2OfCylind = this.Controls["textBox_N2OfCylind" + (i + 1).ToString()].Text;
+                string lambdaOfCylind = this.Controls["textBox_LambdaOfCylind" + (i + 1).ToString()].Text;
+
+                formCreateDiagramProcess.TextBox_N1_IndicPolitrCompres.Text = n1OfCylind;
+                formCreateDiagramProcess.TextBox_N2_IndicPolitrExpansion.Text = n2OfCylind;
+                formCreateDiagramProcess.TextBox_Lambda_DegreeOfPressureIncrease.Text = lambdaOfCylind;
                 formCreateDiagramProcess.Show();
+                formCreateDiagramProcess.BtnCalcAndBuildDiagr.PerformClick();
             }
+            this.TopMost = true;
         }
 
         private void ResetOldCalcFormProcess()
@@ -99,13 +119,13 @@ namespace Mechanic
                 return;
             }
             //minimize other windows
-            foreach (var formCylinderProc in FormsCylinderProcesses)
-            {
-                if (formCylinderProc != null)
-                {
-                    formCylinderProc.WindowState = FormWindowState.Minimized;
-                }
-            }
+            //foreach (var formCylinderProc in FormsCylinderProcesses)
+            //{
+            //    if (formCylinderProc != null)
+            //    {
+            //        formCylinderProc.WindowState = FormWindowState.Minimized;
+            //    }
+            //}
 
             //check - are calculated data for all cylinders
             for (int i = 0; i < CalcSpecificForcesOfCylinders.Count; i++)
@@ -114,14 +134,14 @@ namespace Mechanic
                     (FormsCylinderProcesses[i].TaskCalcSpecificForces != null && !FormsCylinderProcesses[i].TaskCalcSpecificForces.IsCompleted)) //данные вычислены полностью
                 {
                     DialogResult dialogResult = MessageBox.Show("Дані для циліндра " + (i + 1) + " не були розраховані.");
-                    if (dialogResult == DialogResult.OK)
-                    {
-                        this.WindowState = FormWindowState.Minimized;
-                        if (FormsCylinderProcesses[i] != null)
-                        {
-                            FormsCylinderProcesses[i].WindowState = FormWindowState.Normal;
-                        }
-                    }
+                    //if (dialogResult == DialogResult.OK)
+                    //{
+                    //    //this.WindowState = FormWindowState.Minimized;
+                    //    if (FormsCylinderProcesses[i] != null)
+                    //    {
+                    //        FormsCylinderProcesses[i].WindowState = FormWindowState.Normal;
+                    //    }
+                    //}
                     return;
                 }
             }
@@ -150,7 +170,7 @@ namespace Mechanic
 
             for (int angle = CalcSpecificForces.START_ANGLE, iterTotalTorque = 0;
                 angle <= CalcSpecificForces.END_ANGLE && iterTotalTorque < TotalTorqueOfCylinders.Count;
-                angle += FormsCylinderProcesses[FIRST_CYLINDER].DeltaAngle, iterTotalTorque++)
+                angle += FormDiagramProcessOfCylinder.DELTA_ANGLE, iterTotalTorque++)
             {
                 chartTotalToque.Series[0].Points.AddXY(angle, TotalTorqueOfCylinders[iterTotalTorque]);
                 //changle color of points on ecery 120 degrees
@@ -286,16 +306,6 @@ namespace Mechanic
             FormDiagramProcessOfCylinder.AutosizeGridView(dataGridView);
         }
 
-        private void dataGridView_TiAndMi_Resize(object sender, EventArgs e)
-        {
-            chartTotalToque.Top = dataGridView_TiAndMi.Bottom + SHIFT_ELEM_CONTROL;
-        }
-
-        private void chartTotalToque_Move(object sender, EventArgs e)
-        {
-            dataGridView_TorqueUniformity.Top = chartTotalToque.Bottom + SHIFT_ELEM_CONTROL;
-        }
-
         private List<TorqueUniformity> CalcTorqueUniformities(List<double> totalTorque)
         {
             List<TorqueUniformity> torqueUniformities = new List<TorqueUniformity>();
@@ -304,7 +314,7 @@ namespace Mechanic
             double totalTorqueMinRange = totalTorque[0];
             for (int angle = CalcSpecificForces.START_ANGLE, iterTotalTorque = 1;
                angle <= CalcSpecificForces.END_ANGLE && iterTotalTorque < totalTorque.Count;
-               angle += FormsCylinderProcesses[FIRST_CYLINDER].DeltaAngle, iterTotalTorque++)
+               angle += FormDiagramProcessOfCylinder.DELTA_ANGLE, iterTotalTorque++)
             {
                 if (totalTorqueMaxOnRange < totalTorque[iterTotalTorque])
                 {
@@ -375,6 +385,11 @@ namespace Mechanic
             chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(460, 500, "480", 0, LabelMarkStyle.None));
             chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(580, 620, "600", 0, LabelMarkStyle.None));
             chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(700, 740, "720", 0, LabelMarkStyle.None));
-        }        
+        }
+
+        private void dataGridView_TiAndMi_Resize(object sender, EventArgs e)
+        {
+            dataGridView_TorqueUniformity.Top = dataGridView_TiAndMi.Bottom + SHIFT_ELEM_CONTROL;
+        }
     }
 }
