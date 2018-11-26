@@ -30,24 +30,24 @@ namespace Mechanic
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem22 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell22 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem23 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell23 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem24 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell24 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem25 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell25 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem26 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell26 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem27 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell27 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem28 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell28 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.Title title4 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem43 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell43 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem44 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell44 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem45 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell45 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem46 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell46 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem47 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell47 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem48 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell48 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem49 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell49 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.Title title7 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.btnDrawDiagram = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -103,6 +103,10 @@ namespace Mechanic
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.оРазработчикахToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label_bi = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.bi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_TiAndMi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTotalToque)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_TorqueUniformity)).BeginInit();
@@ -246,55 +250,55 @@ namespace Mechanic
             // 
             // chartTotalToque
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chartTotalToque.ChartAreas.Add(chartArea4);
-            legendCell22.BackColor = System.Drawing.Color.Transparent;
-            legendCell22.ForeColor = System.Drawing.Color.Red;
-            legendCell22.Name = "Cell1";
-            legendCell22.Text = "1-ий циліндр";
-            legendItem22.Cells.Add(legendCell22);
-            legendCell23.ForeColor = System.Drawing.Color.Aqua;
-            legendCell23.Name = "Cell1";
-            legendCell23.Text = "2-ий циліндр";
-            legendItem23.Cells.Add(legendCell23);
-            legendCell24.ForeColor = System.Drawing.Color.Violet;
-            legendCell24.Name = "Cell1";
-            legendCell24.Text = "3-ій циліндр";
-            legendItem24.Cells.Add(legendCell24);
-            legendCell25.ForeColor = System.Drawing.Color.Green;
-            legendCell25.Name = "Cell1";
-            legendCell25.Text = "4-ий циліндр";
-            legendItem25.Cells.Add(legendCell25);
-            legendCell26.ForeColor = System.Drawing.Color.Brown;
-            legendCell26.Name = "Cell1";
-            legendCell26.Text = "5-ий циліндр";
-            legendItem26.Cells.Add(legendCell26);
-            legendCell27.ForeColor = System.Drawing.Color.Blue;
-            legendCell27.Name = "Cell1";
-            legendCell27.Text = "6-ий циліндр";
-            legendItem27.Cells.Add(legendCell27);
-            legendCell28.ForeColor = System.Drawing.Color.Black;
-            legendCell28.Name = "Cell1";
-            legendCell28.Text = "Ідеальна робота двигуна";
-            legendItem28.Cells.Add(legendCell28);
-            legend4.CustomItems.Add(legendItem22);
-            legend4.CustomItems.Add(legendItem23);
-            legend4.CustomItems.Add(legendItem24);
-            legend4.CustomItems.Add(legendItem25);
-            legend4.CustomItems.Add(legendItem26);
-            legend4.CustomItems.Add(legendItem27);
-            legend4.CustomItems.Add(legendItem28);
-            legend4.Name = "Legend1";
-            this.chartTotalToque.Legends.Add(legend4);
+            chartArea7.Name = "ChartArea1";
+            this.chartTotalToque.ChartAreas.Add(chartArea7);
+            legendCell43.BackColor = System.Drawing.Color.Transparent;
+            legendCell43.ForeColor = System.Drawing.Color.Red;
+            legendCell43.Name = "Cell1";
+            legendCell43.Text = "1-ий циліндр";
+            legendItem43.Cells.Add(legendCell43);
+            legendCell44.ForeColor = System.Drawing.Color.Aqua;
+            legendCell44.Name = "Cell1";
+            legendCell44.Text = "2-ий циліндр";
+            legendItem44.Cells.Add(legendCell44);
+            legendCell45.ForeColor = System.Drawing.Color.Violet;
+            legendCell45.Name = "Cell1";
+            legendCell45.Text = "3-ій циліндр";
+            legendItem45.Cells.Add(legendCell45);
+            legendCell46.ForeColor = System.Drawing.Color.Green;
+            legendCell46.Name = "Cell1";
+            legendCell46.Text = "4-ий циліндр";
+            legendItem46.Cells.Add(legendCell46);
+            legendCell47.ForeColor = System.Drawing.Color.Brown;
+            legendCell47.Name = "Cell1";
+            legendCell47.Text = "5-ий циліндр";
+            legendItem47.Cells.Add(legendCell47);
+            legendCell48.ForeColor = System.Drawing.Color.Blue;
+            legendCell48.Name = "Cell1";
+            legendCell48.Text = "6-ий циліндр";
+            legendItem48.Cells.Add(legendCell48);
+            legendCell49.ForeColor = System.Drawing.Color.Black;
+            legendCell49.Name = "Cell1";
+            legendCell49.Text = "Ідеальна робота двигуна";
+            legendItem49.Cells.Add(legendCell49);
+            legend7.CustomItems.Add(legendItem43);
+            legend7.CustomItems.Add(legendItem44);
+            legend7.CustomItems.Add(legendItem45);
+            legend7.CustomItems.Add(legendItem46);
+            legend7.CustomItems.Add(legendItem47);
+            legend7.CustomItems.Add(legendItem48);
+            legend7.CustomItems.Add(legendItem49);
+            legend7.Name = "Legend1";
+            this.chartTotalToque.Legends.Add(legend7);
             this.chartTotalToque.Location = new System.Drawing.Point(84, 746);
             this.chartTotalToque.Name = "chartTotalToque";
             this.chartTotalToque.Size = new System.Drawing.Size(946, 296);
             this.chartTotalToque.TabIndex = 9;
             this.chartTotalToque.Text = "chart1";
-            title4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            title4.Name = "Title1";
-            title4.Text = "Сумарний обертальний момент дизеля";
-            this.chartTotalToque.Titles.Add(title4);
+            title7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title7.Name = "Title1";
+            title7.Text = "Сумарний обертальний момент дизеля";
+            this.chartTotalToque.Titles.Add(title7);
             this.chartTotalToque.Customize += new System.EventHandler(this.chartTotalToque_Customize);
             // 
             // dataGridView_TorqueUniformity
@@ -367,9 +371,9 @@ namespace Mechanic
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label10.Location = new System.Drawing.Point(443, 184);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(190, 16);
+            this.label10.Size = new System.Drawing.Size(174, 16);
             this.label10.TabIndex = 31;
-            this.label10.Text = "ступінь підвищення тиску(λ)";
+            this.label10.Text = "ступінь підвищення тиску";
             // 
             // label15
             // 
@@ -467,9 +471,9 @@ namespace Mechanic
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label11.Location = new System.Drawing.Point(443, 210);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(228, 16);
+            this.label11.Size = new System.Drawing.Size(221, 16);
             this.label11.TabIndex = 64;
-            this.label11.Text = "індиккаторна потужність двигуна";
+            this.label11.Text = "індикаторна потужність двигуна";
             // 
             // label12
             // 
@@ -477,9 +481,9 @@ namespace Mechanic
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label12.Location = new System.Drawing.Point(443, 237);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(127, 16);
+            this.label12.Size = new System.Drawing.Size(125, 16);
             this.label12.TabIndex = 65;
-            this.label12.Text = "індикаторний КПД";
+            this.label12.Text = "індикаторний ККД";
             // 
             // label33
             // 
@@ -507,9 +511,9 @@ namespace Mechanic
             this.label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label35.Location = new System.Drawing.Point(443, 289);
             this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(119, 16);
+            this.label35.Size = new System.Drawing.Size(117, 16);
             this.label35.TabIndex = 68;
-            this.label35.Text = "ефективний КПД";
+            this.label35.Text = "ефективний ККД";
             // 
             // dataGridView_DataForDiagram
             // 
@@ -527,16 +531,17 @@ namespace Mechanic
             this.etaI,
             this.Ne,
             this.etaE,
-            this.bE});
+            this.bE,
+            this.bi});
             this.dataGridView_DataForDiagram.Location = new System.Drawing.Point(103, 376);
             this.dataGridView_DataForDiagram.Name = "dataGridView_DataForDiagram";
-            this.dataGridView_DataForDiagram.Size = new System.Drawing.Size(873, 47);
+            this.dataGridView_DataForDiagram.Size = new System.Drawing.Size(974, 47);
             this.dataGridView_DataForDiagram.TabIndex = 69;
             // 
             // numbCylinder
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            this.numbCylinder.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            this.numbCylinder.DefaultCellStyle = dataGridViewCellStyle7;
             this.numbCylinder.HeaderText = "№";
             this.numbCylinder.Name = "numbCylinder";
             this.numbCylinder.ReadOnly = true;
@@ -632,12 +637,49 @@ namespace Mechanic
             this.оРазработчикахToolStripMenuItem.Text = "Про розробників";
             this.оРазработчикахToolStripMenuItem.Click += new System.EventHandler(this.оРазработчикахToolStripMenuItem_Click);
             // 
+            // label_bi
+            // 
+            this.label_bi.AutoSize = true;
+            this.label_bi.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_bi.Location = new System.Drawing.Point(442, 339);
+            this.label_bi.Name = "label_bi";
+            this.label_bi.Size = new System.Drawing.Size(248, 16);
+            this.label_bi.TabIndex = 73;
+            this.label_bi.Text = "питома індикаторна витрата палива";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label9.Location = new System.Drawing.Point(409, 339);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(0, 16);
+            this.label9.TabIndex = 74;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label13.Location = new System.Drawing.Point(409, 339);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(24, 16);
+            this.label13.TabIndex = 75;
+            this.label13.Text = "bᵢ:";
+            // 
+            // bi
+            // 
+            this.bi.HeaderText = "bᵢ";
+            this.bi.Name = "bi";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1184, 881);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label_bi);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.dataGridView_DataForDiagram);
@@ -742,6 +784,10 @@ namespace Mechanic
         private MenuStrip menuStrip1;
         private ToolStripMenuItem справкаToolStripMenuItem;
         private ToolStripMenuItem оРазработчикахToolStripMenuItem;
+        private Label label_bi;
+        private Label label9;
+        private Label label13;
+        private DataGridViewTextBoxColumn bi;
 
         public DataGridView DataGridView_DataForDiagram { get => dataGridView_DataForDiagram; set => dataGridView_DataForDiagram = value; }
     }

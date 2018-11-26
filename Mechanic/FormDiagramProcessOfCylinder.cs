@@ -152,12 +152,10 @@ namespace Mechanic
         {
             if (TaskCalcPolitropData.IsCompleted && !isShowCalcDataPolitr)
             {
-                ShowDataPolitrop();
+                BuildChartDataPolitrop();
                 //show Pip розрахунковий середній індикаторний тиск
                 this.label_AnalyticPip.Text = "Аналітичне P\u1D62\u209A = " + Round(calcPolitrops.CalcAnalyticPip(), 3);
-                this.Pi = Round(calcPolitrops.CalcGraphicPip(calcPolitrops.DataPolitrops), 3);
-                //calc bi after calc politrop data
-                this.label_bi.Text += Round(calcPolitrops.CalcBi(calcPolitrops.DataPolitrops), 3).ToString();
+                this.Pi = Round(calcPolitrops.CalcGraphicPip(calcPolitrops.DataPolitrops), 3);                
                 this.label_GraphicPip.Text = "Графічне P\u1D62\u209A = " + Pi;
                 isShowCalcDataPolitr = true;
                 CalcSpecificForces.CalcPolitrops = CalcPolitrops;
@@ -250,7 +248,6 @@ namespace Mechanic
             ClearChart(chartOfSpecificForces_KAndN);
             ClearChart(chartOfSpecificForces_TAndZ);
 
-
             for (int iterInternalSpecficForcesData = 0;
                  iterInternalSpecficForcesData < CalcSpecificForces.DataSpecificForces.LengthInternalObject;
                  iterInternalSpecficForcesData++
@@ -311,7 +308,7 @@ namespace Mechanic
             AutosizeGridView(this.dataGridView_CalcSpecifForces);
         }
 
-        private void ShowDataPolitrop()
+        private void BuildChartDataPolitrop()
         {
             // очистка старого графіка
             ClearChart(chart_IndicatorDiagram);
@@ -344,12 +341,14 @@ namespace Mechanic
                     dataPolitrop.PressureOnLineCompression[iterInternalPolitrData] // p compression
                     );
 
-                chart_IndicatorDiagram.Series["PolitropOfExpansion"].Points.
+                //not draw chart of expansion when lambda == 1.0
+                if (this.Lambda != 1.0)
+                {
+                    chart_IndicatorDiagram.Series["PolitropOfExpansion"].Points.
                AddXY(dataPolitrop.V[iterInternalPolitrData], // V
                    dataPolitrop.PressureOnLineExpansion[iterInternalPolitrData] // p expansion
                    );
-
-
+                }
             }
 
             // autosize height

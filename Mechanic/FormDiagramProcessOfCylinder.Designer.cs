@@ -96,7 +96,6 @@ namespace Mechanic
             this.chartOfGasPressureOnPistonFromAngle = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.label_AnalyticPip = new System.Windows.Forms.Label();
             this.label_GraphicPip = new System.Windows.Forms.Label();
-            this.label_bi = new System.Windows.Forms.Label();
             this.label_EtaV = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Politrop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart_IndicatorDiagram)).BeginInit();
@@ -131,7 +130,7 @@ namespace Mechanic
             this.attitudeVolumeVToVz,
             this.attitudeVolumeInPowerVToVz,
             this.pressureOnLineExpansion});
-            this.dataGridView_Politrop.Location = new System.Drawing.Point(108, 203);
+            this.dataGridView_Politrop.Location = new System.Drawing.Point(108, 164);
             this.dataGridView_Politrop.Name = "dataGridView_Politrop";
             this.dataGridView_Politrop.Size = new System.Drawing.Size(1044, 47);
             this.dataGridView_Politrop.TabIndex = 10;
@@ -227,7 +226,7 @@ namespace Mechanic
             this.chart_IndicatorDiagram.ChartAreas.Add(chartArea6);
             legend6.Name = "Legend1";
             this.chart_IndicatorDiagram.Legends.Add(legend6);
-            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(108, 230);
+            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(65, 179);
             this.chart_IndicatorDiagram.Name = "chart_IndicatorDiagram";
             series12.BorderWidth = 3;
             series12.ChartArea = "ChartArea1";
@@ -499,16 +498,6 @@ namespace Mechanic
             this.label_GraphicPip.TabIndex = 23;
             this.label_GraphicPip.Text = "Графічне Pᵢₚ = ";
             // 
-            // label_bi
-            // 
-            this.label_bi.AutoSize = true;
-            this.label_bi.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label_bi.Location = new System.Drawing.Point(300, 156);
-            this.label_bi.Name = "label_bi";
-            this.label_bi.Size = new System.Drawing.Size(315, 20);
-            this.label_bi.TabIndex = 24;
-            this.label_bi.Text = "Питома індикаторна витрата палива bᵢ :";
-            // 
             // label_EtaV
             // 
             this.label_EtaV.AutoSize = true;
@@ -526,7 +515,6 @@ namespace Mechanic
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1264, 813);
             this.Controls.Add(this.label_EtaV);
-            this.Controls.Add(this.label_bi);
             this.Controls.Add(this.label_GraphicPip);
             this.Controls.Add(this.label_AnalyticPip);
             this.Controls.Add(this.chartOfGasPressureOnPistonFromAngle);
@@ -592,7 +580,6 @@ namespace Mechanic
         private Chart chartOfGasPressureOnPistonFromAngle;
         private Label label_AnalyticPip;
         private Label label_GraphicPip;
-        private Label label_bi;
         private Label label_EtaV;
 
         public Label LabelDataForCreateDiagr { get => labelDataForCreateDiagr; set => labelDataForCreateDiagr = value; }      

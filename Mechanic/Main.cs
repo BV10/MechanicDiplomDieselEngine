@@ -272,6 +272,9 @@ namespace Mechanic
                 this.dataGridView_DataForDiagram.Rows[i].Cells[7].Value = Round(etaI * 0.84, 3);
                 //calc be - ефективна питома витрата палива
                 this.dataGridView_DataForDiagram.Rows[i].Cells[8].Value = Round((3600 / (etaI * 41500)) / 0.84, 3);
+                //calc bi
+                this.dataGridView_DataForDiagram.Rows[i].Cells[9].Value = Round(FormsDiagrOfCylinderProcesses[i].CalcPolitrops.CalcBi(FormsDiagrOfCylinderProcesses[i].CalcPolitrops.DataPolitrops), 5);
+
             }
 
             //очистити таблицю від старих питомі сили циліндрів та сумарний обертальний момент двигуна
@@ -291,6 +294,12 @@ namespace Mechanic
 
         private void BuildChartTotalToque(Chart chartTotalToque)
         {
+            //remove old chart of total toque
+            if (chartTotalToque.Series.Count > 1)
+            {
+                chartTotalToque.Series[1].Points.Clear();
+                chartTotalToque.Series.RemoveAt(1);
+            }
             //create new seties
             Series series = new Series();
             series.ChartArea = "ChartArea1";
