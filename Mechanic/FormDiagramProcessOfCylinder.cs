@@ -10,35 +10,67 @@ namespace Mechanic
 {
     public partial class FormDiagramProcessOfCylinder : Form
     {
-        private Main main;
-
         private const int WAITING_EXECUTE_CALCULATING = 10; // wait on execute calc data in milisec
         public const int SHIFT_OF_ELEM = 100;
         private const int SHIFT_ELEM_OF_GRAPHIC_Pi = 30;
         private CalcPolitrops calcPolitrops;
         private CalcSpecificForces calcSpecificForces;
-        private bool isShowCalcDataPolitr;        
-        private double lambdaDegreeIncreasePressureFromTextBox;
+        private bool isShowCalcDataPolitr;
+        private double n1;
+        private double n2;
+        private double lambda;
         public const int DELTA_ANGLE = 5;
-        public int NumberCylinder { get; set; }
 
         private Task TaskCalcPolitropData { get; set; } = null;
         public Task TaskCalcSpecificForces { get; set; } = null;
 
         internal CalcSpecificForces CalcSpecificForces { get => calcSpecificForces; set => calcSpecificForces = value; }
         internal CalcPolitrops CalcPolitrops { get => calcPolitrops; set => calcPolitrops = value; }
-        public Main Main { get => main; set => main = value; }
+
         public double Pi { get; private set; }
 
+        public double N1
+        {
+            get => n1;
+            set
+            {
+                CalcPolitrops.N1 = value;
+                this.n1 = value;
+            }
+        }
+        public double N2
+        {
+            get => n2;
+            set
+            {
+
+                CalcPolitrops.N2 = value;
+
+                this.n2 = value;
+            }
+        }
+        public double Lambda
+        {
+            get => lambda;
+            set
+            {
+
+                CalcPolitrops.LambdaDegreeIncreasePressure = value;
+
+                this.lambda = value;
+            }
+        }
+
         // тиск повітря у надувному колекторі  для кожного циліндра
-        public FormDiagramProcessOfCylinder(double Pk)
+        public FormDiagramProcessOfCylinder(double Pk, double n1, double n2, double lambda)
         {
             InitializeComponent();
-
             this.MaximizeBox = false;
-
             CalcSpecificForces = new CalcSpecificForces();
             CalcPolitrops = new CalcPolitrops(Pk, new DataPolitropsOfComprassionAndExpansion());
+            N1 = n1;
+            N2 = n2;
+            Lambda = lambda;
             timer.Interval = WAITING_EXECUTE_CALCULATING;
             this.label_Pc.Text = "Pc:  " + CalcPolitrops.PC.ToString();
             this.chart_IndicatorDiagram.Top = dataGridView_Politrop.Bottom + SHIFT_OF_ELEM;
@@ -73,7 +105,7 @@ namespace Mechanic
             this.label_GraphicPip.Left = this.label_AnalyticPip.Left + this.label_AnalyticPip.Size.Width + SHIFT_ELEM_OF_GRAPHIC_Pi;
         }
 
-        public void btnCalcAndBuildDiagr_Click(object sender, EventArgs e)
+        public void CalcAndBuildDiagr()
         {
             //отменяем предыдущий расчет
             if (TaskCalcPolitropData != null && !TaskCalcPolitropData.IsCompleted && CalcPolitrops.CancellationTokenSource != null)
@@ -92,44 +124,8 @@ namespace Mechanic
             ClearGridView(this.dataGridView_Politrop);
             ClearGridView(this.dataGridView_CalcSpecifForces);
 
-            double n1 = double.Parse(textBox_N1_IndicPolitrCompres.Text);
-            try
-            {
-                CalcPolitrops.N1 = n1;
-                //change data on main window
-                Main.DataGridView_DataForDiagram.Rows[NumberCylinder - 1].Cells[1].Value = n1.ToString();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, ex.Message, "Помилка в заданому значенні", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-
-            double n2 = double.Parse(textBox_N2_IndicPolitrExpansion.Text); ;
-            try
-            {
-                CalcPolitrops.N2 = n2;
-                Main.DataGridView_DataForDiagram.Rows[NumberCylinder - 1].Cells[2].Value = n2.ToString();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, ex.Message, "Помилка в заданому значенні", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            lambdaDegreeIncreasePressureFromTextBox = double.Parse(textBox_Lambda_DegreeOfPressureIncrease.Text);
-            try
-            {
-                CalcPolitrops.LambdaDegreeIncreasePressure = lambdaDegreeIncreasePressureFromTextBox;
-                Main.DataGridView_DataForDiagram.Rows[NumberCylinder - 1].Cells[2].Value = lambdaDegreeIncreasePressureFromTextBox.ToString();
-                label_PZ.Text = "Pz:  " + Math.Round(CalcPolitrops.PZ, 3).ToString();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, ex.Message, "Помилка в заданому значенні", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            label_PZ.Text = "Pz:  " + Math.Round(CalcPolitrops.PZ, 3).ToString();
+            label_EtaV.Text += Math.Round(CalcPolitrops.EtaV, 3).ToString();
 
             TaskCalcPolitropData = CalcPolitrops.CalcPolitropsDataAsync(FormDiagramProcessOfCylinder.DELTA_ANGLE);
 
@@ -160,10 +156,12 @@ namespace Mechanic
                 //show Pip розрахунковий середній індикаторний тиск
                 this.label_AnalyticPip.Text = "Аналітичне P\u1D62\u209A = " + Round(calcPolitrops.CalcAnalyticPip(), 3);
                 this.Pi = Round(calcPolitrops.CalcGraphicPip(calcPolitrops.DataPolitrops), 3);
+                //calc bi after calc politrop data
+                this.label_bi.Text += Round(calcPolitrops.CalcBi(calcPolitrops.DataPolitrops), 3).ToString();
                 this.label_GraphicPip.Text = "Графічне P\u1D62\u209A = " + Pi;
                 isShowCalcDataPolitr = true;
                 CalcSpecificForces.CalcPolitrops = CalcPolitrops;
-                TaskCalcSpecificForces = CalcSpecificForces.CalcDataOfSpecificForcesAsync(FormDiagramProcessOfCylinder.DELTA_ANGLE, this.lambdaDegreeIncreasePressureFromTextBox);
+                TaskCalcSpecificForces = CalcSpecificForces.CalcDataOfSpecificForcesAsync(FormDiagramProcessOfCylinder.DELTA_ANGLE, this.Lambda);
             }
 
             if (TaskCalcSpecificForces != null && TaskCalcSpecificForces.IsCompleted)
@@ -339,7 +337,7 @@ namespace Mechanic
                     );
 
                 // будувати графік по точкам
-                CustomizeAxisYLabelOfChartIndicatorDiagram(chart_IndicatorDiagram, dataPolitrop);            
+                CustomizeAxisYLabelOfChartIndicatorDiagram(chart_IndicatorDiagram, dataPolitrop);
 
                 chart_IndicatorDiagram.Series["PolitropOfComprassion"].Points.
                 AddXY(dataPolitrop.V[iterInternalPolitrData], // V
@@ -351,7 +349,7 @@ namespace Mechanic
                    dataPolitrop.PressureOnLineExpansion[iterInternalPolitrData] // p expansion
                    );
 
-                
+
             }
 
             // autosize height
@@ -361,7 +359,7 @@ namespace Mechanic
         private void CustomizeAxisYLabelOfChartIndicatorDiagram(Chart chart_IndicatorDiagram, DataPolitropsOfComprassionAndExpansion dataPolitrop)
         {
             chart_IndicatorDiagram.ChartAreas[0].AxisY.CustomLabels.Clear();
-            
+
             double pMinOnLineCompress = dataPolitrop.PressureOnLineCompression.Min();
             double pMinOnLineExpansion = dataPolitrop.PressureOnLineExpansion.Min();
             double minP = pMinOnLineCompress <= pMinOnLineExpansion ? pMinOnLineCompress : pMinOnLineExpansion;
@@ -371,7 +369,7 @@ namespace Mechanic
             double maxP = pMaxOnLineCompress >= pMaxOnLineExpansion ? pMaxOnLineCompress : pMaxOnLineExpansion;
 
             double deltaP = 0.5;
-            while(minP < maxP)
+            while (minP < maxP)
             {
                 chart_IndicatorDiagram.ChartAreas[0].AxisY.CustomLabels.Add(new CustomLabel(minP - 15, minP + 15, minP.ToString(), 0, LabelMarkStyle.None));
                 minP += deltaP;

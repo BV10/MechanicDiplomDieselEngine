@@ -299,5 +299,10 @@ namespace Mechanic
         {
             return (2000 * this.CalcGraphicPip(this.DataPolitrops) * this.Vh * 12.5) / 4;
         }
+
+        public double CalcBi(DataPolitropsOfComprassionAndExpansion dataPolitrops)
+        {
+            return (3600 / (41500 * CalcNi()));
+        }
     }
 }

@@ -33,40 +33,33 @@ namespace Mechanic
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title4 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title5 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnCalcAndBuildDiagr = new System.Windows.Forms.Button();
-            this.textBox_N1_IndicPolitrCompres = new System.Windows.Forms.TextBox();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title6 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series15 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series16 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title7 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series17 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series18 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title8 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series19 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series20 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title9 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series21 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series22 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title10 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.labelDataForCreateDiagr = new System.Windows.Forms.Label();
-            this.textBox_N2_IndicPolitrExpansion = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox_Lambda_DegreeOfPressureIncrease = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.dataGridView_Politrop = new System.Windows.Forms.DataGridView();
             this.degree = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pistonMovement = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -78,7 +71,6 @@ namespace Mechanic
             this.attitudeVolumeVToVz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.attitudeVolumeInPowerVToVz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pressureOnLineExpansion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label5 = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.label_Pc = new System.Windows.Forms.Label();
             this.label_PZ = new System.Windows.Forms.Label();
@@ -104,7 +96,8 @@ namespace Mechanic
             this.chartOfGasPressureOnPistonFromAngle = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.label_AnalyticPip = new System.Windows.Forms.Label();
             this.label_GraphicPip = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.label_bi = new System.Windows.Forms.Label();
+            this.label_EtaV = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Politrop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart_IndicatorDiagram)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_CalcSpecifForces)).BeginInit();
@@ -114,80 +107,15 @@ namespace Mechanic
             ((System.ComponentModel.ISupportInitialize)(this.chartOfGasPressureOnPistonFromAngle)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(157, 69);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(374, 16);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Середній показник політропи стиснення (n1 = 1.36...1.38) :\r\n";
-            // 
-            // btnCalcAndBuildDiagr
-            // 
-            this.btnCalcAndBuildDiagr.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnCalcAndBuildDiagr.Location = new System.Drawing.Point(749, 77);
-            this.btnCalcAndBuildDiagr.Name = "btnCalcAndBuildDiagr";
-            this.btnCalcAndBuildDiagr.Size = new System.Drawing.Size(204, 45);
-            this.btnCalcAndBuildDiagr.TabIndex = 1;
-            this.btnCalcAndBuildDiagr.Text = "Розрахувати та побудувати діаграму";
-            this.btnCalcAndBuildDiagr.UseVisualStyleBackColor = true;
-            this.btnCalcAndBuildDiagr.Click += new System.EventHandler(this.btnCalcAndBuildDiagr_Click);
-            // 
-            // textBox_N1_IndicPolitrCompres
-            // 
-            this.textBox_N1_IndicPolitrCompres.Location = new System.Drawing.Point(550, 68);
-            this.textBox_N1_IndicPolitrCompres.Name = "textBox_N1_IndicPolitrCompres";
-            this.textBox_N1_IndicPolitrCompres.Size = new System.Drawing.Size(90, 20);
-            this.textBox_N1_IndicPolitrCompres.TabIndex = 2;
-            this.textBox_N1_IndicPolitrCompres.Text = "1,37";
-            // 
             // labelDataForCreateDiagr
             // 
             this.labelDataForCreateDiagr.AutoSize = true;
             this.labelDataForCreateDiagr.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelDataForCreateDiagr.Location = new System.Drawing.Point(285, 22);
+            this.labelDataForCreateDiagr.Location = new System.Drawing.Point(446, 9);
             this.labelDataForCreateDiagr.Name = "labelDataForCreateDiagr";
             this.labelDataForCreateDiagr.Size = new System.Drawing.Size(289, 24);
             this.labelDataForCreateDiagr.TabIndex = 3;
             this.labelDataForCreateDiagr.Text = "Дані для побудови діаграми";
-            // 
-            // textBox_N2_IndicPolitrExpansion
-            // 
-            this.textBox_N2_IndicPolitrExpansion.Location = new System.Drawing.Point(550, 105);
-            this.textBox_N2_IndicPolitrExpansion.Name = "textBox_N2_IndicPolitrExpansion";
-            this.textBox_N2_IndicPolitrExpansion.Size = new System.Drawing.Size(90, 20);
-            this.textBox_N2_IndicPolitrExpansion.TabIndex = 7;
-            this.textBox_N2_IndicPolitrExpansion.Text = "1,27";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(157, 106);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(386, 16);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Середній показник політропи розширення (n2 = 1.26...1.28) :\r\n";
-            // 
-            // textBox_Lambda_DegreeOfPressureIncrease
-            // 
-            this.textBox_Lambda_DegreeOfPressureIncrease.Location = new System.Drawing.Point(550, 139);
-            this.textBox_Lambda_DegreeOfPressureIncrease.Name = "textBox_Lambda_DegreeOfPressureIncrease";
-            this.textBox_Lambda_DegreeOfPressureIncrease.Size = new System.Drawing.Size(90, 20);
-            this.textBox_Lambda_DegreeOfPressureIncrease.TabIndex = 9;
-            this.textBox_Lambda_DegreeOfPressureIncrease.Text = "1,5";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(157, 137);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(198, 16);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Ступінь підвищення тиску(λ) :\r\n";
             // 
             // dataGridView_Politrop
             // 
@@ -203,7 +131,7 @@ namespace Mechanic
             this.attitudeVolumeVToVz,
             this.attitudeVolumeInPowerVToVz,
             this.pressureOnLineExpansion});
-            this.dataGridView_Politrop.Location = new System.Drawing.Point(108, 205);
+            this.dataGridView_Politrop.Location = new System.Drawing.Point(108, 203);
             this.dataGridView_Politrop.Name = "dataGridView_Politrop";
             this.dataGridView_Politrop.Size = new System.Drawing.Size(1044, 47);
             this.dataGridView_Politrop.TabIndex = 10;
@@ -269,16 +197,6 @@ namespace Mechanic
             this.pressureOnLineExpansion.Name = "pressureOnLineExpansion";
             this.pressureOnLineExpansion.ReadOnly = true;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(158, 171);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(291, 16);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Крок кута повороту колінчастого валу(Δφ):\r\n";
-            // 
             // timer
             // 
             this.timer.Tick += new System.EventHandler(this.timer1_Tick);
@@ -286,56 +204,56 @@ namespace Mechanic
             // label_Pc
             // 
             this.label_Pc.AutoSize = true;
-            this.label_Pc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label_Pc.Location = new System.Drawing.Point(746, 146);
+            this.label_Pc.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_Pc.Location = new System.Drawing.Point(572, 47);
             this.label_Pc.Name = "label_Pc";
-            this.label_Pc.Size = new System.Drawing.Size(31, 16);
+            this.label_Pc.Size = new System.Drawing.Size(37, 20);
             this.label_Pc.TabIndex = 14;
             this.label_Pc.Text = "pC: ";
             // 
             // label_PZ
             // 
             this.label_PZ.AutoSize = true;
-            this.label_PZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label_PZ.Location = new System.Drawing.Point(746, 173);
+            this.label_PZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_PZ.Location = new System.Drawing.Point(573, 81);
             this.label_PZ.Name = "label_PZ";
-            this.label_PZ.Size = new System.Drawing.Size(30, 16);
+            this.label_PZ.Size = new System.Drawing.Size(36, 20);
             this.label_PZ.TabIndex = 15;
             this.label_PZ.Text = "pZ: ";
             // 
             // chart_IndicatorDiagram
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart_IndicatorDiagram.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart_IndicatorDiagram.Legends.Add(legend1);
-            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(65, 247);
+            chartArea6.Name = "ChartArea1";
+            this.chart_IndicatorDiagram.ChartAreas.Add(chartArea6);
+            legend6.Name = "Legend1";
+            this.chart_IndicatorDiagram.Legends.Add(legend6);
+            this.chart_IndicatorDiagram.Location = new System.Drawing.Point(108, 230);
             this.chart_IndicatorDiagram.Name = "chart_IndicatorDiagram";
-            series1.BorderWidth = 3;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series1.Font = new System.Drawing.Font("Courier New", 15F, System.Drawing.FontStyle.Italic);
-            series1.Legend = "Legend1";
-            series1.LegendText = "Політропа стиснення";
-            series1.MarkerBorderWidth = 3;
-            series1.Name = "PolitropOfComprassion";
-            series2.BorderWidth = 3;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series2.Legend = "Legend1";
-            series2.LegendText = "Політропа розширення";
-            series2.MarkerBorderColor = System.Drawing.Color.Transparent;
-            series2.MarkerBorderWidth = 3;
-            series2.Name = "PolitropOfExpansion";
-            this.chart_IndicatorDiagram.Series.Add(series1);
-            this.chart_IndicatorDiagram.Series.Add(series2);
+            series12.BorderWidth = 3;
+            series12.ChartArea = "ChartArea1";
+            series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series12.Font = new System.Drawing.Font("Courier New", 15F, System.Drawing.FontStyle.Italic);
+            series12.Legend = "Legend1";
+            series12.LegendText = "Політропа стиснення";
+            series12.MarkerBorderWidth = 3;
+            series12.Name = "PolitropOfComprassion";
+            series13.BorderWidth = 3;
+            series13.ChartArea = "ChartArea1";
+            series13.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series13.Legend = "Legend1";
+            series13.LegendText = "Політропа розширення";
+            series13.MarkerBorderColor = System.Drawing.Color.Transparent;
+            series13.MarkerBorderWidth = 3;
+            series13.Name = "PolitropOfExpansion";
+            this.chart_IndicatorDiagram.Series.Add(series12);
+            this.chart_IndicatorDiagram.Series.Add(series13);
             this.chart_IndicatorDiagram.Size = new System.Drawing.Size(1044, 300);
             this.chart_IndicatorDiagram.TabIndex = 16;
             this.chart_IndicatorDiagram.Text = "chart1";
-            title1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            title1.Name = "indicateDiagram";
-            title1.Text = "Індикаторна діаграма";
-            this.chart_IndicatorDiagram.Titles.Add(title1);
+            title6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title6.Name = "indicateDiagram";
+            title6.Text = "Індикаторна діаграма";
+            this.chart_IndicatorDiagram.Titles.Add(title6);
             this.chart_IndicatorDiagram.Move += new System.EventHandler(this.chart_IndicatorDiagram_Move);
             // 
             // dataGridView_CalcSpecifForces
@@ -441,123 +359,123 @@ namespace Mechanic
             // 
             // chartOfSpecificForcesP
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chartOfSpecificForcesP.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chartOfSpecificForcesP.Legends.Add(legend2);
-            this.chartOfSpecificForcesP.Location = new System.Drawing.Point(24, 308);
+            chartArea7.Name = "ChartArea1";
+            this.chartOfSpecificForcesP.ChartAreas.Add(chartArea7);
+            legend7.Name = "Legend1";
+            this.chartOfSpecificForcesP.Legends.Add(legend7);
+            this.chartOfSpecificForcesP.Location = new System.Drawing.Point(108, 275);
             this.chartOfSpecificForcesP.Name = "chartOfSpecificForcesP";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series3.Legend = "Legend1";
-            series3.LegendText = "Pr";
-            series3.Name = "SeriesPr";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series4.Legend = "Legend1";
-            series4.LegendText = "Pj";
-            series4.Name = "SeriesPj";
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series5.Legend = "Legend1";
-            series5.LegendText = "PΣ";
-            series5.Name = "SeriesPsum";
-            this.chartOfSpecificForcesP.Series.Add(series3);
-            this.chartOfSpecificForcesP.Series.Add(series4);
-            this.chartOfSpecificForcesP.Series.Add(series5);
+            series14.ChartArea = "ChartArea1";
+            series14.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series14.Legend = "Legend1";
+            series14.LegendText = "Pr";
+            series14.Name = "SeriesPr";
+            series15.ChartArea = "ChartArea1";
+            series15.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series15.Legend = "Legend1";
+            series15.LegendText = "Pj";
+            series15.Name = "SeriesPj";
+            series16.ChartArea = "ChartArea1";
+            series16.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series16.Legend = "Legend1";
+            series16.LegendText = "PΣ";
+            series16.Name = "SeriesPsum";
+            this.chartOfSpecificForcesP.Series.Add(series14);
+            this.chartOfSpecificForcesP.Series.Add(series15);
+            this.chartOfSpecificForcesP.Series.Add(series16);
             this.chartOfSpecificForcesP.Size = new System.Drawing.Size(1044, 300);
             this.chartOfSpecificForcesP.TabIndex = 18;
             this.chartOfSpecificForcesP.Text = "chart1";
-            title2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            title2.Name = "Title1";
-            title2.Text = "Залежність питомих сил Pr, Pj, PΣ від кута для чотирьохтактного двигуна";
-            this.chartOfSpecificForcesP.Titles.Add(title2);
+            title7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title7.Name = "Title1";
+            title7.Text = "Залежність питомих сил Pr, Pj, PΣ від кута для чотирьохтактного двигуна";
+            this.chartOfSpecificForcesP.Titles.Add(title7);
             this.chartOfSpecificForcesP.Move += new System.EventHandler(this.chartOfSpecificForcesP_Move);
             // 
             // chartOfSpecificForces_KAndN
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chartOfSpecificForces_KAndN.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chartOfSpecificForces_KAndN.Legends.Add(legend3);
-            this.chartOfSpecificForces_KAndN.Location = new System.Drawing.Point(91, 330);
+            chartArea8.Name = "ChartArea1";
+            this.chartOfSpecificForces_KAndN.ChartAreas.Add(chartArea8);
+            legend8.Name = "Legend1";
+            this.chartOfSpecificForces_KAndN.Legends.Add(legend8);
+            this.chartOfSpecificForces_KAndN.Location = new System.Drawing.Point(108, 309);
             this.chartOfSpecificForces_KAndN.Name = "chartOfSpecificForces_KAndN";
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series6.Legend = "Legend1";
-            series6.LegendText = "K";
-            series6.Name = "SeriesK";
-            series7.ChartArea = "ChartArea1";
-            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series7.Legend = "Legend1";
-            series7.LegendText = "N";
-            series7.Name = "SeriesN";
-            this.chartOfSpecificForces_KAndN.Series.Add(series6);
-            this.chartOfSpecificForces_KAndN.Series.Add(series7);
+            series17.ChartArea = "ChartArea1";
+            series17.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series17.Legend = "Legend1";
+            series17.LegendText = "K";
+            series17.Name = "SeriesK";
+            series18.ChartArea = "ChartArea1";
+            series18.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series18.Legend = "Legend1";
+            series18.LegendText = "N";
+            series18.Name = "SeriesN";
+            this.chartOfSpecificForces_KAndN.Series.Add(series17);
+            this.chartOfSpecificForces_KAndN.Series.Add(series18);
             this.chartOfSpecificForces_KAndN.Size = new System.Drawing.Size(1044, 300);
             this.chartOfSpecificForces_KAndN.TabIndex = 19;
             this.chartOfSpecificForces_KAndN.Text = "chart1";
-            title3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            title3.Name = "Title1";
-            title3.Text = "Залежність питомих сил K i N від кута для чотирьохтактного двигуна";
-            this.chartOfSpecificForces_KAndN.Titles.Add(title3);
+            title8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title8.Name = "Title1";
+            title8.Text = "Залежність питомих сил K i N від кута для чотирьохтактного двигуна";
+            this.chartOfSpecificForces_KAndN.Titles.Add(title8);
             this.chartOfSpecificForces_KAndN.Move += new System.EventHandler(this.chartOfSpecificForces_KAndN_Move);
             // 
             // chartOfSpecificForces_TAndZ
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chartOfSpecificForces_TAndZ.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chartOfSpecificForces_TAndZ.Legends.Add(legend4);
-            this.chartOfSpecificForces_TAndZ.Location = new System.Drawing.Point(91, 475);
+            chartArea9.Name = "ChartArea1";
+            this.chartOfSpecificForces_TAndZ.ChartAreas.Add(chartArea9);
+            legend9.Name = "Legend1";
+            this.chartOfSpecificForces_TAndZ.Legends.Add(legend9);
+            this.chartOfSpecificForces_TAndZ.Location = new System.Drawing.Point(108, 475);
             this.chartOfSpecificForces_TAndZ.Name = "chartOfSpecificForces_TAndZ";
-            series8.ChartArea = "ChartArea1";
-            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series8.Legend = "Legend1";
-            series8.LegendText = "T";
-            series8.Name = "SeriesT";
-            series9.ChartArea = "ChartArea1";
-            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series9.Legend = "Legend1";
-            series9.LegendText = "Z";
-            series9.Name = "SeriesZ";
-            this.chartOfSpecificForces_TAndZ.Series.Add(series8);
-            this.chartOfSpecificForces_TAndZ.Series.Add(series9);
+            series19.ChartArea = "ChartArea1";
+            series19.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series19.Legend = "Legend1";
+            series19.LegendText = "T";
+            series19.Name = "SeriesT";
+            series20.ChartArea = "ChartArea1";
+            series20.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series20.Legend = "Legend1";
+            series20.LegendText = "Z";
+            series20.Name = "SeriesZ";
+            this.chartOfSpecificForces_TAndZ.Series.Add(series19);
+            this.chartOfSpecificForces_TAndZ.Series.Add(series20);
             this.chartOfSpecificForces_TAndZ.Size = new System.Drawing.Size(1044, 300);
             this.chartOfSpecificForces_TAndZ.TabIndex = 20;
             this.chartOfSpecificForces_TAndZ.Text = "chart1";
-            title4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            title4.Name = "Title1";
-            title4.Text = "Залежність питомих сил T i Z від кута для чотирьохтактного двигуна";
-            this.chartOfSpecificForces_TAndZ.Titles.Add(title4);
+            title9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title9.Name = "Title1";
+            title9.Text = "Залежність питомих сил T i Z від кута для чотирьохтактного двигуна";
+            this.chartOfSpecificForces_TAndZ.Titles.Add(title9);
             // 
             // chartOfGasPressureOnPistonFromAngle
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chartOfGasPressureOnPistonFromAngle.ChartAreas.Add(chartArea5);
-            legend5.Name = "Legend1";
-            this.chartOfGasPressureOnPistonFromAngle.Legends.Add(legend5);
-            this.chartOfGasPressureOnPistonFromAngle.Location = new System.Drawing.Point(108, 407);
+            chartArea10.Name = "ChartArea1";
+            this.chartOfGasPressureOnPistonFromAngle.ChartAreas.Add(chartArea10);
+            legend10.Name = "Legend1";
+            this.chartOfGasPressureOnPistonFromAngle.Legends.Add(legend10);
+            this.chartOfGasPressureOnPistonFromAngle.Location = new System.Drawing.Point(108, 404);
             this.chartOfGasPressureOnPistonFromAngle.Name = "chartOfGasPressureOnPistonFromAngle";
-            series10.ChartArea = "ChartArea1";
-            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series10.Legend = "Legend1";
-            series10.LegendText = "P1";
-            series10.Name = "SeriesEveryP";
-            series11.ChartArea = "ChartArea1";
-            series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series11.Legend = "Legend1";
-            series11.LegendText = "P2";
-            series11.Name = "SeriesPTo360";
-            this.chartOfGasPressureOnPistonFromAngle.Series.Add(series10);
-            this.chartOfGasPressureOnPistonFromAngle.Series.Add(series11);
+            series21.ChartArea = "ChartArea1";
+            series21.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series21.Legend = "Legend1";
+            series21.LegendText = "P1";
+            series21.Name = "SeriesEveryP";
+            series22.ChartArea = "ChartArea1";
+            series22.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series22.Legend = "Legend1";
+            series22.LegendText = "P2";
+            series22.Name = "SeriesPTo360";
+            this.chartOfGasPressureOnPistonFromAngle.Series.Add(series21);
+            this.chartOfGasPressureOnPistonFromAngle.Series.Add(series22);
             this.chartOfGasPressureOnPistonFromAngle.Size = new System.Drawing.Size(1044, 300);
             this.chartOfGasPressureOnPistonFromAngle.TabIndex = 21;
             this.chartOfGasPressureOnPistonFromAngle.Text = "chart1";
-            title5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            title5.Name = "Title1";
-            title5.Text = "Діаграма сил згоряння газів";
-            this.chartOfGasPressureOnPistonFromAngle.Titles.Add(title5);
+            title10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title10.Name = "Title1";
+            title10.Text = "Діаграма сил згоряння газів";
+            this.chartOfGasPressureOnPistonFromAngle.Titles.Add(title10);
             this.chartOfGasPressureOnPistonFromAngle.Move += new System.EventHandler(this.chartOfGasPressureOnPistonFromAngle_Move);
             // 
             // label_AnalyticPip
@@ -581,15 +499,25 @@ namespace Mechanic
             this.label_GraphicPip.TabIndex = 23;
             this.label_GraphicPip.Text = "Графічне Pᵢₚ = ";
             // 
-            // label2
+            // label_bi
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(547, 173);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(15, 16);
-            this.label2.TabIndex = 24;
-            this.label2.Text = "5";
+            this.label_bi.AutoSize = true;
+            this.label_bi.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_bi.Location = new System.Drawing.Point(300, 156);
+            this.label_bi.Name = "label_bi";
+            this.label_bi.Size = new System.Drawing.Size(315, 20);
+            this.label_bi.TabIndex = 24;
+            this.label_bi.Text = "Питома індикаторна витрата палива bᵢ :";
+            // 
+            // label_EtaV
+            // 
+            this.label_EtaV.AutoSize = true;
+            this.label_EtaV.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_EtaV.Location = new System.Drawing.Point(395, 121);
+            this.label_EtaV.Name = "label_EtaV";
+            this.label_EtaV.Size = new System.Drawing.Size(214, 20);
+            this.label_EtaV.TabIndex = 25;
+            this.label_EtaV.Text = "Коефіцієнт наповнення ηᵥ :";
             // 
             // FormDiagramProcessOfCylinder
             // 
@@ -597,7 +525,8 @@ namespace Mechanic
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1264, 813);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label_EtaV);
+            this.Controls.Add(this.label_bi);
             this.Controls.Add(this.label_GraphicPip);
             this.Controls.Add(this.label_AnalyticPip);
             this.Controls.Add(this.chartOfGasPressureOnPistonFromAngle);
@@ -608,16 +537,8 @@ namespace Mechanic
             this.Controls.Add(this.chart_IndicatorDiagram);
             this.Controls.Add(this.label_PZ);
             this.Controls.Add(this.label_Pc);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.dataGridView_Politrop);
-            this.Controls.Add(this.textBox_Lambda_DegreeOfPressureIncrease);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox_N2_IndicPolitrExpansion);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.labelDataForCreateDiagr);
-            this.Controls.Add(this.textBox_N1_IndicPolitrCompres);
-            this.Controls.Add(this.btnCalcAndBuildDiagr);
-            this.Controls.Add(this.label1);
             this.Name = "FormDiagramProcessOfCylinder";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Діаграма робочого процесу для циліндра";
@@ -634,17 +555,8 @@ namespace Mechanic
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnCalcAndBuildDiagr;
-        private System.Windows.Forms.TextBox textBox_N1_IndicPolitrCompres;
         private System.Windows.Forms.Label labelDataForCreateDiagr;
-        private System.Windows.Forms.TextBox textBox_N2_IndicPolitrExpansion;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox_Lambda_DegreeOfPressureIncrease;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dataGridView_Politrop;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Label label_Pc;
         private System.Windows.Forms.Label label_PZ;
@@ -680,12 +592,9 @@ namespace Mechanic
         private Chart chartOfGasPressureOnPistonFromAngle;
         private Label label_AnalyticPip;
         private Label label_GraphicPip;
-        private Label label2;
+        private Label label_bi;
+        private Label label_EtaV;
 
-        public Label LabelDataForCreateDiagr { get => labelDataForCreateDiagr; set => labelDataForCreateDiagr = value; }
-        public TextBox TextBox_N1_IndicPolitrCompres { get => textBox_N1_IndicPolitrCompres; set => textBox_N1_IndicPolitrCompres = value; }
-        public TextBox TextBox_N2_IndicPolitrExpansion { get => textBox_N2_IndicPolitrExpansion; set => textBox_N2_IndicPolitrExpansion = value; }
-        public TextBox TextBox_Lambda_DegreeOfPressureIncrease { get => textBox_Lambda_DegreeOfPressureIncrease; set => textBox_Lambda_DegreeOfPressureIncrease = value; }
-        public Button BtnCalcAndBuildDiagr { get => btnCalcAndBuildDiagr; set => btnCalcAndBuildDiagr = value; }
+        public Label LabelDataForCreateDiagr { get => labelDataForCreateDiagr; set => labelDataForCreateDiagr = value; }      
     }
 }

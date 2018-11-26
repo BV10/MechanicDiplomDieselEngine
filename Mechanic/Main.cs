@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Net;
+using System.Net.Cache;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -81,6 +84,51 @@ namespace Mechanic
 
         }
 
+        //для лицензии
+
+        private DateTime endOfLicense = new DateTime(2018, 12, 26);
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                if (GetTimeFromWeb().Date == endOfLicense.Date)
+                {
+                    MessageBox.Show("Срок вашей лицензии закончился. Для продления лицензии обращайтесь на почту: " +
+                        "Bogdan10075@gmail.com");
+                    this.Close();
+                    return;
+                }
+            } catch(Exception)
+            {
+                MessageBox.Show("Нет подключения к интернету.");
+                this.Close();
+                return;
+            }
+           
+        }
+
+        public static DateTime GetTimeFromWeb()
+        {
+            DateTime dateTime = DateTime.MinValue;
+            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("http://www.microsoft.com");
+            request.Method = "GET";
+            request.Accept = "text/html, application/xhtml+xml, */*";
+            request.UserAgent = "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+            System.Net.HttpWebResponse response = (System.Net.HttpWebResponse)request.GetResponse();
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                string todaysDates = response.Headers["date"];
+
+                dateTime = DateTime.ParseExact(todaysDates, "ddd, dd MMM yyyy HH:mm:ss 'GMT'",
+                    System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat, System.Globalization.DateTimeStyles.AssumeUniversal);
+            }
+
+            return dateTime;
+        }
+
         private void DrawChartIdealWorkingOfEngineTotalToque(Chart chart)
         {
             //create new seties
@@ -138,24 +186,27 @@ namespace Mechanic
 
             for (int i = 0; i < COUNT_CYLINDER_ENGINE; i++)
             {
-                FormDiagramProcessOfCylinder formCreateDiagramProcess = new FormDiagramProcessOfCylinder(pk);
-                formCreateDiagramProcess.Main = this;
-                FormsDiagrOfCylinderProcesses.Add(formCreateDiagramProcess);
-                formCreateDiagramProcess.NumberCylinder = i + 1;
+                FormDiagramProcessOfCylinder formCreateDiagramProcess;
+                try
+                {
+                    formCreateDiagramProcess = new FormDiagramProcessOfCylinder(pk,
+                    double.Parse(this.dataGridView_DataForDiagram.Rows[i].Cells[1].Value.ToString()),
+                    double.Parse(this.dataGridView_DataForDiagram.Rows[i].Cells[2].Value.ToString()),
+                    double.Parse(dataGridView_DataForDiagram.Rows[i].Cells[3].Value.ToString())
+                    );
+                } catch(Exception ex)
+                {
+                    MessageBox.Show(this, ex.Message, "Помилка в заданому значенні", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+
+                FormsDiagrOfCylinderProcesses.Add(formCreateDiagramProcess);                
                 formCreateDiagramProcess.Text += " " + (i + 1);
                 formCreateDiagramProcess.LabelDataForCreateDiagr.Text += " " + (i + 1) + "-го " + "циліндра.";
                 CalcSpecificForcesOfCylinders.Add(formCreateDiagramProcess.CalcSpecificForces);
-
-                // add setted data for calc politron
-                string n1OfCylind = this.dataGridView_DataForDiagram.Rows[i].Cells[1].Value.ToString();
-                string n2OfCylind = this.dataGridView_DataForDiagram.Rows[i].Cells[2].Value.ToString();
-                string lambdaOfCylind = this.dataGridView_DataForDiagram.Rows[i].Cells[3].Value.ToString();
-
-                formCreateDiagramProcess.TextBox_N1_IndicPolitrCompres.Text = n1OfCylind;
-                formCreateDiagramProcess.TextBox_N2_IndicPolitrExpansion.Text = n2OfCylind;
-                formCreateDiagramProcess.TextBox_Lambda_DegreeOfPressureIncrease.Text = lambdaOfCylind;
                 formCreateDiagramProcess.Show();
-                formCreateDiagramProcess.BtnCalcAndBuildDiagr.PerformClick();
+                formCreateDiagramProcess.CalcAndBuildDiagr();
             }
             this.TopMost = true;
             this.TopMost = false;
@@ -480,5 +531,13 @@ namespace Mechanic
         {
             dataGridView_TorqueUniformity.Top = dataGridView_TiAndMi.Bottom + SHIFT_ELEM_CONTROL;
         }
+
+        private void оРазработчикахToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Дана програма була розроблена " +
+                "студентами: групи ПЗ1511 - Валовим Богданом, групи ЛГ1721 - Ольховиком Валентином. 2018 рік."
+                );
+        }
+
     }
 }
