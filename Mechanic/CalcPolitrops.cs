@@ -201,7 +201,15 @@ namespace Mechanic
                 //поточний тиск p на лінії розширення
                 double pressureOnLineExpansion = calcPressureOnLineExpansion(ratioVzToVInDegreeN2);
                 // замінити на pZ, якщо тиск більший pZ
-                pressureOnLineExpansion = pressureOnLineExpansion > PZ ? PZ : pressureOnLineExpansion;
+                if(this.LambdaDegreeIncreasePressure != 1.0)
+                {
+                    pressureOnLineExpansion = pressureOnLineExpansion > PZ ? PZ : pressureOnLineExpansion;
+                }
+                else //при lambda 1.0 совпадает давление
+                {
+                    pressureOnLineExpansion = pressureOnLineCompression;
+                }
+               
                 this.DataPolitrops.PressureOnLineExpansion.Add(Round(pressureOnLineExpansion, DEFAULT_ROUND_NUMB));
                 //cancel execute calc func
                 if (token.IsCancellationRequested)
@@ -302,7 +310,13 @@ namespace Mechanic
 
         public double CalcBi(DataPolitropsOfComprassionAndExpansion dataPolitrops)
         {
-            return (3600 / (41500 * CalcNi()));
+            double ni = CalcEtaI();
+            if (ni == 0.0)
+            {
+                return 0;
+            }
+                
+            return (3600 / (41500 * ni));
         }
     }
 }

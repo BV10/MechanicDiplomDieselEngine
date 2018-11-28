@@ -5,6 +5,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using static System.Math;
 using System.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Drawing;
 
 namespace Mechanic
 {
@@ -20,6 +21,19 @@ namespace Mechanic
         private double n2;
         private double lambda;
         public const int DELTA_ANGLE = 5;
+
+        //const for chart indic diag
+        private const double MIN_AXIS_Y_INDIC_DIAG = 0;
+        private double MAX_AXIS_Y_INDIC_DIAG = 8.1;
+        private const int INTERVAL_AXIS_Y_INDIC_DIAG = 1;
+
+        private const double INTERVAL_AXIS_X_INDIC_DIAG = 0.002;
+        private const double MAX_AXIS_X_INDIC_DIAG = 0.031;
+        private const double MIN_AXIS_X_INDIC_DIAG = 0.0;
+
+        //const for charts pressures
+        private const int INTERVAL_ANGLE_ON_CHART = 60;
+        private const int DIAPAZON_LABEL_CHART = 60;
 
         private Task TaskCalcPolitropData { get; set; } = null;
         public Task TaskCalcSpecificForces { get; set; } = null;
@@ -59,7 +73,7 @@ namespace Mechanic
 
                 this.lambda = value;
             }
-        }
+        }                
 
         // тиск повітря у надувному колекторі  для кожного циліндра
         public FormDiagramProcessOfCylinder(double Pk, double n1, double n2, double lambda)
@@ -73,36 +87,79 @@ namespace Mechanic
             Lambda = lambda;
             timer.Interval = WAITING_EXECUTE_CALCULATING;
             this.label_Pc.Text = "Pc:  " + CalcPolitrops.PC.ToString();
-            this.chart_IndicatorDiagram.Top = dataGridView_Politrop.Bottom + SHIFT_OF_ELEM;
-            this.chartOfGasPressureOnPistonFromAngle.Top = this.dataGridView_CalcSpecifForces.Bottom + SHIFT_OF_ELEM;
-            this.chartOfSpecificForcesP.Top = this.chartOfGasPressureOnPistonFromAngle.Bottom + SHIFT_OF_ELEM;
-            this.chartOfSpecificForces_KAndN.Top = this.chartOfSpecificForcesP.Bottom + SHIFT_OF_ELEM;
-            this.chartOfSpecificForces_TAndZ.Top = this.chartOfSpecificForces_KAndN.Bottom + SHIFT_OF_ELEM;
 
-
-            this.chart_IndicatorDiagram.ChartAreas[0].AxisX.Title = "V";
-            this.chart_IndicatorDiagram.ChartAreas[0].AxisY.Title = "p";
-
-
-            this.chartOfSpecificForcesP.ChartAreas[0].AxisX.Title = "\u03c6";
-            this.chartOfSpecificForcesP.ChartAreas[0].AxisY.Title = "Pr, Pj, P\u2A0A";//sum unicode
-
-            this.chartOfSpecificForces_KAndN.ChartAreas[0].AxisX.Title = "\u03c6";
-            this.chartOfSpecificForces_KAndN.ChartAreas[0].AxisY.Title = "K, N, МПа";
-
-
-            this.chartOfSpecificForces_TAndZ.ChartAreas[0].AxisX.Title = "\u03c6";//phi unicode
-            this.chartOfSpecificForces_TAndZ.ChartAreas[0].AxisY.Title = "T, Z, МПа";
-
-            this.chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisX.Title = "Кут повороту колінчатого валу, град";//phi unicode
-            this.chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisY.Title = "Тиск газів, МПа";
+            CustomizeChartOfIndicatorDiagram();
+            CustomizeChartOfGasPressureOnPistonFromAngle();
+            CustomizeChartOfSpecificForcesP();
+            CustomizeChartOfSpecificForces_KandN();
+            CustomizeChartOfSpicificForces_TandZ();
 
             this.label_AnalyticPip.Top = this.chart_IndicatorDiagram.Bottom + 50;
             this.label_AnalyticPip.Left = this.chart_IndicatorDiagram.Size.Width / 2 + this.chart_IndicatorDiagram.Left - (this.label_AnalyticPip.Size.Width / 2);
-
-
             this.label_GraphicPip.Top = this.label_AnalyticPip.Top;
-            this.label_GraphicPip.Left = this.label_AnalyticPip.Left + this.label_AnalyticPip.Size.Width + SHIFT_ELEM_OF_GRAPHIC_Pi;
+            this.label_GraphicPip.Left = this.label_AnalyticPip.Left + this.label_AnalyticPip.Size.Width + SHIFT_ELEM_OF_GRAPHIC_Pi;            
+        }
+
+        private void CustomizeChartOfIndicatorDiagram()
+        {
+            this.chart_IndicatorDiagram.Top = dataGridView_Politrop.Bottom + SHIFT_OF_ELEM;
+            this.chart_IndicatorDiagram.ChartAreas[0].AxisX.Title = "V, м³";
+            this.chart_IndicatorDiagram.ChartAreas[0].AxisY.Title = "p, МПА";
+
+
+            chart_IndicatorDiagram.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
+            chart_IndicatorDiagram.ChartAreas[0].AxisX.MajorGrid.Interval = INTERVAL_AXIS_X_INDIC_DIAG;
+            chart_IndicatorDiagram.ChartAreas[0].AxisX.Minimum = MIN_AXIS_X_INDIC_DIAG;
+            chart_IndicatorDiagram.ChartAreas[0].AxisX.Maximum = MAX_AXIS_X_INDIC_DIAG;
+
+            chart_IndicatorDiagram.ChartAreas[0].AxisY.MajorTickMark.Enabled = false;
+            chart_IndicatorDiagram.ChartAreas[0].AxisY.MajorGrid.Interval = INTERVAL_AXIS_Y_INDIC_DIAG;
+            chart_IndicatorDiagram.ChartAreas[0].AxisY.Minimum = MIN_AXIS_Y_INDIC_DIAG;
+            chart_IndicatorDiagram.ChartAreas[0].AxisY.Maximum = MAX_AXIS_Y_INDIC_DIAG;
+        }
+
+        private void CustomizeChartOfSpicificForces_TandZ()
+        {
+            this.chartOfSpecificForces_TAndZ.Top = this.chartOfSpecificForces_KAndN.Bottom + SHIFT_OF_ELEM;
+            this.chartOfSpecificForces_TAndZ.ChartAreas[0].AxisX.Title = "\u03c6°";//phi unicode
+            this.chartOfSpecificForces_TAndZ.ChartAreas[0].AxisY.Title = "T, Z, МПа";
+            chartOfSpecificForces_TAndZ.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
+            chartOfSpecificForces_TAndZ.ChartAreas[0].AxisX.MajorGrid.Interval = 60;
+            chartOfSpecificForces_TAndZ.ChartAreas[0].AxisX.Minimum = 0;
+            chartOfSpecificForces_TAndZ.ChartAreas[0].AxisX.Maximum = 720;
+        }
+
+        private void CustomizeChartOfSpecificForces_KandN()
+        {
+            this.chartOfSpecificForces_KAndN.Top = this.chartOfSpecificForcesP.Bottom + SHIFT_OF_ELEM;
+            this.chartOfSpecificForces_KAndN.ChartAreas[0].AxisX.Title = "\u03c6°";
+            this.chartOfSpecificForces_KAndN.ChartAreas[0].AxisY.Title = "K, N, МПа";
+            chartOfSpecificForces_KAndN.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
+            chartOfSpecificForces_KAndN.ChartAreas[0].AxisX.MajorGrid.Interval = 60;
+            chartOfSpecificForces_KAndN.ChartAreas[0].AxisX.Minimum = 0;
+            chartOfSpecificForces_KAndN.ChartAreas[0].AxisX.Maximum = 720;
+        }
+
+        private void CustomizeChartOfGasPressureOnPistonFromAngle()
+        {
+            this.chartOfGasPressureOnPistonFromAngle.Top = this.dataGridView_CalcSpecifForces.Bottom + SHIFT_OF_ELEM;
+            chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
+            chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisX.MajorGrid.Interval = 60;
+            chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisX.Minimum = 0;
+            chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisX.Maximum = 720;
+            this.chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisX.Title = "\u03c6°";//phi unicode
+            this.chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisY.Title = "Тиск газів, МПа";
+        }
+
+        private void CustomizeChartOfSpecificForcesP()
+        {
+            this.chartOfSpecificForcesP.Top = this.chartOfGasPressureOnPistonFromAngle.Bottom + SHIFT_OF_ELEM;
+            chartOfSpecificForcesP.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
+            chartOfSpecificForcesP.ChartAreas[0].AxisX.MajorGrid.Interval = 60;
+            chartOfSpecificForcesP.ChartAreas[0].AxisX.Minimum = 0;
+            chartOfSpecificForcesP.ChartAreas[0].AxisX.Maximum = 720;
+            this.chartOfSpecificForcesP.ChartAreas[0].AxisX.Title = "\u03c6°";
+            this.chartOfSpecificForcesP.ChartAreas[0].AxisY.Title = "Pr, Pj, P\u2A0A МПа";//sum unicode
         }
 
         public void CalcAndBuildDiagr()
@@ -154,9 +211,9 @@ namespace Mechanic
             {
                 BuildChartDataPolitrop();
                 //show Pip розрахунковий середній індикаторний тиск
-                this.label_AnalyticPip.Text = "Аналітичне P\u1D62\u209A = " + Round(calcPolitrops.CalcAnalyticPip(), 3);
+                this.label_AnalyticPip.Text = "Аналітичне P\u1D62\u209A = " + Round(calcPolitrops.CalcAnalyticPip(), 3) + ", МПа";
                 this.Pi = Round(calcPolitrops.CalcGraphicPip(calcPolitrops.DataPolitrops), 3);                
-                this.label_GraphicPip.Text = "Графічне P\u1D62\u209A = " + Pi;
+                this.label_GraphicPip.Text = "Графічне P\u1D62\u209A = " + Pi + ", МПа";
                 isShowCalcDataPolitr = true;
                 CalcSpecificForces.CalcPolitrops = CalcPolitrops;
                 TaskCalcSpecificForces = CalcSpecificForces.CalcDataOfSpecificForcesAsync(FormDiagramProcessOfCylinder.DELTA_ANGLE, this.Lambda);
@@ -425,5 +482,58 @@ namespace Mechanic
             this.label_GraphicPip.Top = this.label_AnalyticPip.Top;
             this.label_GraphicPip.Left = this.label_AnalyticPip.Left + this.label_AnalyticPip.Size.Width + SHIFT_ELEM_OF_GRAPHIC_Pi;
         }
+
+        private void chartOfSpecificForcesP_Customize(object sender, EventArgs e)
+        {
+            chartOfSpecificForcesP.ChartAreas[0].AxisX.CustomLabels.Clear();
+            for (int i = 0; i <= 720; i += INTERVAL_ANGLE_ON_CHART)
+            {
+                chartOfSpecificForcesP.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(i - DIAPAZON_LABEL_CHART, i + DIAPAZON_LABEL_CHART, i.ToString(), 0, LabelMarkStyle.None));
+            }
+        }
+
+        private void chartOfSpecificForces_KAndN_Customize(object sender, EventArgs e)
+        {
+            chartOfSpecificForces_KAndN.ChartAreas[0].AxisX.CustomLabels.Clear();
+            for (int i = 0; i <= 720; i += INTERVAL_ANGLE_ON_CHART)
+            {
+                chartOfSpecificForces_KAndN.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(i - DIAPAZON_LABEL_CHART, i + DIAPAZON_LABEL_CHART, i.ToString(), 0, LabelMarkStyle.None));
+            }
+        }
+
+        private void chartOfGasPressureOnPistonFromAngle_Customize(object sender, EventArgs e)
+        {
+            chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisX.CustomLabels.Clear();
+            for (int i = 0; i <= 720; i += INTERVAL_ANGLE_ON_CHART)
+            {
+                chartOfGasPressureOnPistonFromAngle.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(i - DIAPAZON_LABEL_CHART, i + DIAPAZON_LABEL_CHART, i.ToString(), 0, LabelMarkStyle.None));
+            }
+        }
+
+        private void chartOfSpecificForces_TAndZ_Customize(object sender, EventArgs e)
+        {
+            chartOfSpecificForces_TAndZ.ChartAreas[0].AxisX.CustomLabels.Clear();
+            for (int i = 0; i <= 720; i += INTERVAL_ANGLE_ON_CHART)
+            {
+                chartOfSpecificForces_TAndZ.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(i - DIAPAZON_LABEL_CHART, i + DIAPAZON_LABEL_CHART, i.ToString(), 0, LabelMarkStyle.None));
+            }
+        }
+
+        private void chart_IndicatorDiagram_Customize(object sender, EventArgs e)
+        {
+            chart_IndicatorDiagram.ChartAreas[0].AxisX.CustomLabels.Clear();
+            for (double i = MIN_AXIS_X_INDIC_DIAG; i <= MAX_AXIS_X_INDIC_DIAG; i += INTERVAL_AXIS_X_INDIC_DIAG)
+            {
+                chart_IndicatorDiagram.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(i - INTERVAL_AXIS_X_INDIC_DIAG, i + INTERVAL_AXIS_X_INDIC_DIAG, i.ToString(), 0, LabelMarkStyle.None));
+            }
+
+            chart_IndicatorDiagram.ChartAreas[0].AxisY.CustomLabels.Clear();
+            for (double i = MIN_AXIS_Y_INDIC_DIAG; i <= MAX_AXIS_Y_INDIC_DIAG; i += INTERVAL_AXIS_Y_INDIC_DIAG)
+            {
+                chart_IndicatorDiagram.ChartAreas[0].AxisY.CustomLabels.Add(new CustomLabel(i - INTERVAL_AXIS_Y_INDIC_DIAG, i + INTERVAL_AXIS_Y_INDIC_DIAG, i.ToString(), 0, LabelMarkStyle.None));
+            }
+        }
+        
+
     }
 }

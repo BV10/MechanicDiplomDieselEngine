@@ -39,10 +39,19 @@ namespace Mechanic
         private const double DEFAULT_VALUE_N1 = 1.36;
         private const double DEFAULT_VALUE_N2 = 1.27;
         private const double DEFAULT_VALUE_LAMBDA = 1.5;
+        private const int INTERVAL_AXIS_X_CHART_TOTAL_TORQUE = 120;
+        private const int MIN_AXIS_X_CHART_TOTAL_TOQUE = 0;
+        private const int MAX_AXIS_X_CHART_TOTAL_TOQUE = 720;
 
+        // for 6 cylinders
         private List<CalcSpecificForces> CalcSpecificForcesOfCylinders { get; set; } = new List<CalcSpecificForces>();
         private List<FormDiagramProcessOfCylinder> FormsDiagrOfCylinderProcesses { get; set; } = new List<FormDiagramProcessOfCylinder>();
         private List<double> TotalTorqueOfCylinders { get; set; } = new List<double>(); // обертальні моменти двигунів
+
+        //for ideal engine
+        private FormDiagramProcessOfCylinder FormDiagrOfIdealEngine { get; set; } = null;
+        private CalcSpecificForces CalcSpecificForcesIdealEngine { get; set; } = null;
+        private List<double> TotalTorqueOfIdealEngine { get; set; } = new List<double>();
 
         //max total torques
         private double maxTotalTorque = 0.0;
@@ -51,37 +60,44 @@ namespace Mechanic
         // average total torque
         private double averageTotalTorque = 0.0;
 
-        double[] IdealEngineTotalTorques =
-        {
-            -0.367, 4.167, 8.937, 14.127, 19.723, 21.924, 19.644, 17.233, 15.228, 13.812, 13.013, 12.777,
-            12.843, 12.345, 11.794, 11.021, 9.894, 8.4, 6.526, 4.39, 2.267, 0.459, -0.655, -0.865, -0.367,
-            4.167, 8.937, 14.127, 19.723, 21.924, 19.644, 17.233, 15.228, 13.812, 13.013, 12.777, 12.843,
-            12.345, 11.794, 11.021, 9.894, 8.4, 6.526, 4.39, 2.267, 0.459, -0.655, -0.865, -0.367, 4.167,
-            8.937, 14.127, 19.723, 21.924, 19.644, 17.233, 15.228, 13.812, 13.013, 12.777, 12.843, 12.345,
-            11.794, 11.021, 9.894, 8.4, 6.526, 4.39, 2.267, 0.459, -0.655, -0.865, -0.367, 4.167, 8.937,
-            14.127, 19.723, 21.924, 19.644, 17.233, 15.228, 13.812, 13.013, 12.777, 12.843, 12.345, 11.794,
-            11.021, 9.894, 8.4, 6.526, 4.39, 2.267, 0.459, -0.655, -0.865, -0.367, 4.167, 8.937, 14.127,
-            19.723, 21.924, 19.644, 17.233, 15.228, 13.812, 13.013, 12.777, 12.843, 12.345, 11.794, 11.021,
-            9.894, 8.4, 6.526, 4.39, 2.267, 0.459, -0.655, -0.865, -0.367, 4.167, 8.937, 14.127, 19.723,
-            21.924, 19.644, 17.233, 15.228, 13.812, 13.013, 12.777, 12.843, 12.345, 11.794, 11.021, 9.894,
-            8.4, 6.526, 4.39, 2.267, 0.459, -0.655, -0.865
-        };
-
         public Main()
         {
             InitializeComponent();
-            InitializeGridViewDataForDiagram();            
-            chartTotalToque.Top = btnTotalTorqueEngine.Bottom + DEFAULT_SHIFT_OF_CONTROLS;
+            InitializeGridViewDataForDiagram();
+            InitializeGridViewDataForIdealEngine();
+            //this.btnDrawDiagram.Select();
+            CustomizeOfChartIdealEngine();
+            CustomizeOfChartTotalToque();
+
             dataGridView_TiAndMi.Top = chartTotalToque.Bottom + DEFAULT_SHIFT_OF_CONTROLS;
             dataGridView_TorqueUniformity.Top = dataGridView_TiAndMi.Bottom + DEFAULT_SHIFT_OF_CONTROLS + 20;
-            //dataGridView_TorqueUniformity.Bottom += 20;
-            this.btnDrawDiagram.Select();
-            this.chartTotalToque.ChartAreas[0].AxisX.Title = "\u03c6";
-            this.chartTotalToque.ChartAreas[0].AxisY.Title = "M";
-            DrawChartIdealWorkingOfEngineTotalToque(chartTotalToque);
+
 
             this.MaximizeBox = false;
+        }
 
+        private void CustomizeOfChartIdealEngine()
+        {
+            chart_IdealEngine.Top = btnTotalTorqueEngine.Bottom + DEFAULT_SHIFT_OF_CONTROLS;
+            this.chart_IdealEngine.ChartAreas[0].AxisX.Title = "\u03c6°";
+            this.chart_IdealEngine.ChartAreas[0].AxisY.Title = "M";
+            //customize grid line
+            chart_IdealEngine.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
+            chart_IdealEngine.ChartAreas[0].AxisX.MajorGrid.Interval = INTERVAL_AXIS_X_CHART_TOTAL_TORQUE;
+            chart_IdealEngine.ChartAreas[0].AxisX.Minimum = MIN_AXIS_X_CHART_TOTAL_TOQUE;
+            chart_IdealEngine.ChartAreas[0].AxisX.Maximum = MAX_AXIS_X_CHART_TOTAL_TOQUE;
+        }
+
+        private void CustomizeOfChartTotalToque()
+        {
+            chartTotalToque.Top = chart_IdealEngine.Bottom + DEFAULT_SHIFT_OF_CONTROLS;
+            this.chartTotalToque.ChartAreas[0].AxisX.Title = "\u03c6°";
+            this.chartTotalToque.ChartAreas[0].AxisY.Title = "M";
+            //customize grid line
+            chartTotalToque.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
+            chartTotalToque.ChartAreas[0].AxisX.MajorGrid.Interval = INTERVAL_AXIS_X_CHART_TOTAL_TORQUE;
+            chartTotalToque.ChartAreas[0].AxisX.Minimum = MIN_AXIS_X_CHART_TOTAL_TOQUE;
+            chartTotalToque.ChartAreas[0].AxisX.Maximum = MAX_AXIS_X_CHART_TOTAL_TOQUE;
         }
 
         //для лицензии
@@ -90,22 +106,22 @@ namespace Mechanic
 
         private void Main_Load(object sender, EventArgs e)
         {
-            try
-            {
-                if (GetTimeFromWeb().Date == endOfLicense.Date)
-                {
-                    MessageBox.Show("Срок вашей лицензии закончился. Для продления лицензии обращайтесь на почту: " +
-                        "Bogdan10075@gmail.com");
-                    this.Close();
-                    return;
-                }
-            } catch(Exception)
-            {
-                MessageBox.Show("Нет подключения к интернету.");
-                this.Close();
-                return;
-            }
-           
+            //try
+            //{
+            //    if (GetTimeFromWeb().Date == endOfLicense.Date)
+            //    {
+            //        MessageBox.Show("Срок вашей лицензии закончился. Для продления лицензии обращайтесь на почту: " +
+            //            "Bogdan10075@gmail.com");
+            //        this.Close();
+            //        return;
+            //    }
+            //} catch(Exception)
+            //{
+            //    MessageBox.Show("Нет подключения к интернету.");
+            //    this.Close();
+            //    return;
+            //}
+
         }
 
         public static DateTime GetTimeFromWeb()
@@ -129,31 +145,6 @@ namespace Mechanic
             return dateTime;
         }
 
-        private void DrawChartIdealWorkingOfEngineTotalToque(Chart chart)
-        {
-            //create new seties
-            Series series = new Series();
-            series.ChartArea = "ChartArea1";
-            series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series.IsVisibleInLegend = false;
-            this.chartTotalToque.Series.Add(series);
-
-            //customize grid line
-            chartTotalToque.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
-            chartTotalToque.ChartAreas[0].AxisX.MajorGrid.Interval = 120;
-
-            chartTotalToque.ChartAreas[0].AxisX.Minimum = 0;
-            chartTotalToque.ChartAreas[0].AxisX.Maximum = 720;
-
-            for (int angle = CalcSpecificForces.START_ANGLE, iterTotalTorque = 0;
-                angle <= CalcSpecificForces.END_ANGLE && iterTotalTorque < IdealEngineTotalTorques.Length;
-                angle += FormDiagramProcessOfCylinder.DELTA_ANGLE, iterTotalTorque++)
-            {
-                series.Points.AddXY(angle, IdealEngineTotalTorques[iterTotalTorque]);
-                series.Points[iterTotalTorque].Color = Color.Black;
-
-            }
-        }
 
         private void InitializeGridViewDataForDiagram()
         {
@@ -164,6 +155,15 @@ namespace Mechanic
                     String.Empty, String.Empty, String.Empty, String.Empty
                 );
             }
+            FormDiagramProcessOfCylinder.AutosizeGridView(dataGridView_DataForDiagram);
+        }
+
+        private void InitializeGridViewDataForIdealEngine()
+        {
+            this.dataGridView_IdealEngine.Rows.Add(
+                DEFAULT_VALUE_N1, DEFAULT_VALUE_N2, DEFAULT_VALUE_LAMBDA, String.Empty,
+                String.Empty, String.Empty, String.Empty, String.Empty
+            );
             FormDiagramProcessOfCylinder.AutosizeGridView(dataGridView_DataForDiagram);
         }
 
@@ -194,22 +194,68 @@ namespace Mechanic
                     double.Parse(this.dataGridView_DataForDiagram.Rows[i].Cells[2].Value.ToString()),
                     double.Parse(dataGridView_DataForDiagram.Rows[i].Cells[3].Value.ToString())
                     );
-                } catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     MessageBox.Show(this, ex.Message, "Помилка в заданому значенні", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
 
-                FormsDiagrOfCylinderProcesses.Add(formCreateDiagramProcess);                
+                FormsDiagrOfCylinderProcesses.Add(formCreateDiagramProcess);
                 formCreateDiagramProcess.Text += " " + (i + 1);
                 formCreateDiagramProcess.LabelDataForCreateDiagr.Text += " " + (i + 1) + "-го " + "циліндра.";
                 CalcSpecificForcesOfCylinders.Add(formCreateDiagramProcess.CalcSpecificForces);
                 formCreateDiagramProcess.Show();
                 formCreateDiagramProcess.CalcAndBuildDiagr();
             }
+
+            //  calc data ideal engine
+            CalcDataOfIdealEngine();
+
             this.TopMost = true;
             this.TopMost = false;
+        }
+
+        private void CalcDataOfIdealEngine()
+        {
+            //close and reset old data
+            if (FormDiagrOfIdealEngine != null)
+            {
+                FormDiagrOfIdealEngine.Close();
+                FormDiagrOfIdealEngine = null;
+            }
+
+            double pk = 0.0;
+            try
+            {
+                pk = double.Parse(textBox_Pk.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Неверный формат данных для Pk.");
+                return;
+            }
+
+            try
+            {
+                FormDiagrOfIdealEngine = new FormDiagramProcessOfCylinder(pk,
+                double.Parse(this.dataGridView_IdealEngine.Rows[0].Cells[0].Value.ToString()),
+                double.Parse(this.dataGridView_IdealEngine.Rows[0].Cells[1].Value.ToString()),
+                double.Parse(this.dataGridView_IdealEngine.Rows[0].Cells[2].Value.ToString())
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Помилка в заданому значенні", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            FormDiagrOfIdealEngine.Text = "Ідеальний двигун";
+            FormDiagrOfIdealEngine.LabelDataForCreateDiagr.Text += " ідеального " + "двигуна.";
+            CalcSpecificForcesIdealEngine = FormDiagrOfIdealEngine.CalcSpecificForces;
+            FormDiagrOfIdealEngine.Show();
+            FormDiagrOfIdealEngine.CalcAndBuildDiagr();
         }
 
         private void ResetOldCalcFormProcess()
@@ -241,49 +287,35 @@ namespace Mechanic
             //check - are calculated data for all cylinders
             for (int i = 0; i < CalcSpecificForcesOfCylinders.Count; i++)
             {
-                if (CalcSpecificForcesOfCylinders[i] == null || CalcSpecificForcesOfCylinders[i].DataSpecificForces == null || //данные существуют
+                if (CalcSpecificForcesOfCylinders[i] == null || CalcSpecificForcesOfCylinders[i].DataSpecificForces == null || //данные не существуют
                     (FormsDiagrOfCylinderProcesses[i].TaskCalcSpecificForces != null && !FormsDiagrOfCylinderProcesses[i].TaskCalcSpecificForces.IsCompleted)) //данные вычислены полностью
                 {
                     DialogResult dialogResult = MessageBox.Show("Дані для циліндра " + (i + 1) + " не були розраховані.");
-                    //if (dialogResult == DialogResult.OK)
-                    //{
-                    //    //this.WindowState = FormWindowState.Minimized;
-                    //    if (FormsCylinderProcesses[i] != null)
-                    //    {
-                    //        FormsCylinderProcesses[i].WindowState = FormWindowState.Normal;
-                    //    }
-                    //}
+                    return;
+                }
+
+                if (CalcSpecificForcesIdealEngine == null || CalcSpecificForcesIdealEngine.DataSpecificForces == null || //данные не существуют
+                   (FormDiagrOfIdealEngine.TaskCalcSpecificForces != null && !FormDiagrOfIdealEngine.TaskCalcSpecificForces.IsCompleted)) //данные вычислены не полностью
+                {
+                    DialogResult dialogResult = MessageBox.Show("Дані для ідеального не були розраховані.");
                     return;
                 }
             }
 
             // add calculating data to datagrid view
-            for (int i = 0; i < COUNT_CYLINDER_ENGINE; i++)
-            {
-                //Calc Ni - індикаторна потужність двигуна
-                double ni = Round(FormsDiagrOfCylinderProcesses[i].CalcPolitrops.CalcNi(), 3);
-                this.dataGridView_DataForDiagram.Rows[i].Cells[4].Value = ni;
-                //Calc etaI - індикаторний КПД
-                double etaI = Round(FormsDiagrOfCylinderProcesses[i].CalcPolitrops.CalcEtaI(), 3);
-                this.dataGridView_DataForDiagram.Rows[i].Cells[5].Value = etaI;
-                //calc Ne - ефективна потужність
-                this.dataGridView_DataForDiagram.Rows[i].Cells[6].Value = Round(ni * 0.84, 3);
-                //calc etaE - ефективна КПД
-                this.dataGridView_DataForDiagram.Rows[i].Cells[7].Value = Round(etaI * 0.84, 3);
-                //calc be - ефективна питома витрата палива
-                this.dataGridView_DataForDiagram.Rows[i].Cells[8].Value = Round((3600 / (etaI * 41500)) / 0.84, 3);
-                //calc bi
-                this.dataGridView_DataForDiagram.Rows[i].Cells[9].Value = Round(FormsDiagrOfCylinderProcesses[i].CalcPolitrops.CalcBi(FormsDiagrOfCylinderProcesses[i].CalcPolitrops.DataPolitrops), 5);
+            AddExtraCalculatingDataToGridViewOfCylinders();
+            AddExtraCalculatingDataToGridViewOfIdealEngine();
 
-            }
-
+            //розрахувати сумарний обертальний момент ідеального двигуна
+            CalcTotalTorqueOfIdealEngine();
+            //построить график для идеального двигателя
+            FormDiagramProcessOfCylinder.ClearChart(chart_IdealEngine);
+            BuildChartTotalToqueForIdealEngine(chart_IdealEngine);
             //очистити таблицю від старих питомі сили циліндрів та сумарний обертальний момент двигуна
             FormDiagramProcessOfCylinder.ClearGridView(dataGridView_TiAndMi);
             //показати питомі сили циліндрів та сумарний обертальний момент двигуна
             ShowSpecificForcesAndTorqueEngineOnGridView(dataGridView_TiAndMi);
-            //очистити графік залежності обертального моменту від кута 
-            //FormDiagramProcessOfCylinder.ClearChart(chartTotalToque);
-            //побудувати графік залежності обертального моменту від кута
+            //очистити графік залежності обертального моменту від кута             
             BuildChartTotalToque(chartTotalToque);
             ////очистити таблицю від старих оэффициентов неравномерности крутящего момента для всех цилиндров
             FormDiagramProcessOfCylinder.ClearGridView(dataGridView_TorqueUniformity);
@@ -291,6 +323,156 @@ namespace Mechanic
             ShowTorqueUniformities(CalcTorqueUniformities(TotalTorqueOfCylinders), dataGridView_TorqueUniformity);
         }
 
+        private void CalcTotalTorqueOfIdealEngine()
+        {
+            // remove records in calculations of data specific forces with first angle == 360, and left next record with 360(left record with pressure expansion)
+
+            int indexRecordWith360Degree = CalcSpecificForcesIdealEngine.DataSpecificForces.Angles.BinarySearch(360);
+            if (CalcSpecificForcesIdealEngine.DataSpecificForces.Angles[indexRecordWith360Degree + 1] == 360) // data for 360 degree was remmoved
+            {
+                CalcSpecificForcesIdealEngine.DataSpecificForces.Angles.RemoveAt(indexRecordWith360Degree);
+                CalcSpecificForcesIdealEngine.DataSpecificForces.T.RemoveAt(indexRecordWith360Degree);
+            }
+
+
+            //CalcSpecificForcesOfCylinders[FIRST_CYLINDER].
+            //reset total torque
+            TotalTorqueOfIdealEngine = new List<double>();
+            //create bearing index of T in 6 cylinder for going along T in data specif forces
+            int bearingIndexT1 = CalcSpecificForcesIdealEngine.DataSpecificForces.Angles.BinarySearch(START_ANGLE_T1);
+            int bearingIndexT2 = CalcSpecificForcesIdealEngine.DataSpecificForces.Angles.BinarySearch(START_ANGLE_T2);
+            int bearingIndexT3 = CalcSpecificForcesIdealEngine.DataSpecificForces.Angles.BinarySearch(START_ANGLE_T3);
+            int bearingIndexT4 = CalcSpecificForcesIdealEngine.DataSpecificForces.Angles.BinarySearch(START_ANGLE_T4);
+            int bearingIndexT5 = CalcSpecificForcesIdealEngine.DataSpecificForces.Angles.BinarySearch(START_ANGLE_T5);
+            int bearingIndexT6 = CalcSpecificForcesIdealEngine.DataSpecificForces.Angles.BinarySearch(START_ANGLE_T6);
+
+            int lengthInternalObjectsInDataSpecForces = CalcSpecificForcesIdealEngine.DataSpecificForces.LengthInternalObject;
+
+
+            for (int iterT = 0; iterT < lengthInternalObjectsInDataSpecForces - 1; iterT++) // go along DataSpecificForces for get T of differentcylinder
+            {
+                double T1 = CalcSpecificForcesIdealEngine.DataSpecificForces.T[bearingIndexT1];
+                double T2 = CalcSpecificForcesIdealEngine.DataSpecificForces.T[bearingIndexT2];
+                double T3 = CalcSpecificForcesIdealEngine.DataSpecificForces.T[bearingIndexT3];
+                double T4 = CalcSpecificForcesIdealEngine.DataSpecificForces.T[bearingIndexT4];
+                double T5 = CalcSpecificForcesIdealEngine.DataSpecificForces.T[bearingIndexT5];
+                double T6 = CalcSpecificForcesIdealEngine.DataSpecificForces.T[bearingIndexT6];
+                double Tsum = Round(T1 + T2 + T3 + T4 + T5 + T6, 3);
+                //Mi = 1000 * TSum * Fn * R
+                double totalTorque = Round(1000 * Tsum * FormDiagrOfIdealEngine.CalcPolitrops.Fn * CalcPolitrops.R, 3);
+                TotalTorqueOfIdealEngine.Add(totalTorque);
+
+                //save max totalTorque and min totalTorque  
+                if (iterT == 0)
+                {
+                    this.maxTotalTorque = totalTorque;
+                    this.minTotalTorque = totalTorque;
+                }
+                else
+                {
+                    if (totalTorque > maxTotalTorque)
+                    {
+                        this.maxTotalTorque = totalTorque;
+                    }
+                    if (totalTorque < minTotalTorque)
+                    {
+                        this.minTotalTorque = totalTorque;
+                    }
+                }
+                
+                //increase index
+                bearingIndexT1++;
+                bearingIndexT2++;
+                bearingIndexT3++;
+                bearingIndexT4++;
+                bearingIndexT5++;
+                bearingIndexT6++;
+                //lengthInternalObjectsInDataSpecForces-1 cause value in 720 degree is the same as 0 degree
+                if (bearingIndexT1 == lengthInternalObjectsInDataSpecForces - 1) //index in end - go from start, 
+                {
+                    bearingIndexT1 = 0;
+                }
+
+                if (bearingIndexT2 == lengthInternalObjectsInDataSpecForces - 1) //index in end - go from start
+                {
+                    bearingIndexT2 = 0;
+                }
+
+                if (bearingIndexT3 == lengthInternalObjectsInDataSpecForces - 1) //index in end - go from start
+                {
+                    bearingIndexT3 = 0;
+                }
+
+                if (bearingIndexT4 == lengthInternalObjectsInDataSpecForces - 1) //index in end - go from start
+                {
+                    bearingIndexT4 = 0;
+                }
+
+                if (bearingIndexT5 == lengthInternalObjectsInDataSpecForces - 1) //index in end - go from start
+                {
+                    bearingIndexT5 = 0;
+                }
+
+                if (bearingIndexT6 == lengthInternalObjectsInDataSpecForces - 1) //index in end - go from start
+                {
+                    bearingIndexT6 = 0;
+                }
+            }
+        }
+
+        private void BuildChartTotalToqueForIdealEngine(Chart chart_IdealEngine)
+        {
+            
+            for (int angle = CalcSpecificForces.START_ANGLE, iterTotalTorque = 0;
+                angle <= CalcSpecificForces.END_ANGLE && iterTotalTorque < TotalTorqueOfIdealEngine.Count;
+                angle += FormDiagramProcessOfCylinder.DELTA_ANGLE, iterTotalTorque++)
+            {
+                chart_IdealEngine.Series[0].Points.AddXY(angle, TotalTorqueOfIdealEngine[iterTotalTorque]);
+                chart_IdealEngine.Series[0].Points[iterTotalTorque].Color = Color.Black;
+
+            }
+        }
+
+        private void AddExtraCalculatingDataToGridViewOfIdealEngine()
+        {
+            //Calc Ni - індикаторна потужність двигуна
+            double ni = Round(FormDiagrOfIdealEngine.CalcPolitrops.CalcNi(), 3);
+            this.dataGridView_IdealEngine.Rows[0].Cells[3].Value = (int)ni;
+            //Calc etaI - індикаторний КПД
+            double etaI = Round(FormDiagrOfIdealEngine.CalcPolitrops.CalcEtaI(), 3);
+            this.dataGridView_IdealEngine.Rows[0].Cells[4].Value = Round(etaI, 3);
+            //calc Ne - ефективна потужність
+            this.dataGridView_IdealEngine.Rows[0].Cells[5].Value = (int)(ni * 0.84);
+            //calc etaE - ефективна КПД
+            this.dataGridView_IdealEngine.Rows[0].Cells[6].Value = Round(etaI * 0.84, 3);
+            //calc be - ефективна питома витрата палива
+            this.dataGridView_IdealEngine.Rows[0].Cells[7].Value = Round(etaI != 0.0 ? (3600 / (etaI * 41500)) / 0.84 : 0.0, 3);
+            //calc bi
+            this.dataGridView_IdealEngine.Rows[0].Cells[8].Value = Round(FormDiagrOfIdealEngine.CalcPolitrops.CalcBi(FormDiagrOfIdealEngine.CalcPolitrops.DataPolitrops), 3);
+
+        }
+
+        private void AddExtraCalculatingDataToGridViewOfCylinders()
+        {
+            for (int i = 0; i < COUNT_CYLINDER_ENGINE; i++)
+            {
+                //Calc Ni - індикаторна потужність двигуна
+                double ni = Round(FormsDiagrOfCylinderProcesses[i].CalcPolitrops.CalcNi(), 3);
+                this.dataGridView_DataForDiagram.Rows[i].Cells[4].Value = (int)ni;
+                //Calc etaI - індикаторний КПД
+                double etaI = Round(FormsDiagrOfCylinderProcesses[i].CalcPolitrops.CalcEtaI(), 3);
+                this.dataGridView_DataForDiagram.Rows[i].Cells[5].Value = Round(etaI, 3);
+                //calc Ne - ефективна потужність
+                this.dataGridView_DataForDiagram.Rows[i].Cells[6].Value = (int)(ni * 0.84);
+                //calc etaE - ефективна КПД
+                this.dataGridView_DataForDiagram.Rows[i].Cells[7].Value = Round(etaI * 0.84, 3);
+                //calc be - ефективна питома витрата палива
+                this.dataGridView_DataForDiagram.Rows[i].Cells[8].Value = Round(etaI != 0.0 ? (3600 / (etaI * 41500)) / 0.84 : 0.0, 3);
+                //calc bi
+                this.dataGridView_DataForDiagram.Rows[i].Cells[9].Value = Round(FormsDiagrOfCylinderProcesses[i].CalcPolitrops.CalcBi(FormsDiagrOfCylinderProcesses[i].CalcPolitrops.DataPolitrops), 3);
+
+            }
+        }
 
         private void BuildChartTotalToque(Chart chartTotalToque)
         {
@@ -306,13 +488,6 @@ namespace Mechanic
             series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series.IsVisibleInLegend = false;
             this.chartTotalToque.Series.Add(series);
-
-            //customize grid line
-            chartTotalToque.ChartAreas[0].AxisX.MajorTickMark.Enabled = false;
-            chartTotalToque.ChartAreas[0].AxisX.MajorGrid.Interval = 120;
-
-            chartTotalToque.ChartAreas[0].AxisX.Minimum = 0;
-            chartTotalToque.ChartAreas[0].AxisX.Maximum = 720;
 
             for (int angle = CalcSpecificForces.START_ANGLE, iterTotalTorque = 0;
                 angle <= CalcSpecificForces.END_ANGLE && iterTotalTorque < TotalTorqueOfCylinders.Count;
@@ -527,13 +702,17 @@ namespace Mechanic
         {
             chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Clear();
 
-            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(-20, 20, "0", 0, LabelMarkStyle.None));
-            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(100, 140, "120", 0, LabelMarkStyle.None));
-            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(220, 260, "240", 0, LabelMarkStyle.None));
-            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(340, 380, "360", 0, LabelMarkStyle.None));
-            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(460, 500, "480", 0, LabelMarkStyle.None));
-            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(580, 620, "600", 0, LabelMarkStyle.None));
-            chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(700, 740, "720", 0, LabelMarkStyle.None));
+            for (int i = MIN_AXIS_X_CHART_TOTAL_TOQUE; i <= MAX_AXIS_X_CHART_TOTAL_TOQUE; i += INTERVAL_AXIS_X_CHART_TOTAL_TORQUE)
+            {
+                chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(i - 20, i + 20, i.ToString(), 0, LabelMarkStyle.None));
+            }
+
+            //chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(100, 140, "120", 0, LabelMarkStyle.None));
+            //chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(220, 260, "240", 0, LabelMarkStyle.None));
+            //chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(340, 380, "360", 0, LabelMarkStyle.None));
+            //chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(460, 500, "480", 0, LabelMarkStyle.None));
+            //chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(580, 620, "600", 0, LabelMarkStyle.None));
+            //chartTotalToque.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(700, 740, "720", 0, LabelMarkStyle.None));
         }
 
         private void dataGridView_TiAndMi_Resize(object sender, EventArgs e)
@@ -548,5 +727,14 @@ namespace Mechanic
                 );
         }
 
+        private void chart_IdealEngine_Customize(object sender, EventArgs e)
+        {
+            chart_IdealEngine.ChartAreas[0].AxisX.CustomLabels.Clear();
+
+            for (int i = MIN_AXIS_X_CHART_TOTAL_TOQUE; i <= MAX_AXIS_X_CHART_TOTAL_TOQUE; i += INTERVAL_AXIS_X_CHART_TOTAL_TORQUE)
+            {
+                chart_IdealEngine.ChartAreas[0].AxisX.CustomLabels.Add(new CustomLabel(i - 20, i + 20, i.ToString(), 0, LabelMarkStyle.None));
+            }
+        }
     }
 }
