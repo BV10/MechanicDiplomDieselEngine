@@ -295,7 +295,7 @@ namespace Mechanic
             for (int i = 0; i < chart.Series.Count; i++)
             {
                 chart.Series[i].Points.Clear();
-            }
+            }            
         }
 
         private void ShowDataSpecificForces()
@@ -367,16 +367,23 @@ namespace Mechanic
 
         private void BuildChartDataPolitrop()
         {
-            // очистка старого графіка
+            // очистка старых точек старого графіка
             ClearChart(chart_IndicatorDiagram);
+            //удаление серий для соединения
+            try
+            {
+                chart_IndicatorDiagram.Series.Remove(chart_IndicatorDiagram.Series["LineLinkedBegOfGraphicsPolitrops"]);
+                chart_IndicatorDiagram.Series.Remove(chart_IndicatorDiagram.Series["LineLinkedEndOfGraphicsPolitrops"]);
+            }
+            catch (ArgumentException) { /*NOP*/}
 
 
+            DataPolitropsOfComprassionAndExpansion dataPolitrop = CalcPolitrops.DataPolitrops;
             for (int iterInternalPolitrData = 0;
                  iterInternalPolitrData < CalcPolitrops.DataPolitrops.LengthInternalObject;
                  iterInternalPolitrData++
                 )
-            {
-                DataPolitropsOfComprassionAndExpansion dataPolitrop = CalcPolitrops.DataPolitrops;
+            {                
                 dataGridView_Politrop.Rows.Add(
                     dataPolitrop.Angles[iterInternalPolitrData],
                     dataPolitrop.S[iterInternalPolitrData],
@@ -407,7 +414,33 @@ namespace Mechanic
                    );
                 }
             }
+            //link beg of graphics: data politrop comprassion and data politrop expansion
+            Series seriesLinkBegOfGraphics = new Series();
+            seriesLinkBegOfGraphics.Name ="LineLinkedBegOfGraphicsPolitrops";
+            seriesLinkBegOfGraphics.IsVisibleInLegend = false;
+            seriesLinkBegOfGraphics.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            chart_IndicatorDiagram.Series.Add(seriesLinkBegOfGraphics);
+            seriesLinkBegOfGraphics.Color = Color.Blue;
+            seriesLinkBegOfGraphics.BorderWidth = 2;
+            seriesLinkBegOfGraphics.Points.AddXY(dataPolitrop.V[0], // beg V
+                    dataPolitrop.PressureOnLineCompression[0]); //beg p compression)
 
+            seriesLinkBegOfGraphics.Points.AddXY(dataPolitrop.V[0], //beg V
+                   dataPolitrop.PressureOnLineExpansion[0]); //beg p expansion         
+
+            //link end of graphics: data politrop comprassion and data politrop expansion
+            Series seriesLinkEndOfGraphics = new Series();
+            seriesLinkEndOfGraphics.Name = "LineLinkedEndOfGraphicsPolitrops";
+            seriesLinkEndOfGraphics.IsVisibleInLegend = false;
+            seriesLinkEndOfGraphics.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            chart_IndicatorDiagram.Series.Add(seriesLinkEndOfGraphics);
+            seriesLinkEndOfGraphics.Color = Color.Blue;
+            seriesLinkEndOfGraphics.BorderWidth = 2;
+            seriesLinkEndOfGraphics.Points.AddXY(dataPolitrop.V[dataPolitrop.LengthInternalObject-1], // end V
+                    dataPolitrop.PressureOnLineCompression[dataPolitrop.LengthInternalObject - 1]); //end p compression)
+
+            seriesLinkEndOfGraphics.Points.AddXY(dataPolitrop.V[dataPolitrop.LengthInternalObject - 1], //end V
+                   dataPolitrop.PressureOnLineExpansion[dataPolitrop.LengthInternalObject - 1]); //end p expansion     
             // autosize height
             AutosizeGridView(this.dataGridView_Politrop);
         }

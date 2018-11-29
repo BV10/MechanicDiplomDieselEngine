@@ -44,13 +44,14 @@ namespace Mechanic
             System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell5 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
             System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem6 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
             System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell6 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem7 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell7 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
             System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem7 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell7 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem8 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell8 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
             System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.label1 = new System.Windows.Forms.Label();
             this.btnDrawDiagram = new System.Windows.Forms.Button();
@@ -112,8 +113,6 @@ namespace Mechanic
             this.label9 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.dataGridView_IdealEngine = new System.Windows.Forms.DataGridView();
-            this.label14 = new System.Windows.Forms.Label();
-            this.chart_IdealEngine = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -123,6 +122,8 @@ namespace Mechanic
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label14 = new System.Windows.Forms.Label();
+            this.chart_IdealEngine = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_TiAndMi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTotalToque)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_TorqueUniformity)).BeginInit();
@@ -295,15 +296,20 @@ namespace Mechanic
             legendCell6.Name = "Cell1";
             legendCell6.Text = "6-ий циліндр";
             legendItem6.Cells.Add(legendCell6);
+            legendCell7.ForeColor = System.Drawing.Color.Black;
+            legendCell7.Name = "Cell1";
+            legendCell7.Text = "Ідеальний двигун";
+            legendItem7.Cells.Add(legendCell7);
             legend1.CustomItems.Add(legendItem1);
             legend1.CustomItems.Add(legendItem2);
             legend1.CustomItems.Add(legendItem3);
             legend1.CustomItems.Add(legendItem4);
             legend1.CustomItems.Add(legendItem5);
             legend1.CustomItems.Add(legendItem6);
+            legend1.CustomItems.Add(legendItem7);
             legend1.Name = "Legend1";
             this.chartTotalToque.Legends.Add(legend1);
-            this.chartTotalToque.Location = new System.Drawing.Point(117, 812);
+            this.chartTotalToque.Location = new System.Drawing.Point(117, 674);
             this.chartTotalToque.Name = "chartTotalToque";
             this.chartTotalToque.Size = new System.Drawing.Size(946, 296);
             this.chartTotalToque.TabIndex = 9;
@@ -705,45 +711,6 @@ namespace Mechanic
             this.dataGridView_IdealEngine.Size = new System.Drawing.Size(944, 47);
             this.dataGridView_IdealEngine.TabIndex = 76;
             // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label14.Location = new System.Drawing.Point(431, 603);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(323, 25);
-            this.label14.TabIndex = 77;
-            this.label14.Text = "Дані для ідеального двигуна";
-            // 
-            // chart_IdealEngine
-            // 
-            chartArea2.Name = "ChartArea1";
-            this.chart_IdealEngine.ChartAreas.Add(chartArea2);
-            legendCell7.BackColor = System.Drawing.Color.Transparent;
-            legendCell7.ForeColor = System.Drawing.Color.Black;
-            legendCell7.Name = "Cell1";
-            legendCell7.Text = "Ідеальний двигун";
-            legendItem7.Cells.Add(legendCell7);
-            legend2.CustomItems.Add(legendItem7);
-            legend2.Name = "Legend1";
-            this.chart_IdealEngine.Legends.Add(legend2);
-            this.chart_IdealEngine.Location = new System.Drawing.Point(117, 482);
-            this.chart_IdealEngine.Name = "chart_IdealEngine";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series1.IsVisibleInLegend = false;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart_IdealEngine.Series.Add(series1);
-            this.chart_IdealEngine.Size = new System.Drawing.Size(946, 296);
-            this.chart_IdealEngine.TabIndex = 78;
-            this.chart_IdealEngine.Text = "chart1";
-            title2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            title2.Name = "Title1";
-            title2.Text = "Сумарний обертальний момент ідеального дизеля";
-            this.chart_IdealEngine.Titles.Add(title2);
-            this.chart_IdealEngine.Customize += new System.EventHandler(this.chart_IdealEngine_Customize);
-            // 
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.HeaderText = "n1";
@@ -794,6 +761,39 @@ namespace Mechanic
             this.dataGridViewTextBoxColumn10.HeaderText = "bᵢ";
             this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
             this.dataGridViewTextBoxColumn10.ReadOnly = true;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label14.Location = new System.Drawing.Point(431, 603);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(323, 25);
+            this.label14.TabIndex = 77;
+            this.label14.Text = "Дані для ідеального двигуна";
+            // 
+            // chart_IdealEngine
+            // 
+            chartArea2.Name = "ChartArea1";
+            this.chart_IdealEngine.ChartAreas.Add(chartArea2);
+            legendCell8.BackColor = System.Drawing.Color.Transparent;
+            legendCell8.ForeColor = System.Drawing.Color.Black;
+            legendCell8.Name = "Cell1";
+            legendCell8.Text = "Ідеальний двигун";
+            legendItem8.Cells.Add(legendCell8);
+            legend2.CustomItems.Add(legendItem8);
+            legend2.Name = "Legend1";
+            this.chart_IdealEngine.Legends.Add(legend2);
+            this.chart_IdealEngine.Location = new System.Drawing.Point(105, 464);
+            this.chart_IdealEngine.Name = "chart_IdealEngine";
+            this.chart_IdealEngine.Size = new System.Drawing.Size(946, 296);
+            this.chart_IdealEngine.TabIndex = 78;
+            this.chart_IdealEngine.Text = "chart1";
+            title2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title2.Name = "Title1";
+            title2.Text = "Сумарний обертальний момент ідеального дизеля";
+            this.chart_IdealEngine.Titles.Add(title2);
+            this.chart_IdealEngine.Customize += new System.EventHandler(this.chart_IdealEngine_Customize);
             // 
             // Main
             // 

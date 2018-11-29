@@ -308,15 +308,34 @@ namespace Mechanic
 
             //розрахувати сумарний обертальний момент ідеального двигуна
             CalcTotalTorqueOfIdealEngine();
+            //очистить старый график для идеального двигателя
+            try
+            {
+                chart_IdealEngine.Series.Remove(chart_IdealEngine.Series["TotalToqueForIdealEngine"]);
+            }
+            catch (ArgumentException) { /*NOP*/}            
             //построить график для идеального двигателя
-            FormDiagramProcessOfCylinder.ClearChart(chart_IdealEngine);
             BuildChartTotalToqueForIdealEngine(chart_IdealEngine);
             //очистити таблицю від старих питомі сили циліндрів та сумарний обертальний момент двигуна
             FormDiagramProcessOfCylinder.ClearGridView(dataGridView_TiAndMi);
             //показати питомі сили циліндрів та сумарний обертальний момент двигуна
             ShowSpecificForcesAndTorqueEngineOnGridView(dataGridView_TiAndMi);
-            //очистити графік залежності обертального моменту від кута             
+            //очистити графік залежності обертального моменту від кута   
+            try
+            {
+                chartTotalToque.Series.Remove(chartTotalToque.Series["TotalToque"]);
+            }
+            catch (ArgumentException) { /*NOP*/}
+            //побудувати графік залежності обертального моменту від кута
             BuildChartTotalToque(chartTotalToque);
+            //очистить старый график для идеального двигателя
+            try
+            {
+                chartTotalToque.Series.Remove(chartTotalToque.Series["TotalToqueForIdealEngine"]);
+            }
+            catch (ArgumentException) { /*NOP*/}
+            //построить график для идеального двигателя
+            BuildChartTotalToqueForIdealEngine(chartTotalToque);
             ////очистити таблицю від старих оэффициентов неравномерности крутящего момента для всех цилиндров
             FormDiagramProcessOfCylinder.ClearGridView(dataGridView_TorqueUniformity);
             // показати табцицю коэффициентов неравномерности крутящего момента для всех цилиндров
@@ -422,14 +441,18 @@ namespace Mechanic
 
         private void BuildChartTotalToqueForIdealEngine(Chart chart_IdealEngine)
         {
-            
+            Series series = new Series();            
+            series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series.Name = "TotalToqueForIdealEngine";
+            series.IsVisibleInLegend = false;
+            chart_IdealEngine.Series.Add(series);
+
             for (int angle = CalcSpecificForces.START_ANGLE, iterTotalTorque = 0;
                 angle <= CalcSpecificForces.END_ANGLE && iterTotalTorque < TotalTorqueOfIdealEngine.Count;
                 angle += FormDiagramProcessOfCylinder.DELTA_ANGLE, iterTotalTorque++)
             {
-                chart_IdealEngine.Series[0].Points.AddXY(angle, TotalTorqueOfIdealEngine[iterTotalTorque]);
-                chart_IdealEngine.Series[0].Points[iterTotalTorque].Color = Color.Black;
-
+                series.Points.AddXY(angle, TotalTorqueOfIdealEngine[iterTotalTorque]);
+                series.Points[iterTotalTorque].Color = Color.Black;
             }
         }
 
@@ -475,16 +498,10 @@ namespace Mechanic
         }
 
         private void BuildChartTotalToque(Chart chartTotalToque)
-        {
-            //remove old chart of total toque
-            if (chartTotalToque.Series.Count > 1)
-            {
-                chartTotalToque.Series[1].Points.Clear();
-                chartTotalToque.Series.RemoveAt(1);
-            }
-            //create new seties
+        {            
+            //create new series
             Series series = new Series();
-            series.ChartArea = "ChartArea1";
+            series.Name = "TotalToque";
             series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series.IsVisibleInLegend = false;
             this.chartTotalToque.Series.Add(series);
